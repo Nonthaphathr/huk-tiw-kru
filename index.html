@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ฮูกติวครู</title>
+<meta name="description" content="ระบบฝึกทำข้อสอบใบประกอบวิชาชีพครู (วิชาครู) สำหรับครอบครัว">
+<meta name="theme-color" content="#7C5CFF">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Itim&family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600;700&display=swap">
+<style>:root{
+  --bg:#F4F0FF; --bg2:#FFF6FB; --paper:#FFFFFF; --ink:#2B2340; --muted:#6F6690; --line:#2B2340; --soft:#ECE6FB; --soft2:#F7F4FF;
+  --pri:#7C5CFF; --pri-ink:#FFFFFF; --pri-soft:#E7E0FF; --pink:#FF7AA8; --ok:#1FAF7A; --ok-soft:#DDF7EC; --bad:#FF5A6E; --bad-soft:#FFE6EA; --warn:#FFB020; --warn-soft:#FFF2D6;
+  --d1:#F2557E; --d1t:#FFE3EC; --d2:#F08C1B; --d2t:#FFEBD2; --d3:#16A87E; --d3t:#D7F5EA; --d4:#2E86DE; --d4t:#DCEBFF; --d5:#8A5CF0; --d5t:#EDE4FF;
+  --sh:0 4px 0 var(--line); --sh-sm:0 3px 0 var(--line); --r:22px; --r-sm:14px;
+  --fd:"Itim","IBM Plex Sans Thai Looped",system-ui,sans-serif;
+  --fb:"IBM Plex Sans Thai Looped","Sarabun","Tahoma",system-ui,sans-serif;
+  --ease:cubic-bezier(.65,0,.35,1); --ease-out:cubic-bezier(.22,1,.36,1); --spring:cubic-bezier(.34,1.56,.64,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --bg:#1A1626; --bg2:#1E1830; --paper:#262036; --ink:#F3EEFF; --muted:#B4AACF; --line:#0D0A15; --soft:#332B48; --soft2:#2C253F;
+  --pri:#9A80FF; --pri-soft:#3A2F66; --ok:#3FD39C; --ok-soft:#173A2E; --bad:#FF7C8C; --bad-soft:#40202A; --warn:#FFC24D; --warn-soft:#3F3218;
+  --d1:#FF7FA0; --d1t:#44202E; --d2:#FFAD4D; --d2t:#43301A; --d3:#43D1A3; --d3t:#173B30; --d4:#62A8F0; --d4t:#1A3048; --d5:#AE8CFF; --d5t:#30254D;}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#1A1626; --bg2:#1E1830; --paper:#262036; --ink:#F3EEFF; --muted:#B4AACF; --line:#0D0A15; --soft:#332B48; --soft2:#2C253F;
+  --pri:#9A80FF; --pri-soft:#3A2F66; --ok:#3FD39C; --ok-soft:#173A2E; --bad:#FF7C8C; --bad-soft:#40202A; --warn:#FFC24D; --warn-soft:#3F3218;
+  --d1:#FF7FA0; --d1t:#44202E; --d2:#FFAD4D; --d2t:#43301A; --d3:#43D1A3; --d3t:#173B30; --d4:#62A8F0; --d4t:#1A3048; --d5:#AE8CFF; --d5t:#30254D;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);background-image:radial-gradient(circle at 12% 8%,var(--bg2) 0 180px,transparent 181px),radial-gradient(circle at 92% 30%,var(--bg2) 0 120px,transparent 121px);background-attachment:fixed;color:var(--ink);font-family:var(--fb);font-size:16px;line-height:1.6}
+h1,h2,h3,h4{font-family:var(--fd);font-weight:400;line-height:1.25;margin:0;text-wrap:balance}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+.app{max-width:820px;margin:0 auto;padding-inline:16px;padding-block:0 110px;min-height:100%}
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:10px;padding-block:10px;margin-inline:-16px;padding-inline:16px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px)}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--fd);font-size:22px;text-decoration:none;color:var(--ink);background:none;border:0;padding:0}
+.brand svg{width:40px;height:40px}
+.top .sp{flex:1}
+.demo-pill{font-size:12px;font-weight:700;background:var(--warn-soft);color:var(--ink);border:2px solid var(--line);border-radius:99px;padding:1px 10px}
+.topnav{display:none;gap:6px}
+.topnav button{border:2px solid transparent;background:none;border-radius:99px;padding:5px 14px;font-family:var(--fd);font-size:17px;color:var(--muted);transition:all .25s var(--ease)}
+.topnav button.on{border-color:var(--line);background:var(--paper);color:var(--ink);box-shadow:var(--sh-sm)}
+@media (min-width:760px){.topnav{display:flex}.bnav{display:none!important}.app{padding-block-end:40px}}
+/* bottom nav */
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;pointer-events:none}
+.bnav .inner{pointer-events:auto;display:flex;gap:2px;background:var(--paper);border:2.5px solid var(--line);border-radius:26px;box-shadow:var(--sh);padding:6px;max-width:520px;width:100%}
+.bnav button{flex:1;border:0;background:none;display:grid;justify-items:center;gap:1px;padding:6px 2px;border-radius:18px;font-size:12px;font-weight:600;color:var(--muted);transition:background .3s var(--ease),color .3s var(--ease),transform .3s var(--spring)}
+.bnav button svg{width:24px;height:24px}
+.bnav button.on{background:var(--pri-soft);color:var(--ink)}
+.bnav button.on svg{transform:translateY(-1px) scale(1.08)}
+.bnav button:active{transform:scale(.92)}
+body.focus .bnav,body.focus .topnav{display:none!important}
+/* views & transitions */
+#view{position:relative}
+.view{display:grid;gap:16px;padding-top:6px;transition:opacity .32s var(--ease),transform .32s var(--ease)}
+.view.entering{opacity:0;transform:translateY(14px)}
+.view.leaving{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(-10px);pointer-events:none}
+@media (prefers-reduced-motion:reduce){.view,.view.entering,.view.leaving{transition:none;transform:none}}
+/* cards */
+.card{background:var(--paper);border:2.5px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:16px;display:grid;gap:12px;align-content:start;min-width:0}
+.card.flat{box-shadow:none;border-width:2px}
+.card h3{font-size:21px;display:flex;align-items:center;gap:8px}
+.card h3 small{font-family:var(--fb);font-size:13px;color:var(--muted);margin-left:auto;font-weight:600}
+.pop{animation:pop .5s var(--ease-out) both}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2.5px solid var(--line);background:var(--paper);border-radius:16px;padding:10px 18px;font-family:var(--fd);font-size:18px;box-shadow:var(--sh-sm);transition:transform .18s var(--ease),box-shadow .18s var(--ease),background .2s;white-space:nowrap;color:var(--ink)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(3px);box-shadow:0 0 0 var(--line)}
+.btn.pri{background:var(--pri);color:var(--pri-ink)}
+.btn.pink{background:var(--pink);color:#fff}
+.btn.ok{background:var(--ok);color:#fff}
+.btn.bad{background:var(--bad);color:#fff}
+.btn.ghost{box-shadow:none;border-color:transparent;background:transparent}
+.btn.sm{font-size:15px;padding:6px 12px;border-radius:12px;border-width:2px}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.btn svg{width:20px;height:20px;flex:none}
+.iconbtn{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;border:2.5px solid var(--line);background:var(--paper);box-shadow:var(--sh-sm);transition:transform .18s var(--ease)}
+.iconbtn:active{transform:translateY(3px);box-shadow:none}
+.iconbtn svg{width:22px;height:22px}
+/* forms */
+label.f{display:grid;gap:4px;font-weight:600;font-size:15px}
+.in{width:100%;border:2.5px solid var(--line);border-radius:14px;background:var(--soft2);padding:10px 14px;font-size:16px;transition:background .2s,box-shadow .2s}
+.in:focus{outline:none;background:var(--paper);box-shadow:0 0 0 4px var(--pri-soft)}
+textarea.in{resize:vertical;min-height:84px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:2px solid var(--line);background:var(--paper);border-radius:99px;padding:4px 14px;font-weight:600;font-size:14px;transition:all .22s var(--ease)}
+.chip.on{background:var(--ink);color:var(--paper)}
+.chip.dc{background:var(--t);border-color:var(--c)}
+.chip.dc.on{background:var(--c);color:#fff;border-color:var(--c)}
+.seg{display:flex;background:var(--soft);border:2.5px solid var(--line);border-radius:16px;padding:4px;gap:4px}
+.seg button{flex:1;border:0;background:none;border-radius:11px;padding:8px 6px;font-family:var(--fd);font-size:16px;color:var(--muted);transition:all .25s var(--ease)}
+.seg button.on{background:var(--paper);color:var(--ink);box-shadow:0 2px 0 var(--line)}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:600}
+.switch input{appearance:none;width:52px;height:30px;border-radius:99px;border:2.5px solid var(--line);background:var(--soft);position:relative;transition:background .25s var(--ease);flex:none;cursor:pointer}
+.switch input::after{content:"";position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:var(--paper);border:2px solid var(--line);transition:transform .3s var(--spring)}
+.switch input:checked{background:var(--ok)}
+.switch input:checked::after{transform:translateX(21px)}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{width:34px;height:34px;border-radius:11px;border:2px solid var(--line);background:var(--paper);font-size:20px;line-height:1;display:grid;place-items:center}
+.stepper input{width:56px;text-align:center;border:2px solid var(--line);border-radius:11px;padding:4px;background:var(--soft2);font-variant-numeric:tabular-nums}
+/* domain colors */
+.d1{--c:var(--d1);--t:var(--d1t)} .d2{--c:var(--d2);--t:var(--d2t)} .d3{--c:var(--d3);--t:var(--d3t)} .d4{--c:var(--d4);--t:var(--d4t)} .d5{--c:var(--d5);--t:var(--d5t)}
+.dtag{display:inline-flex;align-items:center;gap:6px;background:var(--t);color:var(--ink);border:2px solid var(--c);border-radius:99px;padding:1px 10px;font-size:13px;font-weight:700}
+.dtag b{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--c);color:#fff;font-size:11px}
+/* hero */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:linear-gradient(135deg,var(--pri-soft),var(--d1t));}
+.hero .owl{width:92px;height:92px}
+.hero h2{font-size:26px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--paper);border:2.5px solid var(--line);border-radius:18px;padding:10px 12px;box-shadow:var(--sh-sm)}
+.kpi .v{font-family:var(--fd);font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:13px;color:var(--muted);font-weight:600}
+.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.act{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;text-align:left;border:2.5px solid var(--line);border-radius:20px;padding:14px;background:var(--t,var(--paper));box-shadow:var(--sh);transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.act:hover{transform:translateY(-2px)}
+.act:active{transform:translateY(4px);box-shadow:0 0 0 var(--line)}
+.act .ic{width:48px;height:48px;border-radius:16px;background:var(--c,var(--pri));color:#fff;display:grid;place-items:center;border:2.5px solid var(--line)}
+.act .ic svg{width:26px;height:26px}
+.act b{font-family:var(--fd);font-weight:400;font-size:19px;display:block}
+.act span{font-size:13px;color:var(--muted);font-weight:600}
+/* bars */
+.dbar{display:grid;grid-template-columns:110px 1fr 48px;gap:10px;align-items:center;font-size:14px}
+.dbar .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{position:relative;height:14px;border-radius:99px;background:var(--soft);border:2px solid var(--line);overflow:hidden}
+.track i{position:absolute;inset:0 auto 0 0;background:var(--c,var(--pri));border-radius:99px;transition:width 1s var(--ease-out)}
+.track .pass{position:absolute;top:-2px;bottom:-2px;left:60%;width:0;border-left:2px dashed var(--ink);opacity:.6}
+.dbar .pc{font-family:var(--fd);font-size:18px;text-align:right;font-variant-numeric:tabular-nums}
+svg text{font-family:var(--fb)}
+.chart{width:100%;height:auto;display:block}
+/* advice */
+.advice{display:grid;gap:10px}
+.tipc{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;background:var(--soft2);border:2px solid var(--line);border-radius:16px;padding:10px 12px}
+.tipc .b{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:var(--c,var(--pri));color:#fff;border:2px solid var(--line)}
+.tipc .b svg{width:18px;height:18px}
+.tipc p{font-size:15px}
+.tipc .btn{margin-top:6px}
+/* list */
+.list{display:grid;gap:10px}
+.li{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:2px solid var(--line);border-radius:18px;padding:10px 12px;background:var(--paper);text-align:left;width:100%;transition:transform .2s var(--ease),background .2s}
+button.li:hover{background:var(--soft2)}
+button.li:active{transform:scale(.99)}
+.score-dot{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-family:var(--fd);font-size:19px;border:2.5px solid var(--line);font-variant-numeric:tabular-nums}
+.score-dot.pass{background:var(--ok-soft)} .score-dot.fail{background:var(--bad-soft)}
+.badge{display:inline-block;font-size:12px;font-weight:700;border-radius:99px;padding:1px 9px;border:2px solid var(--line)}
+.badge.ok{background:var(--ok-soft)} .badge.bad{background:var(--bad-soft)} .badge.warn{background:var(--warn-soft)} .badge.pri{background:var(--pri-soft)}
+/* exam */
+.exam-top{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.exam-top .t{font-family:var(--fd);font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.timer{display:flex;align-items:center;gap:6px;font-family:var(--fd);font-size:20px;background:var(--paper);border:2.5px solid var(--line);border-radius:14px;padding:4px 12px;box-shadow:var(--sh-sm);font-variant-numeric:tabular-nums;transition:background .3s}
+.timer svg{width:20px;height:20px}
+.timer.low{background:var(--bad);color:#fff;animation:pulse 1s var(--ease) infinite}
+@keyframes pulse{50%{transform:scale(1.05)}}
+.prog{height:12px;border:2px solid var(--line);border-radius:99px;background:var(--paper);overflow:hidden}
+.prog i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--pri) 0 10px,color-mix(in srgb,var(--pri) 80%,#fff) 10px 20px);transition:width .5s var(--ease)}
+.qwrap{position:relative;overflow:hidden;border-radius:var(--r)}
+.qcard{transition:transform .34s var(--ease),opacity .34s var(--ease)}
+.qcard.out-l{transform:translateX(-40px);opacity:0}.qcard.out-r{transform:translateX(40px);opacity:0}
+.qcard.in-l{transform:translateX(40px);opacity:0}.qcard.in-r{transform:translateX(-40px);opacity:0}
+.qno{font-family:var(--fd);font-size:17px;color:var(--muted)}
+.qtext{font-size:18px;line-height:1.7;font-weight:500;white-space:pre-wrap}
+.choices{display:grid;gap:10px}
+.choice{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:center;text-align:left;border:2.5px solid var(--line);border-radius:18px;padding:10px 12px;background:var(--paper);box-shadow:var(--sh-sm);transition:transform .2s var(--ease),background .25s var(--ease),box-shadow .2s var(--ease);font-size:16px;line-height:1.55}
+.choice .L{width:40px;height:40px;border-radius:13px;border:2.5px solid var(--line);display:grid;place-items:center;font-family:var(--fd);font-size:20px;background:var(--soft);transition:all .25s var(--ease)}
+.choice:hover{transform:translateY(-1px)}
+.choice:active{transform:translateY(3px);box-shadow:none}
+.choice.sel{background:var(--pri-soft)}
+.choice.sel .L{background:var(--pri);color:#fff;transform:rotate(-6deg) scale(1.06)}
+.choice.right{background:var(--ok-soft)} .choice.right .L{background:var(--ok);color:#fff}
+.choice.wrong{background:var(--bad-soft)} .choice.wrong .L{background:var(--bad);color:#fff}
+.choice[disabled]{cursor:default}
+.choice.bump{animation:bump .42s var(--spring)}
+@keyframes bump{40%{transform:scale(1.025)}}
+.shake{animation:shake .45s var(--ease)}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.explain{border:2px dashed var(--line);border-radius:16px;padding:12px 14px;background:var(--warn-soft);font-size:15px}
+.explain b{font-family:var(--fd);font-weight:400;font-size:17px}
+.exam-foot{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(8px);border-radius:20px;padding:6px}
+.flag.on{background:var(--warn)}
+.navgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:8px}
+.navgrid button{height:44px;border-radius:12px;border:2px solid var(--line);background:var(--paper);font-weight:700;font-variant-numeric:tabular-nums;position:relative}
+.navgrid button.ans{background:var(--pri-soft)}
+.navgrid button.cur{outline:3px solid var(--pri);outline-offset:1px}
+.navgrid button.fl::after{content:"";position:absolute;top:-5px;right:-5px;width:12px;height:12px;border-radius:50%;background:var(--warn);border:2px solid var(--line)}
+.navgrid button.r{background:var(--ok-soft)} .navgrid button.w{background:var(--bad-soft)}
+/* result */
+.ring{position:relative;width:170px;height:170px;margin:0 auto}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .c b{font-family:var(--fd);font-weight:400;font-size:44px;line-height:1;font-variant-numeric:tabular-nums}
+.ring circle{transition:stroke-dashoffset 1.4s var(--ease-out)}
+.res-hero{text-align:center;justify-items:center}
+.verdict{font-family:var(--fd);font-size:26px}
+.rv{display:grid;gap:10px;border:2px solid var(--line);border-radius:18px;padding:12px;background:var(--paper)}
+.rv .choice{box-shadow:none;padding:6px 10px;font-size:15px;grid-template-columns:32px 1fr}
+.rv .choice .L{width:32px;height:32px;font-size:16px;border-radius:10px}
+/* modal & toast */
+.scrim{position:fixed;inset:0;z-index:100;background:rgba(20,14,40,.45);display:grid;align-items:end;justify-items:center;padding:16px;opacity:0;transition:opacity .28s var(--ease)}
+.scrim.show{opacity:1}
+@media (min-width:640px){.scrim{align-items:center}}
+.sheet{width:100%;max-width:620px;max-height:calc(100% - 20px);overflow:auto;background:var(--paper);border:2.5px solid var(--line);border-radius:26px;box-shadow:var(--sh);padding:18px;display:grid;gap:14px;transform:translateY(30px) scale(.98);transition:transform .34s var(--ease)}
+.scrim.show .sheet{transform:none}
+.sheet h3{font-size:22px}
+.sheet .acts{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.toasts{position:fixed;left:0;right:0;top:calc(12px + env(safe-area-inset-top,0px));z-index:200;display:grid;justify-items:center;gap:8px;pointer-events:none;padding-inline:16px}
+.toast{pointer-events:auto;background:var(--ink);color:var(--paper);border-radius:16px;padding:10px 16px;font-weight:600;max-width:520px;box-shadow:0 8px 24px -8px rgba(0,0,0,.4);animation:tin .35s var(--ease-out) both}
+.toast.ok{background:var(--ok);color:#fff} .toast.bad{background:var(--bad);color:#fff}
+.toast.out{animation:tout .3s var(--ease) both}
+@keyframes tin{from{opacity:0;transform:translateY(-12px) scale(.96)}}
+@keyframes tout{to{opacity:0;transform:translateY(-10px)}}
+/* auth */
+.auth{min-height:calc(100vh - 40px);display:grid;place-items:center;padding-block:24px}
+.auth .card{width:100%;max-width:430px}
+.auth .owl{width:130px;height:130px;margin:0 auto;display:block}
+.auth h1{font-size:34px;text-align:center}
+.float{animation:float 3.4s var(--ease) infinite}
+@keyframes float{50%{transform:translateY(-8px) rotate(-3deg)}}
+@media (prefers-reduced-motion:reduce){.float{animation:none}}
+.err{color:var(--bad);font-weight:600;font-size:14px;min-height:1.2em}
+/* table */
+.tbl{overflow-x:auto;border:2px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{background:var(--soft);text-align:left;padding:6px 8px;white-space:nowrap}
+td{padding:6px 8px;border-top:1.5px solid var(--soft);vertical-align:top}
+tr.bad td{background:var(--bad-soft)}
+.skel{height:90px;border-radius:var(--r);background:linear-gradient(90deg,var(--soft) 0%,var(--soft2) 50%,var(--soft) 100%);background-size:200% 100%;animation:sk 1.2s linear infinite;border:2.5px solid var(--soft)}
+@keyframes sk{to{background-position:-200% 0}}
+.empty{text-align:center;display:grid;justify-items:center;gap:8px;padding:12px}
+.empty .owl{width:96px;height:96px}
+.qitem{border:2px solid var(--line);border-radius:16px;padding:10px 12px;display:grid;gap:6px;background:var(--paper)}
+.qitem .qt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.qitem.open .qt{display:block}
+.qitem .more{display:none;gap:6px}
+.qitem.open .more{display:grid}
+.owlpick{display:flex;gap:10px;flex-wrap:wrap}
+.owlpick button{width:62px;height:62px;border-radius:18px;border:2.5px solid var(--line);background:var(--soft2);padding:4px;transition:transform .25s var(--spring)}
+.owlpick button.on{background:var(--pri-soft);transform:scale(1.08);box-shadow:var(--sh-sm)}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:150}
+.hide{display:none!important}
+h2 svg,h3 svg{width:24px;height:24px;flex:none;color:var(--pri)}
+.chip svg{width:16px;height:16px;vertical-align:-3px}
+.owl{width:110px;height:110px;flex:none}
+.res-hero .owl{width:120px;height:120px}
+.li .owl,.owlpick svg{width:100%;height:100%}
+</style>
+</head>
+<body>
+<div id="main" class="app hide">
+  <header class="top">
+    <button class="brand" data-go="home" aria-label="หน้าหลัก"><span id="brandOwl"></span>ฮูกติวครู</button>
+    <span class="demo-pill hide">โหมดทดลอง</span>
+    <span class="sp"></span>
+    <nav class="topnav" aria-label="เมนู"></nav>
+  </header>
+  <main id="view"></main>
+</div>
+<nav class="bnav hide" aria-label="เมนู"><div class="inner"></div></nav>
+
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.14.1/firebase-app-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.14.1/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>window.SAMPLE_QB=[{"domain":1,"topic":"ปรัชญาของเศรษฐกิจพอเพียง","question":"ครูสมศรีวางแผนจัดกิจกรรมทัศนศึกษาโดยคำนวณค่าใช้จ่ายให้อยู่ในงบประมาณที่โรงเรียนมี และไม่ใช้เวลาเกินกว่าที่หลักสูตรกำหนด การกระทำนี้สอดคล้องกับห่วงใดของปรัชญาของเศรษฐกิจพอเพียงมากที่สุด","choices":["การมีภูมิคุ้มกันที่ดีในตัว","เงื่อนไขคุณธรรม","ความมีเหตุผล","ความพอประมาณ"],"answer":3,"explanation":"ความพอประมาณคือความพอดี ไม่มากหรือน้อยเกินไป เหมาะกับศักยภาพและบริบท การจัดกิจกรรมให้อยู่ในงบและเวลาที่มีจริงจึงเป็นเรื่องของ 'ปริมาณ/ขนาด' ที่พอดี","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":1,"topic":"ปรัชญาของเศรษฐกิจพอเพียง","question":"ก่อนสอนออนไลน์ ครูเตรียมใบงานกระดาษและคลิปที่ดาวน์โหลดไว้ในเครื่องเผื่ออินเทอร์เน็ตล่ม พฤติกรรมนี้แสดงถึงองค์ประกอบใด","choices":["ความมีเหตุผล","เงื่อนไขความรู้","การมีภูมิคุ้มกันที่ดีในตัว","ความพอประมาณ"],"answer":2,"explanation":"การทำแผนสำรอง/การเตรียมรับความเสี่ยงที่อาจเกิดขึ้นในอนาคต คือห่วง 'ภูมิคุ้มกันที่ดีในตัว' (กับดัก: การออม แผนสำรอง การกระจายความเสี่ยง = ภูมิคุ้มกัน)","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":1,"topic":"ปรัชญาของเศรษฐกิจพอเพียง","question":"ครูวิเคราะห์ผลการทดสอบก่อนเรียนและธรรมชาติของผู้เรียนก่อนตัดสินใจเลือกสื่อการสอน สะท้อนห่วงใดชัดเจนที่สุด","choices":["การมีภูมิคุ้มกันที่ดีในตัว","ความมีเหตุผล","ความพอประมาณ","เงื่อนไขคุณธรรม"],"answer":1,"explanation":"ความมีเหตุผลคือการตัดสินใจบนข้อมูลและเหตุผล โดยคำนึงถึงผลที่จะตามมา การใช้ข้อมูลผู้เรียนเป็นฐานในการเลือกสื่อจึงตรงกับห่วงนี้ (และอาศัยเงื่อนไขความรู้ร่วมด้วย)","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":1,"topic":"ปรัชญาของเศรษฐกิจพอเพียง","question":"ข้อใดเป็นองค์ประกอบของ 'เงื่อนไขคุณธรรม' ตามปรัชญาของเศรษฐกิจพอเพียง","choices":["พอประมาณ มีเหตุผล มีภูมิคุ้มกัน","วัตถุ สังคม สิ่งแวดล้อม วัฒนธรรม","ซื่อสัตย์สุจริต ขยัน อดทน แบ่งปัน","รอบรู้ รอบคอบ ระมัดระวัง"],"answer":2,"explanation":"เงื่อนไขคุณธรรม ได้แก่ ความซื่อสัตย์สุจริต ขยัน อดทน แบ่งปัน และใช้สติปัญญา ส่วน 'รอบรู้ รอบคอบ ระมัดระวัง' เป็นเงื่อนไขความรู้ และ 'วัตถุ สังคม สิ่งแวดล้อม วัฒนธรรม' คือ 4 มิติของผลลัพธ์","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":1,"topic":"ปรัชญาของเศรษฐกิจพอเพียง","question":"ผลลัพธ์ที่มุ่งหวังของการน้อมนำปรัชญาของเศรษฐกิจพอเพียงไปใช้ คือความสมดุลและพร้อมรับการเปลี่ยนแปลงในมิติใดบ้าง","choices":["ความรู้ ทักษะ เจตคติ ค่านิยม","ร่างกาย จิตใจ สติปัญญา สังคม","บ้าน วัด โรงเรียน ราชการ","วัตถุ สังคม สิ่งแวดล้อม วัฒนธรรม"],"answer":3,"explanation":"ปรัชญาของเศรษฐกิจพอเพียงมุ่งให้เกิดความสมดุลและพร้อมรับการเปลี่ยนแปลงใน 4 มิติ คือ วัตถุ สังคม สิ่งแวดล้อม และวัฒนธรรม","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":1,"topic":"ศาสตร์พระราชา","question":"ทฤษฎีใหม่ขั้นที่ 1 แบ่งสัดส่วนพื้นที่ทำกินอย่างไร","choices":["50 : 30 : 10 : 10","30 : 30 : 30 : 10","25 : 25 : 25 : 25","40 : 30 : 20 : 10"],"answer":1,"explanation":"ทฤษฎีใหม่ขั้นที่ 1 แบ่งพื้นที่เป็น แหล่งน้ำ 30% นาข้าว 30% พืชผสมผสาน 30% และที่อยู่อาศัย/อื่น ๆ 10%","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":1,"topic":"ศาสตร์พระราชา","question":"ผู้อำนวยการโรงเรียนเริ่มโครงการพัฒนาชุมชนด้วยการลงพื้นที่สำรวจปัญหาและพูดคุยกับชาวบ้านก่อนวางแผนร่วมกัน สอดคล้องกับหลักการทรงงานข้อใด","choices":["ทำให้ง่าย","ประหยัด เรียบง่าย ได้ประโยชน์สูงสุด","ขาดทุนคือกำไร","เข้าใจ เข้าถึง พัฒนา"],"answer":3,"explanation":"หลัก 'เข้าใจ เข้าถึง พัฒนา' เริ่มจากการทำความเข้าใจบริบทและปัญหาจริง เข้าถึงผู้คนเพื่อให้เกิดการยอมรับ แล้วจึงพัฒนาร่วมกัน","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":1,"topic":"เป้าหมายการพัฒนาที่ยั่งยืน (SDGs)","question":"เป้าหมายการพัฒนาที่ยั่งยืนข้อใดเกี่ยวข้องโดยตรงกับการศึกษา","choices":["SDG 3 Good Health and Well-being","SDG 4 Quality Education","SDG 16 Peace, Justice and Strong Institutions","SDG 10 Reduced Inequalities"],"answer":1,"explanation":"SDG 4 คือการศึกษาที่มีคุณภาพ มุ่งสร้างหลักประกันว่าทุกคนมีการศึกษาที่มีคุณภาพอย่างครอบคลุมและเท่าเทียม และส่งเสริมการเรียนรู้ตลอดชีวิต","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":1,"topic":"เป้าหมายการพัฒนาที่ยั่งยืน (SDGs)","question":"เป้าหมายย่อย 4.7 ของ SDG 4 มุ่งเน้นเรื่องใด","choices":["การศึกษาเพื่อการพัฒนาที่ยั่งยืนและความเป็นพลเมืองโลก","การเพิ่มจำนวนครูที่มีคุณภาพ","การศึกษาขั้นพื้นฐานที่ไม่เสียค่าใช้จ่าย","การศึกษาปฐมวัยที่มีคุณภาพ"],"answer":0,"explanation":"4.7 = การศึกษาเพื่อการพัฒนาที่ยั่งยืน (ESD) และความเป็นพลเมืองโลก ส่วน 4.1 = การศึกษาขั้นพื้นฐาน, 4.2 = ปฐมวัย, 4.c = ครูที่มีคุณภาพ","difficulty":"ยาก","level":"จำ/เข้าใจ"},{"domain":1,"topic":"แนวโน้มการเปลี่ยนแปลงของโลก","question":"เมื่อ Generative AI สามารถให้ข้อมูลและอธิบายเนื้อหาได้รวดเร็ว บทบาทของครูที่เหมาะสมที่สุดควรเปลี่ยนไปอย่างไร","choices":["เป็นผู้ออกแบบประสบการณ์การเรียนรู้และโค้ชที่ช่วยให้ผู้เรียนคิด ตรวจสอบ และสร้างความรู้","เน้นการบรรยายเนื้อหาให้มากขึ้นเพื่อแข่งกับ AI","ห้ามผู้เรียนใช้ AI ทุกกรณีเพื่อป้องกันการลอกงาน","ให้ AI สอนแทนทั้งหมดเพื่อลดภาระครู"],"answer":0,"explanation":"ในยุค AI บทบาทครูเปลี่ยนจาก 'ผู้ถ่ายทอดความรู้' เป็น 'ผู้ออกแบบประสบการณ์เรียนรู้และโค้ช' โดยครูยังต้องเป็นผู้ตัดสินใจสุดท้าย (Human-in-the-loop) ตัวเลือกสุดโต่งอย่างห้ามทั้งหมดหรือให้ AI สอนแทนทั้งหมดไม่เหมาะสม","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":1,"topic":"แนวโน้มการเปลี่ยนแปลงของโลก","question":"โรงเรียนแห่งหนึ่งพบว่านักเรียนส่วนใหญ่อาศัยอยู่กับปู่ย่าตายายเพราะพ่อแม่ไปทำงานต่างถิ่น ครูควรให้ความสำคัญกับเรื่องใดเป็นพิเศษ","choices":["การติดต่อเฉพาะพ่อแม่ที่ทำงานต่างถิ่นเท่านั้น","การดูแลด้านจิตใจและการประสานความร่วมมือกับผู้ดูแลเด็กอย่างใกล้ชิด","การย้ายนักเรียนไปเรียนใกล้ที่ทำงานของพ่อแม่","การให้การบ้านเพิ่มขึ้นเพื่อให้เด็กมีงานทำที่บ้าน"],"answer":1,"explanation":"ครอบครัวแหว่งกลางเป็นแนวโน้มทางสังคมที่ทำให้ครูต้องรับบทบาทดูแลด้านจิตใจมากขึ้น และทำงานร่วมกับผู้ดูแลที่อยู่กับเด็กจริง (ปู่ย่าตายาย)","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":1,"topic":"แนวโน้มการเปลี่ยนแปลงของโลก","question":"ภาวะที่ผู้เรียนมีความรู้และทักษะถดถอยลงอย่างเห็นได้ชัดหลังการปิดโรงเรียนช่วงโรคระบาด เรียกว่าอะไร","choices":["Brain Drain","Learned Helplessness","Digital Divide","Learning Loss"],"answer":3,"explanation":"Learning Loss คือภาวะถดถอยทางการเรียนรู้ ซึ่งต้องแก้ด้วยมาตรการซ่อมเสริมเชิงรุก ส่วน Digital Divide คือความเหลื่อมล้ำด้านดิจิทัล","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":1,"topic":"ทักษะแห่งศตวรรษที่ 21","question":"ข้อใดไม่อยู่ในทักษะ 8C ของทักษะแห่งศตวรรษที่ 21","choices":["Collaboration","Compassion","Competition","Cross-cultural Understanding"],"answer":2,"explanation":"8C ได้แก่ Critical Thinking, Creativity, Cross-cultural Understanding, Collaboration, Communication, Computing & ICT Literacy, Career & Learning Skills และ Compassion ไม่มี Competition (การแข่งขัน)","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":1,"topic":"ทักษะแห่งศตวรรษที่ 21","question":"ตามกรอบ OECD Learning Compass 2030 วงจร AAR ประกอบด้วยอะไร","choices":["Attention – Acquisition – Retention","Assessment – Adjustment – Review","Anticipation – Action – Reflection","Analysis – Application – Revision"],"answer":2,"explanation":"AAR ใน OECD Learning Compass 2030 คือ Anticipation (คาดการณ์) – Action (ลงมือทำ) – Reflection (สะท้อนคิด) ซึ่งเป็นกระบวนการพัฒนา Student Agency","difficulty":"ยาก","level":"จำ/เข้าใจ"},{"domain":1,"topic":"พ.ร.บ.การศึกษาแห่งชาติ พ.ศ. 2542","question":"ตาม พ.ร.บ.การศึกษาแห่งชาติ พ.ศ. 2542 มาตรา 22 หลักการจัดการศึกษาข้อใดถูกต้อง","choices":["การศึกษาต้องจัดในระบบโรงเรียนเท่านั้น","การประเมินผู้เรียนให้ใช้การทดสอบเป็นหลักเพียงวิธีเดียว","ครูเป็นศูนย์กลางของการเรียนรู้และเป็นผู้ถ่ายทอดความรู้หลัก","ผู้เรียนทุกคนมีความสามารถเรียนรู้และพัฒนาตนเองได้ และถือว่าผู้เรียนมีความสำคัญที่สุด"],"answer":3,"explanation":"มาตรา 22 ระบุว่าการจัดการศึกษาต้องยึดหลักว่าผู้เรียนทุกคนมีความสามารถเรียนรู้และพัฒนาตนเองได้ และถือว่าผู้เรียนมีความสำคัญที่สุด","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":1,"topic":"พ.ร.บ.การศึกษาแห่งชาติ พ.ศ. 2542","question":"รูปแบบการจัดการศึกษาตาม พ.ร.บ.การศึกษาแห่งชาติ มาตรา 15 มีกี่รูปแบบ อะไรบ้าง","choices":["3 รูปแบบ คือ ปฐมวัย ขั้นพื้นฐาน และอุดมศึกษา","2 รูปแบบ คือ ในระบบ และนอกระบบ","4 รูปแบบ คือ ในระบบ นอกระบบ ตามอัธยาศัย และทางไกล","3 รูปแบบ คือ ในระบบ นอกระบบ และตามอัธยาศัย"],"answer":3,"explanation":"มาตรา 15 กำหนดการจัดการศึกษา 3 รูปแบบ ได้แก่ การศึกษาในระบบ นอกระบบ และตามอัธยาศัย (ส่วนระดับการศึกษาอยู่ในมาตรา 16)","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":1,"topic":"พ.ร.บ.การศึกษาแห่งชาติ พ.ศ. 2542","question":"ตามมาตรา 26 การประเมินผู้เรียนควรพิจารณาจากสิ่งใด","choices":["คะแนนสอบปลายภาคเพียงอย่างเดียว","ผลการสอบระดับชาติเป็นหลัก","ความคิดเห็นของผู้ปกครองเป็นสำคัญ","พัฒนาการ ความประพฤติ การสังเกตพฤติกรรม การร่วมกิจกรรม และการทดสอบ ควบคู่กันไป"],"answer":3,"explanation":"มาตรา 26 กำหนดให้ประเมินผู้เรียนโดยพิจารณาจากพัฒนาการ ความประพฤติ การสังเกตพฤติกรรม การร่วมกิจกรรม และการทดสอบควบคู่กันไปตามความเหมาะสม","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":1,"topic":"พ.ร.บ.สภาครูและบุคลากรทางการศึกษา พ.ศ. 2546","question":"วิชาชีพทางการศึกษาที่เป็นวิชาชีพควบคุมตาม พ.ร.บ.สภาครูและบุคลากรทางการศึกษา พ.ศ. 2546 มีกี่ประเภท","choices":["5 ประเภท คือ ครู ผู้บริหารสถานศึกษา ผู้บริหารการศึกษา ศึกษานิเทศก์ และบุคลากรสนับสนุน","2 ประเภท คือ ครู และผู้บริหารสถานศึกษา","4 ประเภท คือ ครู ผู้บริหารสถานศึกษา ผู้บริหารการศึกษา และศึกษานิเทศก์","3 ประเภท คือ ครู ผู้บริหารสถานศึกษา และศึกษานิเทศก์"],"answer":2,"explanation":"วิชาชีพควบคุมมี 4 ประเภท ได้แก่ ครู ผู้บริหารสถานศึกษา ผู้บริหารการศึกษา และศึกษานิเทศก์ (บุคลากรทางการศึกษาอื่นไม่ใช่วิชาชีพควบคุม)","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":1,"topic":"พ.ร.บ.สภาครูและบุคลากรทางการศึกษา พ.ศ. 2546","question":"มาตรฐานวิชาชีพตามที่คุรุสภากำหนดประกอบด้วยกี่ด้าน","choices":["3 ด้าน คือ มาตรฐานความรู้และประสบการณ์วิชาชีพ มาตรฐานการปฏิบัติงาน และมาตรฐานการปฏิบัติตน","5 ด้าน ตามจรรยาบรรณของวิชาชีพ","4 ด้าน คือ ความรู้ ทักษะ เจตคติ และจรรยาบรรณ","2 ด้าน คือ มาตรฐานความรู้ และมาตรฐานการปฏิบัติงาน"],"answer":0,"explanation":"มาตรฐานวิชาชีพมี 3 ด้าน ได้แก่ มาตรฐานความรู้และประสบการณ์วิชาชีพ มาตรฐานการปฏิบัติงาน และมาตรฐานการปฏิบัติตน (ซึ่งก็คือจรรยาบรรณของวิชาชีพ)","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":1,"topic":"พ.ร.บ.สภาครูและบุคลากรทางการศึกษา พ.ศ. 2546","question":"ผู้ถูกเพิกถอนใบอนุญาตประกอบวิชาชีพจะยื่นขอรับใบอนุญาตใหม่ได้เมื่อใด","choices":["เมื่อพ้น 3 ปี นับแต่วันที่ถูกเพิกถอน","เมื่อพ้น 5 ปี นับแต่วันที่ถูกเพิกถอน","ไม่สามารถยื่นขอใหม่ได้ตลอดชีวิต","เมื่อพ้น 1 ปี นับแต่วันที่ถูกเพิกถอน"],"answer":1,"explanation":"ผู้ถูกเพิกถอนใบอนุญาตจะขอรับใบอนุญาตใหม่ได้เมื่อพ้น 5 ปีนับแต่วันที่ถูกเพิกถอน ส่วนโทษพักใช้ใบอนุญาตกำหนดได้ไม่เกิน 5 ปี","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":1,"topic":"จรรยาบรรณของวิชาชีพ","question":"ครูเข้ารับการอบรมการใช้ AI ในการสอนด้วยทุนของตนเองเพื่อให้ทันต่อความเปลี่ยนแปลง แสดงถึงจรรยาบรรณด้านใด","choices":["จรรยาบรรณต่อสังคม","จรรยาบรรณต่อวิชาชีพ","จรรยาบรรณต่อตนเอง","จรรยาบรรณต่อผู้รับบริการ"],"answer":2,"explanation":"จรรยาบรรณต่อตนเอง (ข้อ 1) คือ มีวินัยในตนเอง พัฒนาตนเองด้านวิชาชีพ บุคลิกภาพ และวิสัยทัศน์ ให้ทันต่อการพัฒนาทางวิทยาการ เศรษฐกิจ สังคม และการเมืองอยู่เสมอ","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":1,"topic":"จรรยาบรรณของวิชาชีพ","question":"ครูรับเงินจากผู้ปกครองเพื่อแลกกับการเพิ่มคะแนนให้นักเรียน ถือว่าผิดจรรยาบรรณด้านใด","choices":["จรรยาบรรณต่อผู้รับบริการ","จรรยาบรรณต่อสังคม","จรรยาบรรณต่อผู้ร่วมประกอบวิชาชีพ","จรรยาบรรณต่อตนเอง"],"answer":0,"explanation":"ข้อ 7 ในจรรยาบรรณต่อผู้รับบริการ ระบุว่าต้องให้บริการด้วยความจริงใจและเสมอภาค โดยไม่เรียกรับหรือยอมรับผลประโยชน์จากการใช้ตำแหน่งหน้าที่โดยมิชอบ","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":1,"topic":"จรรยาบรรณของวิชาชีพ","question":"จรรยาบรรณของวิชาชีพตามข้อบังคับคุรุสภา มีกี่ด้าน กี่ข้อ","choices":["9 ด้าน 5 ข้อ","4 ด้าน 9 ข้อ","5 ด้าน 9 ข้อ","5 ด้าน 10 ข้อ"],"answer":2,"explanation":"จรรยาบรรณของวิชาชีพมี 5 ด้าน (ต่อตนเอง ต่อวิชาชีพ ต่อผู้รับบริการ ต่อผู้ร่วมประกอบวิชาชีพ ต่อสังคม) รวม 9 ข้อ โดยด้านผู้รับบริการมีมากที่สุด 5 ข้อ","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":1,"topic":"จรรยาบรรณของวิชาชีพ","question":"ครูพบว่าเพื่อนครูมาสอนสายเป็นประจำ การปฏิบัติข้อใดเหมาะสมที่สุดตามจรรยาบรรณต่อผู้ร่วมประกอบวิชาชีพ","choices":["พูดคุยตักเตือนด้วยความหวังดีเป็นการส่วนตัวก่อน หากไม่ดีขึ้นจึงรายงานตามลำดับขั้น","รายงานผู้อำนวยการทันทีโดยไม่ต้องพูดคุย","เพิกเฉยเพราะไม่ใช่หน้าที่ของตน","โพสต์เตือนในกลุ่มไลน์ครูเพื่อให้ทุกคนรับรู้"],"answer":0,"explanation":"จรรยาบรรณข้อ 8 ให้ช่วยเหลือเกื้อกูลกันอย่างสร้างสรรค์ ยึดระบบคุณธรรม และสร้างความสามัคคี แนวทางที่เหมาะสมคือตักเตือนด้วยความหวังดีก่อน หากร้ายแรงจึงรายงานตามลำดับขั้น ไม่ประจานหรือโพสต์ออนไลน์","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":1,"topic":"กฎหมายคุ้มครองเด็กและการลงโทษนักเรียน","question":"ตามระเบียบกระทรวงศึกษาธิการว่าด้วยการลงโทษนักเรียนและนักศึกษา พ.ศ. 2548 ข้อใดไม่ใช่โทษที่กำหนดไว้","choices":["ทำทัณฑ์บน","การเฆี่ยนตีเพื่อให้หลาบจำ","ว่ากล่าวตักเตือน","ทำกิจกรรมเพื่อให้ปรับเปลี่ยนพฤติกรรม"],"answer":1,"explanation":"โทษมี 4 สถาน คือ ว่ากล่าวตักเตือน ทำทัณฑ์บน ตัดคะแนนความประพฤติ และทำกิจกรรมเพื่อให้ปรับเปลี่ยนพฤติกรรม ห้ามลงโทษด้วยวิธีรุนแรงหรือแบบกลั่นแกล้ง","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":1,"topic":"กฎหมายคุ้มครองเด็กและการลงโทษนักเรียน","question":"นักเรียนทะเลาะวิวาทในห้อง ครูโกรธมากและต้องการลงโทษทันที การปฏิบัติข้อใดเหมาะสมที่สุด","choices":["ตัดคะแนนความประพฤติทั้งห้องเพื่อให้ช่วยกันดูแล","แยกนักเรียนให้สงบ ระงับอารมณ์ตนเอง แล้วสอบถามข้อเท็จจริงก่อนพิจารณาโทษตามระเบียบ","ประกาศชื่อนักเรียนหน้าแถวเพื่อเป็นตัวอย่าง","ให้นักเรียนทั้งคู่ยืนตากแดดหน้าเสาธงเพื่อให้เข็ดหลาบ"],"answer":1,"explanation":"ระเบียบการลงโทษห้ามลงโทษด้วยความโกรธหรือพยาบาท และต้องคำนึงถึงประโยชน์สูงสุดของเด็กตาม พ.ร.บ.คุ้มครองเด็ก ครูจึงควรระงับเหตุ หาข้อเท็จจริง แล้วลงโทษอย่างเหมาะสม","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":1,"topic":"กฎหมายคุ้มครองข้อมูลส่วนบุคคล","question":"ครูต้องการโพสต์ภาพนักเรียนทำกิจกรรมลงเพจสาธารณะของโรงเรียน ควรปฏิบัติอย่างไรจึงสอดคล้องกับ พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562","choices":["ห้ามถ่ายภาพนักเรียนในทุกกรณี","ขอความยินยอมจากผู้ปกครองหรือมีฐานทางกฎหมายรองรับ และหลีกเลี่ยงภาพที่ทำให้นักเรียนเสียหาย","โพสต์ได้หากใส่ชื่อ-นามสกุลนักเรียนกำกับ","โพสต์ได้ทันทีเพราะเป็นกิจกรรมของโรงเรียน"],"answer":1,"explanation":"PDPA กำหนดให้การเก็บ ใช้ หรือเผยแพร่ข้อมูลส่วนบุคคล (รวมภาพถ่าย) ต้องมีฐานทางกฎหมายหรือความยินยอม ซึ่งกรณีเด็กต้องได้รับความยินยอมจากผู้ใช้อำนาจปกครอง","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":1,"topic":"กฎหมายการศึกษาอื่น ๆ","question":"การศึกษาภาคบังคับตาม พ.ร.บ.การศึกษาภาคบังคับ พ.ศ. 2545 มีระยะเวลากี่ปี","choices":["9 ปี (ป.1 – ม.3)","12 ปี (ป.1 – ม.6)","15 ปี (อนุบาล – ม.6)","6 ปี (ป.1 – ป.6)"],"answer":0,"explanation":"การศึกษาภาคบังคับคือ 9 ปี ตั้งแต่ ป.1 ถึง ม.3 ส่วนการศึกษาขั้นพื้นฐานตามมาตรา 16 คือไม่น้อยกว่า 12 ปี","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":1,"topic":"สิทธิเด็ก","question":"หลักการสำคัญของอนุสัญญาว่าด้วยสิทธิเด็ก (CRC) ข้อใดที่ครูควรยึดเป็นเกณฑ์แรกเมื่อต้องตัดสินใจเรื่องที่กระทบต่อนักเรียน","choices":["ประโยชน์สูงสุดของเด็ก","ความสะดวกของสถานศึกษา","ความต้องการของผู้ปกครองเป็นหลัก","ความเห็นของคณะกรรมการสถานศึกษา"],"answer":0,"explanation":"หลัก Best Interests of the Child (ประโยชน์สูงสุดของเด็ก) เป็นหนึ่งใน 4 หลักการของ CRC และยังเป็นหลักใน พ.ร.บ.คุ้มครองเด็ก พ.ศ. 2546","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":1,"topic":"ความเหลื่อมล้ำทางการศึกษา","question":"หน่วยงานใดมีบทบาทหลักในการช่วยเหลือเด็กยากจนพิเศษเพื่อลดความเหลื่อมล้ำทางการศึกษา ตามกฎหมายปี พ.ศ. 2561","choices":["กองทุนเพื่อความเสมอภาคทางการศึกษา (กสศ.)","สำนักงานรับรองมาตรฐานและประเมินคุณภาพการศึกษา (สมศ.)","คุรุสภา","สำนักงานคณะกรรมการส่งเสริมสวัสดิการและสวัสดิภาพครู (สกสค.)"],"answer":0,"explanation":"กสศ. จัดตั้งตาม พ.ร.บ.กองทุนเพื่อความเสมอภาคทางการศึกษา พ.ศ. 2561 มีหน้าที่ลดความเหลื่อมล้ำและช่วยเหลือเด็กยากจนพิเศษ ส่วน สมศ. ดูแลการประเมินคุณภาพภายนอก","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":2,"topic":"Piaget","question":"นักเรียนชั้น ป.1 คิดว่าน้ำในแก้วทรงสูงมีมากกว่าน้ำในแก้วทรงเตี้ยทั้งที่เทจากภาชนะเดียวกัน แสดงว่านักเรียนอยู่ในขั้นพัฒนาการใดตามทฤษฎีของ Piaget","choices":["Formal Operational (11 ปีขึ้นไป)","Sensorimotor (0–2 ปี)","Preoperational (2–7 ปี)","Concrete Operational (7–11 ปี)"],"answer":2,"explanation":"เด็กขั้น Preoperational ยังไม่เข้าใจหลักการอนุรักษ์ (Conservation) และตัดสินจากสิ่งที่เห็นภายนอก ความเข้าใจเรื่องการอนุรักษ์จะเกิดในขั้น Concrete Operational","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Piaget","question":"การสอนเรื่องเศษส่วนให้นักเรียนชั้น ป.3 ควรเริ่มอย่างไรจึงสอดคล้องกับทฤษฎีของ Piaget มากที่สุด","choices":["เริ่มจากสูตรและสัญลักษณ์ทางคณิตศาสตร์ทันที","ให้ท่องจำนิยามเศษส่วนก่อนลงมือทำ","ให้ตั้งสมมติฐานเกี่ยวกับเศษส่วนด้วยตนเอง","ให้แบ่งของจริง เช่น ขนมหรือกระดาษ ก่อนใช้ภาพและสัญลักษณ์"],"answer":3,"explanation":"เด็กวัยประถม (Concrete Operational) คิดได้ดีกับสิ่งที่เป็นรูปธรรม จึงควรใช้แนวทาง CPA: Concrete → Pictorial → Abstract","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Piaget","question":"นักเรียนเคยรู้ว่า 'สัตว์ที่ว่ายน้ำได้คือปลา' เมื่อเรียนว่าวาฬเป็นสัตว์เลี้ยงลูกด้วยนมจึงปรับความเข้าใจใหม่ กระบวนการนี้เรียกว่าอะไร","choices":["Accommodation","Assimilation","Equilibration","Egocentrism"],"answer":0,"explanation":"Accommodation คือการปรับโครงสร้างความรู้เดิม (Schema) ให้สอดคล้องกับข้อมูลใหม่ ส่วน Assimilation คือการรับข้อมูลใหม่เข้าไปในโครงสร้างเดิมโดยไม่ต้องปรับ","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Erikson","question":"นักเรียนชั้น ม.4 สับสนว่าตนเองชอบอะไรและอยากเป็นอะไรในอนาคต ตามทฤษฎีของ Erikson นักเรียนกำลังเผชิญวิกฤตขั้นใด","choices":["Identity vs. Role Confusion","Initiative vs. Guilt","Intimacy vs. Isolation","Industry vs. Inferiority"],"answer":0,"explanation":"วัยรุ่นอายุประมาณ 12–18 ปี อยู่ในขั้น Identity vs. Role Confusion คือการค้นหาอัตลักษณ์ของตนเอง","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Erikson","question":"ตามทฤษฎีของ Erikson ครูประถมศึกษาควรจัดการเรียนรู้อย่างไรเพื่อช่วยให้นักเรียนผ่านวิกฤต Industry vs. Inferiority ได้ดี","choices":["ให้งานยากเกินระดับเพื่อฝึกความอดทน","มอบงานที่ท้าทายพอเหมาะให้ทำสำเร็จ และชื่นชมความพยายามอย่างสม่ำเสมอ","ลดการให้งานเพื่อไม่ให้นักเรียนเครียด","เปรียบเทียบผลงานของนักเรียนกับเพื่อนเพื่อกระตุ้นให้แข่งขัน"],"answer":1,"explanation":"ขั้น Industry vs. Inferiority (6–12 ปี) เด็กต้องการรู้สึกว่าตนทำสิ่งต่าง ๆ ได้สำเร็จ หากล้มเหลวบ่อยหรือถูกเปรียบเทียบจะเกิดปมด้อย","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Vygotsky","question":"ครูให้คำใบ้และตั้งคำถามนำแก่นักเรียนที่แก้โจทย์ไม่ได้ เมื่อนักเรียนเริ่มทำได้ครูจึงค่อย ๆ ลดความช่วยเหลือลง เป็นการใช้แนวคิดใด","choices":["Advance Organizer","Extinction","Scaffolding","Reinforcement"],"answer":2,"explanation":"Scaffolding (การเสริมต่อการเรียนรู้) ตามแนวคิด Vygotsky คือการช่วยเหลือชั่วคราวในเขต ZPD แล้วค่อย ๆ ถอนออก (Fading)","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Vygotsky","question":"Zone of Proximal Development (ZPD) หมายถึงข้อใด","choices":["ช่วงอายุที่สมองพัฒนาได้เร็วที่สุด","พื้นที่ในห้องเรียนที่ใกล้ครูมากที่สุด","ช่วงระหว่างสิ่งที่ผู้เรียนทำได้เองกับสิ่งที่ทำได้เมื่อมีผู้ชี้แนะ","ระดับความสามารถสูงสุดที่ผู้เรียนทำได้ด้วยตนเอง"],"answer":2,"explanation":"ZPD คือช่วงระหว่าง 'สิ่งที่ทำได้เอง' กับ 'สิ่งที่ทำได้เมื่อมีผู้ที่รู้มากกว่า (MKO) ชี้แนะ' เป็นเขตที่การสอนได้ผลที่สุด","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":2,"topic":"Kohlberg","question":"นักเรียนบอกว่า 'ไม่ลอกการบ้านเพราะกลัวครูตี' แสดงว่านักเรียนมีพัฒนาการทางจริยธรรมขั้นใดตามแนวคิดของ Kohlberg","choices":["ขั้นที่ 4 ยึดกฎหมายและระเบียบสังคม","ขั้นที่ 1 หลบหลีกการลงโทษ","ขั้นที่ 3 ทำตามความคาดหวังของกลุ่ม","ขั้นที่ 2 แสวงหารางวัล"],"answer":1,"explanation":"การกระทำเพื่อหลีกเลี่ยงการถูกลงโทษเป็นขั้นที่ 1 ในระดับก่อนกฎเกณฑ์ (Pre-conventional)","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Kohlberg","question":"วิธีการใดเหมาะสมที่สุดในการพัฒนาจริยธรรมของนักเรียนตามแนวคิดของ Kohlberg","choices":["ให้ท่องจำหลักศีลธรรมและลงโทษเมื่อทำผิด","ใช้สถานการณ์ขัดแย้งทางจริยธรรม (Moral Dilemma) ให้อภิปรายเหตุผล","ให้รางวัลทุกครั้งที่ทำความดี","ให้ฟังนิทานแล้วสรุปคติสอนใจตามที่ครูกำหนด"],"answer":1,"explanation":"Kohlberg เน้นการพัฒนาเหตุผลเชิงจริยธรรม โดยใช้ Moral Dilemma ให้นักเรียนอภิปรายเหตุผล มากกว่าการตัดสินถูกผิดให้","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Bronfenbrenner","question":"ตามทฤษฎีระบบนิเวศของ Bronfenbrenner การประชุมร่วมกันระหว่างผู้ปกครองกับครูประจำชั้น จัดอยู่ในระบบใด","choices":["Macrosystem","Mesosystem","Exosystem","Microsystem"],"answer":1,"explanation":"Mesosystem คือปฏิสัมพันธ์ระหว่างระบบย่อยใน Microsystem เช่น ความสัมพันธ์ระหว่างบ้านกับโรงเรียน","difficulty":"ยาก","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Bandura","question":"นักเรียนเริ่มทักทายครูด้วยการไหว้หลังจากเห็นเพื่อนที่ทำเช่นนั้นได้รับคำชม อธิบายได้ด้วยทฤษฎีใด","choices":["ทฤษฎีพหุปัญญา (Gardner)","ทฤษฎีการเรียนรู้ทางสังคม (Bandura)","ทฤษฎีการวางเงื่อนไขแบบคลาสสิก (Pavlov)","ทฤษฎีลำดับขั้นความต้องการ (Maslow)"],"answer":1,"explanation":"Bandura อธิบายว่าคนเรียนรู้โดยการสังเกตตัวแบบ และการเห็นตัวแบบได้รับการเสริมแรง (Vicarious Reinforcement) ทำให้เลียนแบบพฤติกรรมนั้น","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Bandura","question":"แหล่งที่ส่งผลต่อการรับรู้ความสามารถของตนเอง (Self-efficacy) มากที่สุดตามแนวคิดของ Bandura คือข้อใด","choices":["สภาวะทางร่างกายและอารมณ์","การชักจูงด้วยคำพูดของผู้อื่น","การได้เห็นตัวแบบประสบความสำเร็จ","ประสบการณ์ความสำเร็จของตนเอง (Mastery Experience)"],"answer":3,"explanation":"Bandura ระบุ 4 แหล่งของ Self-efficacy โดยประสบการณ์ความสำเร็จของตนเองมีอิทธิพลมากที่สุด ครูจึงควรจัดงานที่ผู้เรียนทำสำเร็จได้ทีละขั้น","difficulty":"ยาก","level":"จำ/เข้าใจ"},{"domain":2,"topic":"Skinner","question":"ครูบอกว่า 'ถ้าทำแบบฝึกหัดในห้องเสร็จครบถูกต้อง คืนนี้ไม่ต้องทำการบ้านเพิ่ม' ทำให้นักเรียนตั้งใจทำงานมากขึ้น เป็นการใช้วิธีใด","choices":["การเสริมแรงทางบวก","การลงโทษทางลบ","การลงโทษทางบวก","การเสริมแรงทางลบ"],"answer":3,"explanation":"การเสริมแรงทางลบคือการถอดสิ่งที่ไม่พึงพอใจ (การบ้าน) ออก เพื่อให้พฤติกรรมที่ต้องการเพิ่มขึ้น 'การเสริมแรง' ทุกแบบทำให้พฤติกรรมเพิ่ม","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Skinner","question":"นักเรียนชอบพูดแทรกเพื่อเรียกร้องความสนใจ ครูจึงไม่ตอบสนองต่อการพูดแทรกนั้น แต่ชมเมื่อนักเรียนยกมือ วิธีที่ครูใช้กับการพูดแทรกคือข้อใด","choices":["การลงโทษทางบวก","การลงโทษทางลบ (Response Cost)","การเสริมแรงทางลบ","การหยุดยั้ง (Extinction)"],"answer":3,"explanation":"Extinction คือการไม่เสริมแรงพฤติกรรม จนพฤติกรรมนั้นลดลงและหายไป เหมาะกับพฤติกรรมเรียกร้องความสนใจ ร่วมกับเสริมแรงพฤติกรรมที่เหมาะสม","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Skinner","question":"ตารางการเสริมแรงแบบใดทำให้พฤติกรรมคงทนต่อการหยุดยั้งได้ดีที่สุด","choices":["การเสริมแรงแบบอัตราส่วนไม่คงที่ (Variable Ratio)","การเสริมแรงแบบต่อเนื่องทุกครั้ง","การเสริมแรงแบบช่วงเวลาคงที่ (Fixed Interval)","การเสริมแรงแบบอัตราส่วนคงที่ (Fixed Ratio)"],"answer":0,"explanation":"การเสริมแรงแบบไม่คงที่ โดยเฉพาะ Variable Ratio ผู้เรียนคาดเดาไม่ได้ว่าจะได้รับรางวัลเมื่อใด พฤติกรรมจึงคงทนและหายช้าที่สุด","difficulty":"ยาก","level":"จำ/เข้าใจ"},{"domain":2,"topic":"Pavlov","question":"นักเรียนรู้สึกใจสั่นทุกครั้งที่ได้ยินครูพูดว่า 'เก็บหนังสือ' เพราะเคยเจอการสอบย่อยทันทีหลังคำพูดนี้หลายครั้ง อธิบายได้ด้วยทฤษฎีใด","choices":["การเรียนรู้อย่างมีความหมาย","การเรียนรู้โดยการหยั่งรู้","การวางเงื่อนไขแบบคลาสสิก","การวางเงื่อนไขแบบการกระทำ"],"answer":2,"explanation":"Pavlov อธิบายว่าสิ่งเร้าที่เป็นกลาง (คำพูด) เมื่อเกิดคู่กับสิ่งเร้าที่ทำให้เกิดความวิตก (การสอบ) ซ้ำ ๆ จะกลายเป็นสิ่งเร้าที่วางเงื่อนไข (CS) ที่ทำให้เกิดการตอบสนองเอง","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Ausubel","question":"ก่อนเริ่มบทเรียนเรื่องระบบนิเวศ ครูแสดงแผนผังภาพรวมที่เชื่อมโยงหัวข้อทั้งหมดของหน่วยให้นักเรียนเห็น เป็นการใช้แนวคิดของใคร","choices":["Kolb – Experiential Learning","Ausubel – Advance Organizer","Bruner – Discovery Learning","Thorndike – Law of Exercise"],"answer":1,"explanation":"Ausubel เสนอ Advance Organizer คือการให้กรอบความรู้ล่วงหน้า เพื่อเชื่อมความรู้ใหม่กับโครงสร้างความรู้เดิม ทำให้เกิดการเรียนรู้อย่างมีความหมาย","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Bruner","question":"ข้อใดเรียงลำดับขั้นการเรียนรู้ตามแนวคิดของ Bruner ได้ถูกต้อง","choices":["Enactive → Iconic → Symbolic","Concrete → Abstract → Pictorial","Iconic → Enactive → Symbolic","Symbolic → Iconic → Enactive"],"answer":0,"explanation":"Bruner แบ่งการเรียนรู้เป็น Enactive (ลงมือกระทำ) → Iconic (ภาพ) → Symbolic (สัญลักษณ์) และเสนอหลักสูตรแบบเกลียวสว่าน (Spiral Curriculum)","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":2,"topic":"Information Processing","question":"ครูให้นักเรียนจำเบอร์โทรศัพท์ 10 หลักโดยแบ่งเป็นกลุ่ม 3-3-4 ตัว เป็นการใช้กลยุทธ์ใดตามทฤษฎีการประมวลผลสารสนเทศ","choices":["Mnemonics","Rehearsal","Elaboration","Chunking"],"answer":3,"explanation":"Chunking คือการจัดกลุ่มข้อมูลเป็นหน่วยใหญ่ขึ้น ช่วยให้หน่วยความจำขณะทำงาน (Working Memory) ซึ่งจำได้ประมาณ 7±2 หน่วยรองรับข้อมูลได้มากขึ้น","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":2,"topic":"Cognitive Load Theory","question":"ครูออกแบบสไลด์ที่มีภาพเคลื่อนไหว เสียงประกอบ และข้อความจำนวนมากที่ไม่เกี่ยวกับเนื้อหา ตาม Cognitive Load Theory ครูกำลังเพิ่มภาระทางปัญญาประเภทใดที่ควรลดลง","choices":["Germane Load","Intrinsic Load","Extraneous Load","Metacognitive Load"],"answer":2,"explanation":"Extraneous Load คือภาระทางปัญญาที่เกิดจากการออกแบบการนำเสนอที่ไม่จำเป็น ต้องลดให้น้อยที่สุด ส่วน Germane Load เป็นภาระที่ช่วยสร้างความรู้ ควรเพิ่ม","difficulty":"ยาก","level":"วิเคราะห์/ประเมินค่า"},{"domain":2,"topic":"Maslow","question":"นักเรียนคนหนึ่งไม่ได้กินอาหารเช้าและง่วงซึมในชั้นเรียนเป็นประจำ ตามทฤษฎีของ Maslow ครูควรดำเนินการอย่างไรก่อน","choices":["ประสานให้นักเรียนได้รับอาหารและดูแลความต้องการพื้นฐานทางร่างกาย","ให้คะแนนพิเศษเมื่อนักเรียนตั้งใจเรียน","ตักเตือนให้นักเรียนตั้งใจเรียนมากขึ้น","เพิ่มกิจกรรมที่สนุกเพื่อกระตุ้นความสนใจ"],"answer":0,"explanation":"Maslow เสนอว่าความต้องการขั้นพื้นฐานทางสรีระ (อาหาร การพักผ่อน) ต้องได้รับการตอบสนองก่อน จึงจะเกิดแรงจูงใจในการเรียนรู้ระดับสูงขึ้น","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":2,"topic":"แรงจูงใจ","question":"คำชมข้อใดสอดคล้องกับแนวคิด Growth Mindset และ Attribution Theory มากที่สุด","choices":["หนูเก่งคณิตศาสตร์โดยธรรมชาติ","ครูเห็นว่าหนูลองหลายวิธีจนแก้โจทย์ข้อนี้ได้ พยายามได้ดีมาก","หนูโชคดีที่ได้ข้อสอบง่าย","หนูเป็นเด็กฉลาดที่สุดในห้องเลย"],"answer":1,"explanation":"ควรชมที่ความพยายามและกระบวนการ ซึ่งเป็นปัจจัยภายในที่ควบคุมได้ ไม่ควรชมที่ความฉลาดหรือพรสวรรค์ เพราะทำให้ผู้เรียนกลัวความล้มเหลวและไม่กล้าเผชิญความท้าทาย","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":2,"topic":"แรงจูงใจ","question":"ตาม Self-Determination Theory ของ Deci & Ryan ความต้องการพื้นฐานทางจิตวิทยา 3 ประการ ได้แก่ข้อใด","choices":["Autonomy, Competence, Relatedness","Ability, Effort, Luck","Safety, Love, Esteem","Attention, Relevance, Confidence"],"answer":0,"explanation":"SDT ระบุความต้องการพื้นฐาน 3 ประการ คือ ความเป็นอิสระในการเลือก (Autonomy) ความรู้สึกว่าตนมีความสามารถ (Competence) และความรู้สึกเชื่อมโยงกับผู้อื่น (Relatedness)","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":2,"topic":"แรงจูงใจ","question":"นักเรียนที่สอบตกซ้ำหลายครั้งพูดว่า 'ทำไปก็ไม่ได้อยู่ดี' และไม่ยอมลงมือทำงาน ครูควรช่วยเหลืออย่างไรเหมาะสมที่สุด","choices":["ให้งานที่ยากขึ้นเพื่อพิสูจน์ความสามารถ","ให้เพื่อนทำงานแทนเพื่อไม่ให้นักเรียนเครียด","แบ่งงานเป็นขั้นย่อยที่นักเรียนทำสำเร็จได้ และให้ข้อมูลย้อนกลับเชิงบวกทีละขั้น","ตำหนิเพื่อกระตุ้นให้เกิดความมุมานะ"],"answer":2,"explanation":"นักเรียนมีภาวะสิ้นหวังจากการเรียนรู้ (Learned Helplessness) วิธีแก้คือให้ประสบการณ์ความสำเร็จทีละขั้น เพื่อสร้างการรับรู้ว่าความพยายามส่งผลต่อความสำเร็จ","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":2,"topic":"พหุปัญญา","question":"นักเรียนที่ชอบเขียนบันทึกประจำวัน สะท้อนความรู้สึกของตนเอง และตั้งเป้าหมายส่วนตัวได้ดี มีความโดดเด่นด้านใดตามทฤษฎีพหุปัญญาของ Gardner","choices":["ปัญญาด้านธรรมชาติวิทยา (Naturalist)","ปัญญาด้านภาษา (Linguistic)","ปัญญาด้านมนุษยสัมพันธ์ (Interpersonal)","ปัญญาด้านการเข้าใจตนเอง (Intrapersonal)"],"answer":3,"explanation":"Intrapersonal คือความสามารถในการเข้าใจตนเอง รู้จุดแข็งจุดอ่อน อารมณ์ และตั้งเป้าหมายของตน ส่วน Interpersonal คือการเข้าใจผู้อื่น","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":2,"topic":"ผู้เรียนที่มีความต้องการพิเศษ","question":"นักเรียนชั้น ป.4 มีสติปัญญาปกติ แต่อ่านสะกดคำผิดบ่อย สลับตัวอักษร และอ่านช้ากว่าเพื่อนมาก นักเรียนน่าจะมีลักษณะใด","choices":["สมาธิสั้น (ADHD)","บกพร่องทางการเรียนรู้ด้านการอ่าน (Dyslexia)","ออทิสติก","บกพร่องทางสติปัญญา"],"answer":1,"explanation":"LD ด้านการอ่าน (Dyslexia) คือเด็กมีสติปัญญาปกติ แต่มีปัญหาเฉพาะด้านการอ่าน เช่น สะกดผิด สลับตัวอักษร อ่านช้า (LD ด้านการเขียน = Dysgraphia, ด้านการคำนวณ = Dyscalculia)","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":2,"topic":"ผู้เรียนที่มีความต้องการพิเศษ","question":"แนวทางใดเหมาะสมที่สุดในการจัดการเรียนรู้ให้นักเรียนที่มีภาวะสมาธิสั้น (ADHD) ในห้องเรียนรวม","choices":["จัดที่นั่งใกล้ครู แบ่งงานเป็นช่วงสั้น และให้สัญญาณเตือนเชิงบวก","ให้นั่งหลังห้องเพื่อไม่รบกวนเพื่อน","ให้งานชิ้นใหญ่ชิ้นเดียวเพื่อฝึกสมาธิ","ลงโทษทุกครั้งที่ลุกจากที่นั่ง"],"answer":0,"explanation":"นักเรียน ADHD ได้ประโยชน์จากการนั่งหน้าชั้นใกล้ครู การแบ่งงานเป็นช่วงสั้น ๆ และการให้สัญญาณเตือนเชิงบวก มากกว่าการแยกออกหรือการลงโทษ","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":2,"topic":"ระบบดูแลช่วยเหลือนักเรียน","question":"ข้อใดเรียงลำดับขั้นตอนของระบบดูแลช่วยเหลือนักเรียนได้ถูกต้อง","choices":["รู้จักนักเรียนเป็นรายบุคคล → ป้องกันและแก้ไข → คัดกรอง → ส่งต่อ → ส่งเสริมพัฒนา","คัดกรอง → ส่งต่อ → รู้จักนักเรียนเป็นรายบุคคล → ส่งเสริมพัฒนา → ป้องกันและแก้ไข","รู้จักนักเรียนเป็นรายบุคคล → คัดกรอง → ส่งเสริมพัฒนา → ป้องกันและแก้ไข → ส่งต่อ","คัดกรอง → รู้จักนักเรียนเป็นรายบุคคล → ป้องกันและแก้ไข → ส่งเสริมพัฒนา → ส่งต่อ"],"answer":2,"explanation":"ระบบดูแลช่วยเหลือนักเรียนมี 5 ขั้นตอน: 1) รู้จักนักเรียนเป็นรายบุคคล 2) คัดกรอง (ปกติ/เสี่ยง/มีปัญหา) 3) ส่งเสริมพัฒนา 4) ป้องกันและแก้ไข 5) ส่งต่อ","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":2,"topic":"การให้คำปรึกษา","question":"นักเรียนเล่าว่า 'หนูทะเลาะกับแม่ทุกวันเลยค่ะ ไม่อยากกลับบ้าน' คำตอบของครูข้อใดเป็นการสะท้อนความรู้สึก (Reflection of Feeling)","choices":["หนูต้องเชื่อฟังแม่นะ แม่หวังดีเสมอ","เรื่องแค่นี้เอง เดี๋ยวก็ดีกันแล้ว","ครูจะโทรไปคุยกับแม่ให้เดี๋ยวนี้เลย","หนูรู้สึกอึดอัดและเหนื่อยใจกับสถานการณ์ที่บ้านมากเลยใช่ไหม"],"answer":3,"explanation":"การสะท้อนความรู้สึกคือการบอกความรู้สึกที่ผู้รับคำปรึกษากำลังเผชิญให้เขารับรู้ว่าครูเข้าใจ ส่วนตัวเลือกอื่นเป็นการสั่งสอน การตัดบท และการตัดสินใจแทน ซึ่งไม่ควรทำ","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":2,"topic":"การให้คำปรึกษา","question":"ระหว่างให้คำปรึกษา นักเรียนเปิดเผยว่ากำลังคิดทำร้ายตนเอง ครูควรปฏิบัติอย่างไรเหมาะสมที่สุด","choices":["รับฟังโดยไม่ตัดสิน ดูแลความปลอดภัย แจ้งผู้ปกครอง และส่งต่อผู้เชี่ยวชาญทันที","เก็บเป็นความลับตามจรรยาบรรณการให้คำปรึกษาอย่างเคร่งครัด","แจ้งเพื่อนร่วมห้องให้ช่วยกันจับตาดูนักเรียน","บอกนักเรียนว่าอย่าคิดมาก แล้วให้กลับไปเรียนตามปกติ"],"answer":0,"explanation":"การรักษาความลับมีข้อยกเว้นเมื่อมีความเสี่ยงต่อชีวิต ครูต้องรับฟังโดยไม่ตัดสิน ดูแลความปลอดภัย แจ้งผู้ปกครอง และส่งต่อผู้เชี่ยวชาญทันที โดยไม่เปิดเผยต่อสาธารณะ","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":3,"topic":"หลักสูตรและการพัฒนาหลักสูตร","question":"ความเชื่อ ค่านิยม และพฤติกรรมที่นักเรียนเรียนรู้จากวัฒนธรรมโรงเรียนและแบบอย่างของครู โดยไม่ได้เขียนไว้ในหลักสูตร เรียกว่าอะไร","choices":["หลักสูตรแฝง (Hidden Curriculum)","หลักสูตรที่ไม่ได้สอน (Null Curriculum)","หลักสูตรที่ผู้เรียนได้รับ (Attained Curriculum)","หลักสูตรที่ตั้งใจ (Intended Curriculum)"],"answer":0,"explanation":"หลักสูตรแฝงคือสิ่งที่ผู้เรียนเรียนรู้โดยไม่ได้ระบุในหลักสูตร เช่น วัฒนธรรมองค์กร กฎระเบียบ และแบบอย่างของครู ส่วน Null Curriculum คือสิ่งที่ไม่ได้ถูกสอนเลย","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":3,"topic":"หลักสูตรและการพัฒนาหลักสูตร","question":"หลักการพัฒนาหลักสูตรของ Tyler เริ่มต้นจากคำถามข้อใด","choices":["จะประเมินผลการเรียนรู้อย่างไร","ควรเลือกประสบการณ์การเรียนรู้ใดบ้าง","จะจัดประสบการณ์การเรียนรู้อย่างไรให้มีประสิทธิภาพ","สถานศึกษาควรมีจุดมุ่งหมายทางการศึกษาอะไรบ้าง"],"answer":3,"explanation":"Tyler เสนอ 4 คำถามตามลำดับ: จุดมุ่งหมาย → การเลือกประสบการณ์การเรียนรู้ → การจัดประสบการณ์ → การประเมินผล","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":3,"topic":"หลักสูตรแกนกลาง พ.ศ. 2551","question":"สมรรถนะสำคัญของผู้เรียนตามหลักสูตรแกนกลางการศึกษาขั้นพื้นฐาน พ.ศ. 2551 มีกี่ประการ","choices":["6 ประการ","3 ประการ","5 ประการ","8 ประการ"],"answer":2,"explanation":"สมรรถนะสำคัญมี 5 ประการ คือ ความสามารถในการสื่อสาร การคิด การแก้ปัญหา การใช้ทักษะชีวิต และการใช้เทคโนโลยี (8 ประการคือคุณลักษณะอันพึงประสงค์)","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":3,"topic":"หลักสูตรแกนกลาง พ.ศ. 2551","question":"ข้อใดเป็นคุณลักษณะอันพึงประสงค์ตามหลักสูตรแกนกลางการศึกษาขั้นพื้นฐาน พ.ศ. 2551","choices":["ความสามารถในการใช้เทคโนโลยี","ความสามารถในการสื่อสาร","อยู่อย่างพอเพียง","ความสามารถในการคิด"],"answer":2,"explanation":"'อยู่อย่างพอเพียง' เป็น 1 ใน 8 คุณลักษณะอันพึงประสงค์ ส่วนตัวเลือกอื่นเป็นสมรรถนะสำคัญของผู้เรียน","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":3,"topic":"หลักสูตรแกนกลาง พ.ศ. 2551","question":"ในระดับมัธยมศึกษา การเรียนรายวิชา 40 ชั่วโมงต่อภาคเรียน คิดเป็นกี่หน่วยกิต","choices":["2 หน่วยกิต","1.5 หน่วยกิต","1 หน่วยกิต","0.5 หน่วยกิต"],"answer":2,"explanation":"ตามหลักสูตรแกนกลางฯ ระดับมัธยมศึกษา เวลาเรียน 40 ชั่วโมงต่อภาคเรียน มีค่าเท่ากับ 1 หน่วยกิต","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":3,"topic":"หลักสูตรฐานสมรรถนะ","question":"ข้อใดอธิบายความหมายของ 'สมรรถนะ' ได้ถูกต้องที่สุด","choices":["ความสนใจและความถนัดเฉพาะตัวของผู้เรียน","ปริมาณความรู้ที่ผู้เรียนจดจำได้หลังเรียนจบหลักสูตร","คะแนนสอบที่ผ่านเกณฑ์ตามตัวชี้วัด","ความสามารถในการประยุกต์ใช้ความรู้ ทักษะ และเจตคติ เพื่อทำงานหรือแก้ปัญหาในสถานการณ์จริงได้สำเร็จ"],"answer":3,"explanation":"สมรรถนะ = ความรู้ + ทักษะ + เจตคติ ที่นำมาใช้ในสถานการณ์จริงได้สำเร็จ หลักสูตรฐานสมรรถนะจึงเน้นว่าผู้เรียน 'ทำอะไรได้' มากกว่า 'รู้อะไร'","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":3,"topic":"Backward Design","question":"ขั้นตอนแรกของการออกแบบการเรียนรู้แบบย้อนกลับ (Backward Design) ของ Wiggins & McTighe คือข้อใด","choices":["กำหนดผลลัพธ์ที่พึงประสงค์ เช่น ความเข้าใจที่คงทนและคำถามสำคัญ","เลือกสื่อและแหล่งเรียนรู้ที่เหมาะสม","ออกแบบกิจกรรมการเรียนรู้ตามกรอบ WHERETO","กำหนดหลักฐานการเรียนรู้และภาระงาน"],"answer":0,"explanation":"Backward Design มี 3 ขั้น: 1) กำหนดผลลัพธ์ที่พึงประสงค์ 2) กำหนดหลักฐานการเรียนรู้ (ภาระงาน + เกณฑ์) 3) ออกแบบกิจกรรมการเรียนรู้","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":3,"topic":"Backward Design","question":"ครูออกแบบหน่วยการเรียนรู้โดยกำหนดผลลัพธ์ที่ต้องการแล้ว ขั้นตอนต่อไปที่ถูกต้องตามแนวคิด Backward Design คืออะไร","choices":["กำหนดภาระงานและเกณฑ์การประเมินที่เป็นหลักฐานว่าผู้เรียนบรรลุผลลัพธ์","เขียนกิจกรรมการเรียนรู้รายชั่วโมงทันที","ทดสอบก่อนเรียนเพื่อแบ่งกลุ่มนักเรียน","จัดหาสื่อการสอนที่ทันสมัย"],"answer":0,"explanation":"หัวใจของ Backward Design คือ 'คิดเรื่องการประเมินก่อนกิจกรรม' เมื่อกำหนดเป้าหมายแล้ว ต้องกำหนดหลักฐานการเรียนรู้ก่อนออกแบบกิจกรรม","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":3,"topic":"แผนการจัดการเรียนรู้","question":"จุดประสงค์การเรียนรู้ข้อใดเขียนได้ถูกต้องตามหลักจุดประสงค์เชิงพฤติกรรม","choices":["นักเรียนตระหนักถึงความสำคัญของภาษาไทย","นักเรียนเข้าใจฉันทลักษณ์ของกลอนสุภาพ","นักเรียนซาบซึ้งในคุณค่าของวรรณคดีไทย","เมื่อกำหนดบทร้อยกรองให้ นักเรียนสามารถบอกฉันทลักษณ์ได้ถูกต้องอย่างน้อย 4 ใน 5 ข้อ"],"answer":3,"explanation":"จุดประสงค์เชิงพฤติกรรมตามหลัก ABCD ต้องมีผู้เรียน (A) พฤติกรรมที่สังเกต/วัดได้ (B) เงื่อนไข (C) และเกณฑ์ (D) คำว่า 'เข้าใจ ซาบซึ้ง ตระหนัก' วัดโดยตรงไม่ได้","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":3,"topic":"รูปแบบการสอน","question":"ข้อใดเรียงลำดับขั้นตอนการสอนแบบสืบเสาะหาความรู้ 5E ได้ถูกต้อง","choices":["Explore → Engage → Explain → Evaluate → Elaborate","Explain → Explore → Engage → Elaborate → Evaluate","Engage → Explore → Explain → Elaborate → Evaluate","Engage → Explain → Explore → Elaborate → Evaluate"],"answer":2,"explanation":"5E: สร้างความสนใจ (Engage) → สำรวจและค้นหา (Explore) → อธิบายและลงข้อสรุป (Explain) → ขยายความรู้ (Elaborate) → ประเมิน (Evaluate)","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":3,"topic":"รูปแบบการสอน","question":"ครูให้นักเรียนแต่ละคนในกลุ่มบ้านไปศึกษาหัวข้อย่อยต่างกันในกลุ่มผู้เชี่ยวชาญ แล้วกลับมาสอนเพื่อนในกลุ่มบ้าน เป็นเทคนิคการเรียนรู้แบบร่วมมือแบบใด","choices":["Numbered Heads Together","Jigsaw","TGT","STAD"],"answer":1,"explanation":"Jigsaw คือการแบ่งเนื้อหาเป็นส่วน ๆ ให้สมาชิกไปเรียนในกลุ่มผู้เชี่ยวชาญ แล้วกลับมาถ่ายทอดให้กลุ่มบ้าน ทำให้ทุกคนต้องพึ่งพากันเชิงบวก","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":3,"topic":"รูปแบบการสอน","question":"ครูมอบหมายให้นักเรียนดูคลิปวิดีโอเนื้อหาที่บ้าน แล้วใช้เวลาในห้องเรียนทำกิจกรรมแก้ปัญหาและอภิปราย เป็นการจัดการเรียนรู้แบบใด","choices":["Flipped Classroom","Phenomenon-Based Learning","Blended Learning แบบหมุนเวียนสถานี","Gamification"],"answer":0,"explanation":"Flipped Classroom (ห้องเรียนกลับด้าน) คือให้เรียนเนื้อหาที่บ้าน และใช้เวลาในห้องเรียนสำหรับการฝึก แก้ปัญหา และทำกิจกรรมเชิงรุก","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":3,"topic":"รูปแบบการสอน","question":"กระบวนการออกแบบเชิงวิศวกรรม (Engineering Design Process) ในการสอนแบบ STEM มีลำดับเริ่มต้นที่ขั้นใด","choices":["ออกแบบวิธีการแก้ปัญหา","ระบุปัญหา","ทดสอบและปรับปรุง","สร้างต้นแบบ"],"answer":1,"explanation":"EDP: ระบุปัญหา → รวบรวมข้อมูลและแนวคิด → ออกแบบวิธีแก้ปัญหา → วางแผนและดำเนินการ/สร้าง → ทดสอบ ประเมินผล และปรับปรุง → นำเสนอ","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":3,"topic":"รูปแบบการสอน","question":"ข้อใดเรียงลำดับขั้นตอนของกระบวนการคิดเชิงออกแบบ (Design Thinking) ได้ถูกต้อง","choices":["Define → Empathize → Ideate → Test → Prototype","Ideate → Define → Empathize → Prototype → Test","Empathize → Define → Ideate → Prototype → Test","Empathize → Ideate → Define → Prototype → Test"],"answer":2,"explanation":"Design Thinking เริ่มจากเข้าใจผู้ใช้ (Empathize) → ระบุปัญหา (Define) → ระดมความคิด (Ideate) → สร้างต้นแบบ (Prototype) → ทดสอบ (Test)","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":3,"topic":"การสอนแบบแตกต่าง","question":"ในห้องเรียนที่นักเรียนมีความพร้อมแตกต่างกันมาก ครูให้นักเรียนเลือกนำเสนอความรู้ได้ทั้งแบบเขียนรายงาน ทำคลิป หรือทำอินโฟกราฟิก เป็นการปรับด้านใดตามแนวคิดการสอนแบบแตกต่าง (Differentiated Instruction)","choices":["ผลผลิต (Product)","กระบวนการ (Process)","สภาพแวดล้อม (Learning Environment)","เนื้อหา (Content)"],"answer":0,"explanation":"Tomlinson เสนอการปรับ 4 ด้าน คือ เนื้อหา กระบวนการ ผลผลิต และสภาพแวดล้อม การให้เลือกรูปแบบชิ้นงานเพื่อแสดงความรู้เป็นการปรับด้านผลผลิต","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":3,"topic":"การสอนแบบแตกต่าง","question":"หลักการออกแบบการเรียนรู้เพื่อทุกคน (UDL) ประกอบด้วยหลักการใดบ้าง","choices":["การนำเสนอที่หลากหลาย การแสดงออกที่หลากหลาย และการมีส่วนร่วมที่หลากหลาย","การจัดกลุ่มตามความสามารถ การสอนซ่อมเสริม และการเร่งเรียน","การวางแผน การลงมือทำ และการประเมินผล","ความรู้ ทักษะ และเจตคติ"],"answer":0,"explanation":"UDL มี 3 หลัก: หลากหลายวิธีการนำเสนอ (Representation) การแสดงออก (Action & Expression) และการมีส่วนร่วม (Engagement) เพื่อให้ทุกคนเข้าถึงการเรียนรู้","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":3,"topic":"เทคนิคการสอน","question":"หลังตั้งคำถามระดับการคิดวิเคราะห์ ครูควรปฏิบัติอย่างไรจึงช่วยให้นักเรียนตอบได้มีคุณภาพมากขึ้น","choices":["เปลี่ยนเป็นคำถามแบบใช่หรือไม่ใช่","รอคำตอบอย่างน้อย 3–5 วินาที (Wait Time) ก่อนเรียกให้ตอบ","เรียกนักเรียนที่เก่งตอบทันทีเพื่อไม่ให้เสียเวลา","เฉลยคำตอบทันทีหากไม่มีใครยกมือ"],"answer":1,"explanation":"การให้เวลารอคอย (Wait Time) อย่างน้อย 3–5 วินาที ช่วยให้นักเรียนมีเวลาคิด คำตอบมีคุณภาพ และนักเรียนมีส่วนร่วมมากขึ้น","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":3,"topic":"เทคนิคการสอน","question":"ข้อใดเป็นการให้ข้อมูลย้อนกลับ (Feedback) ที่มีคุณภาพตามแนวคิดของ Hattie & Timperley มากที่สุด","choices":["ได้ 7 คะแนนจาก 10 คะแนน","ยังไม่ดีพอ ต้องพยายามมากกว่านี้","เก่งมาก เธอเป็นนักเขียนที่ดี","เรียงความมีใจความหลักชัดเจนแล้ว ย่อหน้าที่ 2 ควรเพิ่มตัวอย่างสนับสนุน ลองปรับแล้วส่งอีกครั้ง"],"answer":3,"explanation":"Feedback ที่ดีต้องตอบ 3 คำถาม: เป้าหมายคืออะไร ตอนนี้อยู่ตรงไหน และต้องทำอะไรต่อ โดยเน้นระดับงานและกระบวนการ หลีกเลี่ยงคำชมที่ตัวบุคคล","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":3,"topic":"เทคนิคการสอน","question":"ก่อนจบคาบ ครูให้นักเรียนเขียนตอบสั้น ๆ ในกระดาษว่า 'วันนี้เรียนรู้อะไร และยังสงสัยอะไร' เพื่อนำไปปรับการสอนครั้งต่อไป เป็นการใช้เทคนิคใด","choices":["Gallery Walk","KWL Chart","Fishbowl","Exit Ticket"],"answer":3,"explanation":"Exit Ticket เป็นเทคนิคการประเมินระหว่างเรียนแบบรวดเร็วช่วงท้ายคาบ ช่วยให้ครูทราบความเข้าใจของผู้เรียนและนำไปปรับการสอน","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":3,"topic":"การจัดการชั้นเรียน","question":"ครูสามารถรับรู้ได้ว่านักเรียนหลังห้องกำลังคุยกันในขณะที่ตนกำลังอธิบายโจทย์ให้กลุ่มหน้าห้อง และส่งสัญญาณเตือนได้ทันที Kounin เรียกคุณลักษณะนี้ว่าอะไร","choices":["Smoothness","Ripple Effect","Withitness","Momentum"],"answer":2,"explanation":"Withitness คือการที่ครูรู้ทันทุกความเคลื่อนไหวในห้องเรียน และแสดงให้นักเรียนรู้ว่าครูรับรู้ ส่วน Overlapping คือการทำหลายสิ่งพร้อมกันได้","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":3,"topic":"การจัดการชั้นเรียน","question":"นักเรียนคนหนึ่งเล่นโทรศัพท์ระหว่างเรียน ข้อใดเป็นการจัดการพฤติกรรมขั้นแรกที่เหมาะสมที่สุด","choices":["ส่งตัวไปฝ่ายปกครอง","ใช้สัญญาณอวัจนภาษา เช่น เดินเข้าไปใกล้หรือสบตา","เชิญผู้ปกครองมาพบทันที","ยึดโทรศัพท์และประกาศหน้าชั้นเรียน"],"answer":1,"explanation":"ลำดับขั้นการจัดการพฤติกรรม: สัญญาณอวัจนภาษา → เตือนเป็นส่วนตัว → พูดคุยหาสาเหตุ → ทำข้อตกลง → ประสานผู้ปกครอง → ส่งต่อ ควรเริ่มจากวิธีที่เบาที่สุดและไม่ทำให้อับอาย","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":3,"topic":"การจัดการชั้นเรียน","question":"ข้อใดสอดคล้องกับหลักวินัยเชิงบวก (Positive Discipline) มากที่สุด","choices":["นักเรียนส่งงานช้า ครูตำหนิว่าเป็นคนขี้เกียจ","นักเรียนคุยในห้อง ครูให้คัดลายมือ 100 จบ","นักเรียนมาสาย ครูให้ยืนหน้าห้องตลอดคาบ","นักเรียนทำน้ำหกในห้อง ครูให้นักเรียนช่วยทำความสะอาดและพูดคุยวิธีป้องกันครั้งต่อไป"],"answer":3,"explanation":"วินัยเชิงบวกมุ่งสอนพฤติกรรมที่ถูกต้อง เน้นที่พฤติกรรมไม่ใช่ตัวตน และใช้ผลที่ตามมาอย่างสมเหตุสมผล (Logical Consequence) ซึ่งสัมพันธ์กับพฤติกรรมโดยตรง","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":3,"topic":"การจัดการชั้นเรียน","question":"ระบบ PBIS ระดับที่ 2 (Targeted) มุ่งช่วยเหลือกลุ่มใด","choices":["นักเรียนรายบุคคลที่มีปัญหารุนแรง","นักเรียนทุกคนในโรงเรียน","ครูและบุคลากรในโรงเรียน","นักเรียนกลุ่มเสี่ยงที่ต้องการการสนับสนุนเพิ่มเติม"],"answer":3,"explanation":"PBIS มี 3 ระดับ: Universal (ทั้งโรงเรียน) → Targeted (กลุ่มเสี่ยง) → Intensive (รายบุคคลที่มีปัญหารุนแรง)","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":3,"topic":"เทคโนโลยีดิจิทัลเพื่อการศึกษา","question":"ตาม SAMR Model ครูให้นักเรียนสร้างสารคดีสั้นร่วมกับนักเรียนต่างประเทศผ่านการประชุมออนไลน์และเผยแพร่สู่สาธารณะ ซึ่งเป็นงานที่ไม่อาจทำได้หากไม่มีเทคโนโลยี จัดอยู่ในระดับใด","choices":["Modification","Redefinition","Substitution","Augmentation"],"answer":1,"explanation":"Redefinition คือการใช้เทคโนโลยีสร้างงานรูปแบบใหม่ที่เดิมทำไม่ได้ ขณะที่ Substitution เป็นเพียงการแทนที่เครื่องมือเดิมโดยไม่เปลี่ยนหน้าที่","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":3,"topic":"เทคโนโลยีดิจิทัลเพื่อการศึกษา","question":"ครูเปลี่ยนจากให้นักเรียนเขียนรายงานด้วยมือ มาพิมพ์รายงานใน Word แทนโดยไม่มีการเปลี่ยนแปลงลักษณะงาน จัดอยู่ในระดับใดของ SAMR Model","choices":["Substitution","Redefinition","Modification","Augmentation"],"answer":0,"explanation":"Substitution คือการใช้เทคโนโลยีแทนเครื่องมือเดิมโดยไม่มีการเปลี่ยนแปลงหน้าที่ของงาน","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":3,"topic":"เทคโนโลยีดิจิทัลเพื่อการศึกษา","question":"แนวคิด TPACK มีสาระสำคัญตามข้อใด","choices":["ครูต้องมีความรู้ด้านการเขียนโปรแกรมคอมพิวเตอร์","ครูต้องใช้เทคโนโลยีใหม่ล่าสุดในทุกคาบเรียน","ครูต้องบูรณาการความรู้ด้านเทคโนโลยี วิธีสอน และเนื้อหาเข้าด้วยกันอย่างสอดคล้อง","ครูต้องให้นักเรียนเลือกเทคโนโลยีที่ใช้เรียนเอง"],"answer":2,"explanation":"TPACK คือจุดตัดของ Technological + Pedagogical + Content Knowledge การเลือกเทคโนโลยีต้องสอดคล้องกับเนื้อหาและวิธีสอน ไม่ใช่ใช้เพราะทันสมัย","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":3,"topic":"เทคโนโลยีดิจิทัลเพื่อการศึกษา","question":"ADDIE Model สำหรับการออกแบบระบบการสอนและสื่อ เริ่มต้นด้วยขั้นตอนใด","choices":["Analysis","Design","Development","Evaluation"],"answer":0,"explanation":"ADDIE: Analysis (วิเคราะห์) → Design (ออกแบบ) → Development (พัฒนา) → Implementation (นำไปใช้) → Evaluation (ประเมินผล)","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":3,"topic":"เทคโนโลยีดิจิทัลเพื่อการศึกษา","question":"ตามกรวยประสบการณ์ของ Edgar Dale ประสบการณ์ใดเป็นรูปธรรมมากที่สุด","choices":["ประสบการณ์จากสัญลักษณ์ภาพ","ประสบการณ์ตรงที่มีจุดมุ่งหมาย","ประสบการณ์จากการดูภาพยนตร์","ประสบการณ์จากการฟังบรรยาย"],"answer":1,"explanation":"กรวยประสบการณ์ของ Dale เริ่มจากฐานกรวยคือประสบการณ์ตรง (รูปธรรมที่สุด) ไปสู่ยอดกรวยคือวจนสัญลักษณ์ (นามธรรมที่สุด)","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":3,"topic":"AI ในการศึกษา","question":"ครูใช้ Generative AI ช่วยสร้างข้อสอบ ข้อใดเป็นแนวปฏิบัติที่เหมาะสมที่สุด","choices":["หลีกเลี่ยงการใช้ AI ในการศึกษาทุกกรณี","ตรวจสอบความถูกต้องของเนื้อหาและเฉลยทุกข้อด้วยตนเองก่อนนำไปใช้","ใส่ชื่อและข้อมูลคะแนนของนักเรียนลงไปเพื่อให้ AI วิเคราะห์ละเอียดขึ้น","นำไปใช้ได้ทันทีเพราะ AI มีความแม่นยำสูง"],"answer":1,"explanation":"AI อาจสร้างข้อมูลผิด (Hallucination) หรือมีอคติ ครูต้องเป็นผู้ตรวจสอบและตัดสินใจสุดท้าย (Human-in-the-loop) และต้องไม่นำข้อมูลส่วนบุคคลของนักเรียนใส่ในระบบโดยไม่จำเป็น","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":3,"topic":"การรู้ดิจิทัลและลิขสิทธิ์","question":"ครูต้องการนำภาพจากอินเทอร์เน็ตมาทำสื่อการสอนเผยแพร่ออนไลน์ ข้อใดเป็นแนวปฏิบัติที่เหมาะสมที่สุด","choices":["ใช้ได้หากภาพนั้นปรากฏในผลการค้นหาอันดับแรก","เลือกภาพที่มีสัญญาอนุญาต Creative Commons ที่อนุญาตการใช้งาน และอ้างอิงแหล่งที่มาตามเงื่อนไข","ใช้ภาพใดก็ได้เพราะเป็นการใช้เพื่อการศึกษา","ครอปลายน้ำออกก่อนนำไปใช้"],"answer":1,"explanation":"ต้องเคารพลิขสิทธิ์ โดยเลือกสื่อที่มีสัญญาอนุญาตเปิด (เช่น Creative Commons) ทำตามเงื่อนไข และอ้างอิงแหล่งที่มา การใช้เพื่อการศึกษาไม่ได้ทำให้ใช้งานได้ทุกกรณี","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":4,"topic":"หลักการวัดและประเมินผล","question":"ข้อความใดเป็น 'การประเมิน (Evaluation)' ไม่ใช่เพียง 'การวัด (Measurement)'","choices":["ผลงานของนักเรียนอยู่ในระดับดีมาก ผ่านเกณฑ์ที่กำหนด","นักเรียนได้คะแนนสอบ 35 คะแนน","นักเรียนสูง 150 เซนติเมตร","นักเรียนตอบถูก 18 ข้อจาก 20 ข้อ"],"answer":0,"explanation":"การวัดคือการกำหนดตัวเลขแทนคุณลักษณะ ส่วนการประเมินคือการตัดสินคุณค่าโดยเทียบกับเกณฑ์ เช่น 'อยู่ในระดับดีมาก ผ่านเกณฑ์'","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":4,"topic":"หลักการวัดและประเมินผล","question":"ข้อมูล 'เพศ' และ 'หมู่เลือด' ของนักเรียนจัดเป็นมาตรวัดระดับใด","choices":["อันตรภาค (Interval)","นามบัญญัติ (Nominal)","เรียงลำดับ (Ordinal)","อัตราส่วน (Ratio)"],"answer":1,"explanation":"มาตรนามบัญญัติใช้จำแนกประเภทโดยไม่มีลำดับมากน้อย เช่น เพศ หมู่เลือด ศาสนา ส่วนอันดับที่สอบได้เป็นมาตรเรียงลำดับ","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":4,"topic":"ประเภทของการประเมิน","question":"ระหว่างสอนหน่วยการเรียนรู้ ครูใช้แบบทดสอบย่อยเพื่อหาจุดที่นักเรียนยังไม่เข้าใจ แล้วนำไปปรับการสอน โดยไม่นำคะแนนไปตัดสินผลการเรียน เป็นการประเมินประเภทใด","choices":["การประเมินเพื่อพัฒนา (Formative Assessment)","การประเมินแบบอิงกลุ่ม (Norm-referenced)","การประเมินเพื่อจัดตำแหน่ง (Placement Assessment)","การประเมินเพื่อตัดสินผล (Summative Assessment)"],"answer":0,"explanation":"Formative Assessment ใช้ระหว่างเรียนเพื่อให้ข้อมูลย้อนกลับและปรับปรุงการเรียนการสอน ไม่เน้นการตัดสินผล (Assessment FOR Learning)","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":4,"topic":"ประเภทของการประเมิน","question":"ครูให้นักเรียนตรวจสอบงานเขียนของตนเองด้วยรูบริก แล้วตั้งเป้าหมายการปรับปรุงงานครั้งต่อไป เป็นลักษณะของการประเมินแบบใด","choices":["Norm-referenced Assessment","Assessment as Learning","Assessment for Learning","Assessment of Learning"],"answer":1,"explanation":"Assessment as Learning คือผู้เรียนประเมินตนเองและกำกับการเรียนรู้ของตน (Metacognition) ส่วน Assessment for Learning ครูเป็นผู้ใช้ข้อมูลปรับการสอน","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":4,"topic":"ประเภทของการประเมิน","question":"การตัดสินว่านักเรียน 'ผ่าน' เมื่อได้คะแนนไม่ต่ำกว่าร้อยละ 60 โดยไม่ขึ้นกับคะแนนของเพื่อนในห้อง เป็นการประเมินแบบใด","choices":["การประเมินแบบอิงกลุ่ม (Norm-referenced)","การประเมินแบบอิงเกณฑ์ (Criterion-referenced)","การประเมินแบบอิงตนเอง (Self-referenced)","การประเมินแบบวินิจฉัย (Diagnostic)"],"answer":1,"explanation":"การประเมินแบบอิงเกณฑ์เทียบผลกับเกณฑ์ที่กำหนดไว้ล่วงหน้า ส่วนการอิงกลุ่มเทียบกับผลของคนอื่นในกลุ่ม เช่น การจัดอันดับเปอร์เซ็นไทล์เพื่อคัดเลือก","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":4,"topic":"คุณภาพเครื่องมือวัด","question":"แบบทดสอบวัดผลสัมฤทธิ์วิชาคณิตศาสตร์ที่มีข้อความยาวและใช้ภาษายากมาก จนนักเรียนที่อ่านช้าทำคะแนนได้ต่ำแม้เข้าใจคณิตศาสตร์ดี แบบทดสอบนี้มีปัญหาด้านใดมากที่สุด","choices":["ความเที่ยง (Reliability)","ความตรง (Validity)","ความเป็นปรนัย (Objectivity)","ความยากง่าย (Difficulty)"],"answer":1,"explanation":"ความตรงคือการวัดได้ตรงสิ่งที่ต้องการวัด แบบทดสอบนี้กลับไปวัดความสามารถในการอ่านแทนความสามารถทางคณิตศาสตร์ จึงขาดความตรง","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":4,"topic":"คุณภาพเครื่องมือวัด","question":"ผู้เชี่ยวชาญ 5 คนพิจารณาข้อสอบข้อหนึ่ง ให้คะแนนความสอดคล้องเป็น +1, +1, 0, +1, +1 ค่า IOC ของข้อสอบนี้เท่ากับเท่าใด และใช้ได้หรือไม่","choices":["0.80 ใช้ได้","0.60 ใช้ได้","4.00 ใช้ได้","0.80 ใช้ไม่ได้"],"answer":0,"explanation":"IOC = ΣR / N = (1+1+0+1+1) / 5 = 4/5 = 0.80 ซึ่งมากกว่าหรือเท่ากับ 0.50 จึงใช้ได้","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":4,"topic":"คุณภาพเครื่องมือวัด","question":"ข้อสอบข้อหนึ่งมีนักเรียนสอบ 30 คน ตอบถูก 18 คน ค่าความยากง่าย (p) ของข้อสอบข้อนี้เท่ากับเท่าใด","choices":["0.60 ยากเกินไป","0.60 ความยากพอเหมาะ","1.67 ง่ายเกินไป","0.40 ค่อนข้างยาก"],"answer":1,"explanation":"p = R / N = 18 / 30 = 0.60 อยู่ในช่วงที่ใช้ได้ 0.20–0.80 (ค่า p ยิ่งมากยิ่งง่าย)","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":4,"topic":"คุณภาพเครื่องมือวัด","question":"แบ่งนักเรียนเป็นกลุ่มสูงและกลุ่มต่ำ กลุ่มละ 20 คน ข้อสอบข้อหนึ่งกลุ่มสูงตอบถูก 16 คน กลุ่มต่ำตอบถูก 8 คน ค่าอำนาจจำแนก (r) เท่ากับเท่าใด","choices":["0.60","0.80","0.20","0.40"],"answer":3,"explanation":"r = (Ru − RL) / n = (16 − 8) / 20 = 0.40 ซึ่งมากกว่า 0.20 ถือว่าจำแนกได้ดี","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":4,"topic":"คุณภาพเครื่องมือวัด","question":"ข้อสอบข้อหนึ่งมีค่าอำนาจจำแนกเป็น −0.25 ครูควรดำเนินการอย่างไร","choices":["ใช้เป็นข้อสอบข้อแรกเพื่อสร้างกำลังใจ","ตัดทิ้งหรือปรับปรุงใหม่ เพราะกลุ่มอ่อนตอบถูกมากกว่ากลุ่มเก่ง","เก็บไว้ใช้ เพราะค่าอำนาจจำแนกติดลบแสดงว่าจำแนกได้ดี","เก็บไว้ใช้ เพราะเป็นข้อสอบที่ยาก"],"answer":1,"explanation":"ค่าอำนาจจำแนกติดลบหมายถึงกลุ่มอ่อนตอบถูกมากกว่ากลุ่มเก่ง แสดงว่าข้อสอบบกพร่อง ต้องตัดทิ้งหรือปรับปรุง (ควรมีค่าตั้งแต่ 0.20 ขึ้นไป)","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":4,"topic":"คุณภาพเครื่องมือวัด","question":"การหาค่าความเที่ยงของแบบสอบถามมาตรประมาณค่า 5 ระดับ ควรใช้วิธีใด","choices":["ดัชนี IOC","KR-20","สัมประสิทธิ์แอลฟาของครอนบาค (Cronbach's Alpha)","ค่าอำนาจจำแนกแบบ 27%"],"answer":2,"explanation":"Cronbach's Alpha ใช้กับเครื่องมือที่ให้คะแนนแบบหลายระดับ เช่น มาตรประมาณค่า ส่วน KR-20/KR-21 ใช้กับข้อสอบที่ตรวจให้คะแนนแบบ 0–1 และ IOC เป็นการหาความตรง","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":4,"topic":"เครื่องมือและวิธีการวัด","question":"ข้อใดเป็นหลักการเขียนข้อสอบแบบเลือกตอบที่ถูกต้อง","choices":["ควรใช้ตัวเลือก 'ถูกทุกข้อ' บ่อย ๆ เพื่อเพิ่มความยาก","ตัวเลือกที่ถูกควรยาวกว่าตัวเลือกอื่นเพื่อความชัดเจน","ตัวลวงต้องมีความเป็นไปได้ และตัวเลือกควรยาวใกล้เคียงกัน","ควรใช้คำปฏิเสธซ้อนเพื่อวัดความรอบคอบ"],"answer":2,"explanation":"หลักการเขียนข้อสอบเลือกตอบ: คำถามชัดเจน ตัวลวงเป็นไปได้ ตัวเลือกยาวใกล้เคียงกัน หลีกเลี่ยง 'ถูกทุกข้อ/ผิดทุกข้อ' และไม่ใช้คำปฏิเสธซ้อน","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":4,"topic":"เครื่องมือและวิธีการวัด","question":"ครูต้องการประเมินงานเขียนเรียงความเพื่อให้ข้อมูลย้อนกลับว่านักเรียนควรพัฒนาด้านใดบ้าง เช่น การใช้ภาษา การเรียบเรียง และเนื้อหา ควรใช้เครื่องมือใดเหมาะสมที่สุด","choices":["เกณฑ์การให้คะแนนแบบแยกองค์ประกอบ (Analytic Rubric)","เกณฑ์การให้คะแนนแบบองค์รวม (Holistic Rubric)","แบบตรวจสอบรายการ (Checklist) แบบมี-ไม่มี","แบบทดสอบแบบเลือกตอบ"],"answer":0,"explanation":"Analytic Rubric แยกเกณฑ์ย่อยหลายด้าน จึงให้ข้อมูลย้อนกลับเพื่อพัฒนาได้ละเอียด ส่วน Holistic Rubric ให้คะแนนภาพรวม เหมาะกับการตัดสินอย่างรวดเร็ว","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":4,"topic":"เครื่องมือและวิธีการวัด","question":"องค์ประกอบที่สำคัญซึ่งต้องมีในแฟ้มสะสมงาน (Portfolio) ที่มีคุณภาพคือข้อใด","choices":["การสะท้อนคิดของผู้เรียนต่อชิ้นงาน","ใบประกาศนียบัตรที่ได้รับ","คะแนนสอบปลายภาค","ชิ้นงานทุกชิ้นที่ผู้เรียนเคยทำ"],"answer":0,"explanation":"แฟ้มสะสมงานไม่ใช่เพียงที่เก็บงาน แต่ต้องมีการคัดเลือกชิ้นงานและ 'การสะท้อนคิดของผู้เรียน' เพื่อแสดงพัฒนาการและการรู้คิด","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":4,"topic":"เครื่องมือและวิธีการวัด","question":"ครูจดบันทึกเหตุการณ์พฤติกรรมสำคัญของนักเรียนที่สังเกตเห็นโดยบรรยายตามสภาพจริง พร้อมวันเวลา เป็นการใช้เครื่องมือใด","choices":["แบบสัมภาษณ์แบบมีโครงสร้าง","ระเบียนพฤติการณ์ (Anecdotal Record)","มาตรประมาณค่า (Rating Scale)","แบบตรวจสอบรายการ (Checklist)"],"answer":1,"explanation":"ระเบียนพฤติการณ์คือการบันทึกเหตุการณ์หรือพฤติกรรมที่สังเกตได้อย่างเป็นข้อเท็จจริง ส่วน Checklist เป็นการตรวจว่ามี/ไม่มี และ Rating Scale ให้ระดับคุณภาพ","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":4,"topic":"สถิติพื้นฐาน","question":"คะแนนสอบของห้องหนึ่งมีค่าเฉลี่ย 60 ส่วนเบี่ยงเบนมาตรฐาน 10 นักเรียนที่ได้ 75 คะแนน มีคะแนนมาตรฐาน Z และ T เท่าใด","choices":["Z = 1.5 และ T = 15","Z = 15 และ T = 65","Z = 0.75 และ T = 57.5","Z = 1.5 และ T = 65"],"answer":3,"explanation":"Z = (x − x̄) / S = (75 − 60) / 10 = 1.5 และ T = 50 + 10Z = 50 + 15 = 65","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":4,"topic":"สถิติพื้นฐาน","question":"ห้อง ก และห้อง ข มีคะแนนเฉลี่ยเท่ากัน แต่ห้อง ก มีส่วนเบี่ยงเบนมาตรฐานสูงกว่าห้อง ข มาก แปลความได้อย่างไร","choices":["นักเรียนห้อง ก มีความสามารถใกล้เคียงกันมากกว่า","แบบทดสอบที่ใช้กับห้อง ก ยากกว่า","คะแนนของนักเรียนห้อง ก กระจายมากกว่า นักเรียนมีความสามารถแตกต่างกันมากกว่า","นักเรียนห้อง ก เก่งกว่าห้อง ข"],"answer":2,"explanation":"ส่วนเบี่ยงเบนมาตรฐาน (SD) บอกการกระจายของข้อมูล SD สูง = คะแนนกระจายมาก ผู้เรียนมีความแตกต่างกันมาก ไม่ได้บอกว่าเก่งกว่า","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":4,"topic":"สถิติพื้นฐาน","question":"ผลการประเมินความพึงพอใจแบบมาตรประมาณค่า 5 ระดับ ได้ค่าเฉลี่ย 3.72 แปลผลได้ว่าอยู่ในระดับใด","choices":["มากที่สุด","น้อย","มาก","ปานกลาง"],"answer":2,"explanation":"เกณฑ์แปลผล: 4.51–5.00 มากที่สุด / 3.51–4.50 มาก / 2.51–3.50 ปานกลาง / 1.51–2.50 น้อย / 1.00–1.50 น้อยที่สุด ค่า 3.72 จึงอยู่ในระดับมาก","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":4,"topic":"สถิติพื้นฐาน","question":"ครูทดสอบนักเรียนกลุ่มเดียวกันก่อนและหลังใช้ชุดกิจกรรม แล้วต้องการเปรียบเทียบคะแนนว่าแตกต่างกันอย่างมีนัยสำคัญหรือไม่ ควรใช้สถิติใด","choices":["t-test แบบ Independent Samples","One-way ANOVA","t-test แบบ Dependent Samples","Chi-square"],"answer":2,"explanation":"กลุ่มเดียววัดซ้ำก่อน–หลัง ข้อมูลไม่เป็นอิสระต่อกัน จึงใช้ t-test แบบ Dependent ส่วน Independent ใช้กับ 2 กลุ่มอิสระ และ ANOVA ใช้กับ 3 กลุ่มขึ้นไป","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":4,"topic":"สถิติพื้นฐาน","question":"นักเรียนมีคะแนนก่อนเรียน 10 คะแนน หลังเรียน 25 คะแนน จากคะแนนเต็ม 40 คะแนน ดัชนีประสิทธิผล (E.I.) เท่ากับเท่าใด","choices":["0.50","0.375","0.60","0.625"],"answer":0,"explanation":"E.I. = (หลังเรียน − ก่อนเรียน) / (คะแนนเต็ม − ก่อนเรียน) = (25 − 10) / (40 − 10) = 15/30 = 0.50 ถึงเกณฑ์ที่ควรมีค่าตั้งแต่ 0.50 ขึ้นไป","difficulty":"ยาก","level":"ประยุกต์ใช้"},{"domain":4,"topic":"สถิติพื้นฐาน","question":"ประสิทธิภาพของชุดกิจกรรมตามเกณฑ์ 80/80 ตัวเลข 80 ตัวแรก (E1) หมายถึงข้อใด","choices":["ร้อยละของคะแนนเฉลี่ยจากการทดสอบหลังเรียน","ร้อยละของนักเรียนที่ผ่านเกณฑ์","ร้อยละของคะแนนเฉลี่ยจากการทำกิจกรรม/แบบฝึกระหว่างเรียน","ร้อยละของความพึงพอใจของนักเรียน"],"answer":2,"explanation":"E1 คือประสิทธิภาพของกระบวนการ (คะแนนระหว่างเรียน) ส่วน E2 คือประสิทธิภาพของผลลัพธ์ (คะแนนทดสอบหลังเรียน)","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":4,"topic":"การตัดสินผลการเรียน","question":"นักเรียนได้คะแนนรวมรายวิชา 76 คะแนน จะได้ระดับผลการเรียนเท่าใดตามหลักสูตรแกนกลางฯ พ.ศ. 2551","choices":["2.5","3","4","3.5"],"answer":3,"explanation":"เกณฑ์ 8 ระดับ: 80–100 = 4 / 75–79 = 3.5 / 70–74 = 3 / 65–69 = 2.5 / 60–64 = 2 / 55–59 = 1.5 / 50–54 = 1 / 0–49 = 0 คะแนน 76 จึงได้ 3.5","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":4,"topic":"การตัดสินผลการเรียน","question":"นักเรียนมีเวลาเรียนไม่ถึงร้อยละ 80 ของเวลาเรียนทั้งหมดในรายวิชา จะได้รับผลการเรียนเป็นสัญลักษณ์ใด","choices":["มผ","มส","0","ร"],"answer":1,"explanation":"'มส' หมายถึงไม่มีสิทธิ์เข้ารับการวัดผลปลายภาค เพราะเวลาเรียนไม่ถึงร้อยละ 80 ส่วน 'ร' คือรอการตัดสิน และ 'มผ' คือไม่ผ่านกิจกรรม","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":4,"topic":"การวิจัยในชั้นเรียน","question":"ข้อใดไม่ใช่ลักษณะของการวิจัยในชั้นเรียน","choices":["ครูเป็นผู้วิจัยเอง","ทำควบคู่ไปกับการสอนตามปกติ","มุ่งแก้ปัญหาที่เกิดขึ้นในห้องเรียนของตน","มุ่งสรุปผลอ้างอิงไปยังประชากรทั่วประเทศ"],"answer":3,"explanation":"การวิจัยในชั้นเรียนมุ่งแก้ปัญหาเฉพาะหน้าในห้องเรียนของตน ครูเป็นผู้วิจัย ทำควบคู่กับการสอน และไม่เน้นการสรุปอ้างอิงไปสู่ประชากรทั่วไป","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":4,"topic":"การวิจัยในชั้นเรียน","question":"วงจรการวิจัยเชิงปฏิบัติการตามแนวคิดของ Kemmis & McTaggart มีลำดับอย่างไร","choices":["Observe → Plan → Reflect → Act","Analysis → Design → Develop → Evaluate","Plan → Act → Observe → Reflect","Plan → Do → Check → Act"],"answer":2,"explanation":"วงจร PAOR: วางแผน (Plan) → ปฏิบัติ (Act) → สังเกต (Observe) → สะท้อนผล (Reflect) แล้ววนซ้ำ ส่วน PDCA เป็นวงจรบริหารคุณภาพ","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":4,"topic":"การวิจัยในชั้นเรียน","question":"นักเรียน ม.2 จำนวน 12 คน ในห้องของครูอ่านจับใจความไม่ได้ ครูต้องการพัฒนาแบบฝึกเพื่อแก้ปัญหา ขั้นตอนแรกที่ควรทำคืออะไร","choices":["เขียนรายงานการวิจัยบทที่ 5","สร้างแบบฝึกให้เสร็จแล้วนำไปใช้ทันที","สุ่มนักเรียนจากทั้งโรงเรียนเป็นกลุ่มตัวอย่าง","วิเคราะห์สภาพปัญหาและสาเหตุจากข้อมูลของนักเรียน"],"answer":3,"explanation":"การวิจัยในชั้นเรียนเริ่มจากการวิเคราะห์ปัญหาและสาเหตุ → กำหนดวัตถุประสงค์ → ออกแบบนวัตกรรม → เก็บและวิเคราะห์ข้อมูล → สรุปและสะท้อนผล","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":4,"topic":"ระเบียบวิธีวิจัย","question":"งานวิจัยเรื่อง 'ผลของการใช้เกมการศึกษาที่มีต่อผลสัมฤทธิ์ทางการเรียนคณิตศาสตร์' ตัวแปรต้นคือข้อใด","choices":["ความพึงพอใจของนักเรียน","ระดับชั้นของนักเรียน","ผลสัมฤทธิ์ทางการเรียนคณิตศาสตร์","การใช้เกมการศึกษา"],"answer":3,"explanation":"ตัวแปรต้น (อิสระ) คือสิ่งที่ผู้วิจัยจัดกระทำ คือ 'การใช้เกมการศึกษา' ส่วนตัวแปรตามคือผลที่เกิดขึ้น คือ 'ผลสัมฤทธิ์ทางการเรียน'","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":4,"topic":"ระเบียบวิธีวิจัย","question":"แบบแผนการทดลอง O₁ X O₂ ที่นิยมใช้ในการวิจัยในชั้นเรียนมีจุดอ่อนสำคัญที่สุดในเรื่องใด","choices":["ไม่มีกลุ่มควบคุม จึงควบคุมตัวแปรแทรกซ้อนได้น้อย","ไม่สามารถวัดผลก่อนเรียนได้","ต้องใช้สถิติขั้นสูงในการวิเคราะห์","ต้องใช้กลุ่มตัวอย่างจำนวนมาก"],"answer":0,"explanation":"One-Group Pretest-Posttest Design มีกลุ่มเดียว ไม่มีกลุ่มควบคุม จึงไม่แน่ใจว่าผลที่เปลี่ยนไปเกิดจากนวัตกรรมหรือปัจจัยอื่น (เช่น วุฒิภาวะ การเรียนนอกห้อง)","difficulty":"ยาก","level":"วิเคราะห์/ประเมินค่า"},{"domain":4,"topic":"ระเบียบวิธีวิจัย","question":"ผู้วิจัยเก็บข้อมูลจากหลายแหล่ง ทั้งการสัมภาษณ์นักเรียน การสังเกตในชั้นเรียน และการวิเคราะห์ชิ้นงาน เพื่อยืนยันความถูกต้องของข้อค้นพบ เป็นการใช้วิธีใด","choices":["การหาค่าความเที่ยงแบบสอบซ้ำ","การเลือกกลุ่มตัวอย่างแบบเจาะจง","การสุ่มแบบแบ่งชั้น (Stratified Sampling)","การตรวจสอบสามเส้า (Triangulation)"],"answer":3,"explanation":"Triangulation เป็นการตรวจสอบความน่าเชื่อถือของข้อมูลเชิงคุณภาพ โดยใช้หลายแหล่งข้อมูล หลายผู้วิจัย หลายทฤษฎี หรือหลายวิธีการ","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":4,"topic":"นวัตกรรมการศึกษา","question":"การหาประสิทธิภาพของนวัตกรรมตามลำดับที่ถูกต้องคือข้อใด","choices":["ทดลองแบบ 1:1 → กลุ่มเล็ก → ภาคสนาม","กลุ่มเล็ก → ทดลองแบบ 1:1 → ภาคสนาม","ภาคสนาม → กลุ่มเล็ก → ทดลองแบบ 1:1","ทดลองแบบ 1:1 → ภาคสนาม → กลุ่มเล็ก"],"answer":0,"explanation":"การพัฒนานวัตกรรม: ตรวจสอบโดยผู้เชี่ยวชาญ (IOC) → ทดลองแบบเดี่ยว 1:1 → กลุ่มเล็ก (6–9 คน) → ภาคสนาม (30 คนขึ้นไป) เพื่อหา E1/E2","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":5,"topic":"การประกันคุณภาพการศึกษา","question":"ตามกฎกระทรวงการประกันคุณภาพการศึกษา พ.ศ. 2561 การประเมินคุณภาพภายนอกต้องดำเนินการอย่างน้อยกี่ครั้ง","choices":["อย่างน้อย 1 ครั้งทุกปี","อย่างน้อย 1 ครั้งในทุก 3 ปี","อย่างน้อย 1 ครั้งในทุก 10 ปี","อย่างน้อย 1 ครั้งในทุก 5 ปี"],"answer":3,"explanation":"การประเมินคุณภาพภายนอกดำเนินการโดย สมศ. อย่างน้อย 1 ครั้งในทุก 5 ปี โดยใช้รายงานการประเมินตนเอง (SAR) ของสถานศึกษาเป็นฐาน","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"การประกันคุณภาพการศึกษา","question":"หน่วยงานที่รับผิดชอบการประเมินคุณภาพภายนอกของสถานศึกษาคือข้อใด","choices":["สมศ.","สกศ.","คุรุสภา","สพฐ."],"answer":0,"explanation":"สมศ. (สำนักงานรับรองมาตรฐานและประเมินคุณภาพการศึกษา) เป็นหน่วยงานที่ทำหน้าที่ประเมินคุณภาพภายนอก ส่วนการประกันคุณภาพภายในเป็นหน้าที่ของสถานศึกษา","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"การประกันคุณภาพการศึกษา","question":"ขั้นตอนแรกของการประกันคุณภาพภายในสถานศึกษาตามกฎกระทรวงฯ พ.ศ. 2561 คือข้อใด","choices":["จัดทำแผนพัฒนาการจัดการศึกษา","ประเมินผลและตรวจสอบคุณภาพภายใน","จัดทำรายงานผลการประเมินตนเอง (SAR)","กำหนดมาตรฐานการศึกษาของสถานศึกษา"],"answer":3,"explanation":"6 ขั้นตอน: 1) กำหนดมาตรฐานการศึกษา 2) จัดทำแผนพัฒนาฯ 3) ดำเนินการตามแผน 4) ประเมินผลและตรวจสอบคุณภาพภายใน 5) ติดตามผล 6) จัดทำ SAR","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"การประกันคุณภาพการศึกษา","question":"มาตรฐานการศึกษาระดับการศึกษาขั้นพื้นฐาน (พ.ศ. 2561) มีกี่มาตรฐาน อะไรบ้าง","choices":["3 มาตรฐาน คือ ความรู้ ทักษะ และคุณลักษณะ","5 มาตรฐาน ตามระดับคุณภาพ 5 ระดับ","3 มาตรฐาน คือ คุณภาพของผู้เรียน กระบวนการบริหารและการจัดการ และกระบวนการจัดการเรียนการสอนที่เน้นผู้เรียนเป็นสำคัญ","4 มาตรฐาน คือ ผู้เรียน ครู ผู้บริหาร และชุมชน"],"answer":2,"explanation":"มาตรฐานการศึกษาขั้นพื้นฐาน 3 มาตรฐาน: 1) คุณภาพของผู้เรียน 2) กระบวนการบริหารและการจัดการ 3) กระบวนการจัดการเรียนการสอนที่เน้นผู้เรียนเป็นสำคัญ","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"การประกันคุณภาพการศึกษา","question":"การที่ครูใช้สื่อ เทคโนโลยี และแหล่งเรียนรู้ที่เอื้อต่อการเรียนรู้ และบริหารชั้นเรียนเชิงบวก เป็นประเด็นพิจารณาในมาตรฐานใด","choices":["มาตรฐานที่ 1 คุณภาพของผู้เรียน","ไม่อยู่ในมาตรฐานใด","มาตรฐานที่ 3 กระบวนการจัดการเรียนการสอนที่เน้นผู้เรียนเป็นสำคัญ","มาตรฐานที่ 2 กระบวนการบริหารและการจัดการ"],"answer":2,"explanation":"มาตรฐานที่ 3 ครอบคลุมการจัดการเรียนรู้ผ่านกระบวนการคิดและปฏิบัติจริง การใช้สื่อและแหล่งเรียนรู้ การบริหารชั้นเรียนเชิงบวก การประเมินผู้เรียนอย่างเป็นระบบ และการแลกเปลี่ยนเรียนรู้","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":5,"topic":"การประกันคุณภาพการศึกษา","question":"ระดับคุณภาพสูงสุดในการประเมินคุณภาพตามมาตรฐานการศึกษาขั้นพื้นฐาน คือข้อใด","choices":["ดีมาก","ดีเยี่ยม","ดีเลิศ","ยอดเยี่ยม"],"answer":3,"explanation":"ระดับคุณภาพ 5 ระดับ: กำลังพัฒนา → ปานกลาง → ดี → ดีเลิศ → ยอดเยี่ยม","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"เครื่องมือบริหารคุณภาพ","question":"หลังจัดโครงการส่งเสริมการอ่าน ครูประเมินผลแล้วพบว่าไม่บรรลุเป้าหมาย จึงนำผลมาปรับปรุงโครงการในปีถัดไป การนำผลมาปรับปรุงเป็นขั้นตอนใดของวงจร PDCA","choices":["Check","Act","Do","Plan"],"answer":1,"explanation":"PDCA: Plan (วางแผน) → Do (ปฏิบัติ) → Check (ตรวจสอบประเมิน) → Act (ปรับปรุง/นำผลไปพัฒนา) การนำผลประเมินมาปรับปรุงจึงเป็นขั้น Act","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":5,"topic":"การพัฒนาวิชาชีพครู","question":"ครูกลุ่มสาระภาษาไทยรวมกลุ่มกันวิเคราะห์ปัญหาการอ่านของนักเรียน ร่วมกันออกแบบแนวทาง เปิดชั้นเรียนให้เพื่อนครูสังเกต และสะท้อนผลร่วมกันอย่างต่อเนื่อง เป็นกระบวนการใด","choices":["การนิเทศแบบสั่งการ","ชุมชนแห่งการเรียนรู้ทางวิชาชีพ (PLC)","การประเมินวิทยฐานะ","การประกันคุณภาพภายนอก"],"answer":1,"explanation":"PLC คือการรวมกลุ่มของครูเพื่อร่วมกันแก้ปัญหาการเรียนรู้ของผู้เรียน มีวงจร: ระบุปัญหา → ร่วมออกแบบ → นำไปใช้ → เปิดชั้นเรียน/สังเกต → สะท้อนผลร่วมกัน","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":5,"topic":"การพัฒนาวิชาชีพครู","question":"การศึกษาบทเรียนร่วมกัน (Lesson Study) มีขั้นตอนหลักตามข้อใด","choices":["สำรวจ → ทดลอง → สรุป","ร่วมวางแผนบทเรียน → ร่วมสังเกตชั้นเรียน → ร่วมสะท้อนผล","นิเทศ → ประเมิน → รายงาน","สอน → สอบ → ตัดเกรด"],"answer":1,"explanation":"Lesson Study มี 3 ขั้นหลัก: Plan (ร่วมกันวางแผนบทเรียน) → Do (ร่วมสังเกตชั้นเรียน) → See (ร่วมกันสะท้อนผล)","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"การพัฒนาวิชาชีพครู","question":"ครูพี่เลี้ยงใช้คำถามว่า 'เป้าหมายของคาบนี้คืออะไร' 'ตอนนี้เกิดอะไรขึ้น' 'มีทางเลือกใดบ้าง' และ 'จะเริ่มทำอะไรก่อน' เพื่อให้ครูใหม่ค้นพบแนวทางด้วยตนเอง เป็นการใช้โมเดลใด","choices":["ADDIE Model","SAMR Model","5E Model","GROW Model"],"answer":3,"explanation":"GROW Model ใช้ในการโค้ช: Goal (เป้าหมาย) – Reality (สภาพจริง) – Options (ทางเลือก) – Will (สิ่งที่จะลงมือทำ) เน้นการตั้งคำถามให้ผู้รับการโค้ชค้นพบคำตอบเอง","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":5,"topic":"การพัฒนาวิชาชีพครู","question":"ข้อตกลงในการพัฒนางาน (วPA) ส่วนที่ 2 เกี่ยวข้องกับเรื่องใด","choices":["ประเด็นท้าทายในการพัฒนาผลลัพธ์การเรียนรู้ของผู้เรียน","การลงเวลาปฏิบัติราชการ","ภาระงานสอนตามมาตรฐานตำแหน่ง","การประเมินความพึงพอใจของผู้ปกครอง"],"answer":0,"explanation":"วPA มี 2 ส่วน: ส่วนที่ 1 ข้อตกลงในการพัฒนางานตามมาตรฐานตำแหน่ง และส่วนที่ 2 ข้อตกลงในการพัฒนางานที่เป็นประเด็นท้าทาย ซึ่งมุ่งพัฒนาผลลัพธ์การเรียนรู้ของผู้เรียน","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":5,"topic":"ความร่วมมือกับผู้ปกครองและชุมชน","question":"ครูต้องแจ้งผู้ปกครองว่านักเรียนมีปัญหาการส่งงาน วิธีการสื่อสารข้อใดเหมาะสมที่สุด","choices":["เริ่มจากจุดเด่นของนักเรียน แจ้งข้อเท็จจริงพร้อมหลักฐาน แล้วเสนอแนวทางช่วยเหลือร่วมกัน","แจ้งปัญหาทั้งหมดอย่างตรงไปตรงมาเพื่อให้ผู้ปกครองตระหนัก","ส่งข้อความแจ้งในกลุ่มไลน์ผู้ปกครองของห้อง","รอให้ถึงวันประชุมผู้ปกครองปลายภาคเรียน"],"answer":0,"explanation":"การสื่อสารกับผู้ปกครองเชิงบวก: แจ้งเรื่องดีก่อนเรื่องปัญหา ใช้ข้อเท็จจริง เสนอแนวทางร่วมกันแทนการตำหนิ และรักษาความลับของนักเรียน (ไม่แจ้งในกลุ่มสาธารณะ)","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":5,"topic":"ความร่วมมือกับผู้ปกครองและชุมชน","question":"ตามแนวคิดของ Epstein การที่ผู้ปกครองเป็นกรรมการสถานศึกษาและร่วมกำหนดนโยบายของโรงเรียน จัดเป็นการมีส่วนร่วมประเภทใด","choices":["การมีส่วนร่วมในการตัดสินใจ (Decision Making)","การเลี้ยงดู (Parenting)","การอาสาสมัคร (Volunteering)","การเรียนรู้ที่บ้าน (Learning at Home)"],"answer":0,"explanation":"Epstein แบ่งการมีส่วนร่วม 6 ประเภท: การเลี้ยงดู การสื่อสาร การอาสาสมัคร การเรียนรู้ที่บ้าน การตัดสินใจ และการร่วมมือกับชุมชน การร่วมกำหนดนโยบายคือการตัดสินใจ","difficulty":"ปานกลาง","level":"ประยุกต์ใช้"},{"domain":5,"topic":"การใช้ภาษาไทยเพื่อการสื่อสาร","question":"ข้อใดเขียนสะกดคำถูกต้องทุกคำ","choices":["อนุญาต สังเกต กะทันหัน","อนุญาติ สังเกต กระทันหัน","อนุญาติ สังเกตุ กะทันหัน","อนุญาต สังเกตุ กระทันหัน"],"answer":0,"explanation":"คำที่ถูกต้องคือ 'อนุญาต' (ไม่มีสระอิ) 'สังเกต' (ไม่มีสระอุ) และ 'กะทันหัน' (ไม่มี ร)","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"การใช้ภาษาไทยเพื่อการสื่อสาร","question":"ข้อใดใช้ภาษาระดับทางการเหมาะสมสำหรับหนังสือราชการ","choices":["โรงเรียนอยากให้คุณมาช่วยพูดเรื่องวิจัยในห้องเรียนหน่อยครับ","โรงเรียนขอความอนุเคราะห์ให้ท่านเป็นวิทยากรบรรยายเรื่องการวิจัยในชั้นเรียน","ทางโรงเรียนเลยอยากเชิญท่านมาเป็นวิทยากรจ้า","รบกวนท่านมาบรรยายเรื่องวิจัยให้ครูฟังด้วยนะคะ"],"answer":1,"explanation":"หนังสือราชการใช้ภาษาระดับทางการ สุภาพ กระชับ เช่น 'ขอความอนุเคราะห์' และหลีกเลี่ยงคำภาษาพูด เช่น 'อยาก หน่อย นะคะ เลย จ้า'","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":5,"topic":"การใช้ภาษาไทยเพื่อการสื่อสาร","question":"ข้อใดใช้คำราชาศัพท์ถูกต้อง","choices":["พระบาทสมเด็จพระเจ้าอยู่หัวเสด็จไปทรงเปิดอาคารเรียน","พระบาทสมเด็จพระเจ้าอยู่หัวทรงเสด็จพระราชดำเนินไปเปิดอาคารเรียน","พระบาทสมเด็จพระเจ้าอยู่หัวทรงเสด็จไปเปิดอาคารเรียน","พระบาทสมเด็จพระเจ้าอยู่หัวเสด็จพระราชดำเนินไปทรงเปิดอาคารเรียน"],"answer":3,"explanation":"'เสด็จพระราชดำเนิน' เป็นคำกริยาราชาศัพท์อยู่แล้ว ห้ามเติม 'ทรง' ข้างหน้า และใช้ 'เสด็จพระราชดำเนิน' กับพระมหากษัตริย์ ส่วน 'ทรงเปิด' ถูกต้องเพราะ 'เปิด' เป็นคำกริยาสามัญ","difficulty":"ยาก","level":"จำ/เข้าใจ"},{"domain":5,"topic":"การใช้ภาษาไทยเพื่อการสื่อสาร","question":"ตามระเบียบสำนักนายกรัฐมนตรีว่าด้วยงานสารบรรณ หนังสือติดต่อราชการภายในกระทรวง ทบวง กรม หรือจังหวัดเดียวกัน ที่ใช้กระดาษบันทึกข้อความ เรียกว่าอะไร","choices":["หนังสือภายนอก","หนังสือสั่งการ","หนังสือประทับตรา","หนังสือภายใน"],"answer":3,"explanation":"หนังสือภายในคือหนังสือติดต่อราชการที่เป็นแบบพิธีน้อยกว่าหนังสือภายนอก ใช้ติดต่อภายในกระทรวง ทบวง กรม หรือจังหวัดเดียวกัน โดยใช้กระดาษบันทึกข้อความ","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":5,"topic":"การใช้ภาษาไทยเพื่อการสื่อสาร","question":"หนังสือราชการที่มีชั้นความเร็วต้องปฏิบัติ 'ทันทีที่ได้รับหนังสือ' คือชั้นความเร็วใด","choices":["ลับที่สุด","ด่วนที่สุด","ด่วนมาก","ด่วน"],"answer":1,"explanation":"ชั้นความเร็ว 3 ระดับ: ด่วนที่สุด = ปฏิบัติทันทีที่ได้รับ / ด่วนมาก = ปฏิบัติโดยเร็ว / ด่วน = ปฏิบัติเร็วกว่าปกติเท่าที่จะทำได้ (ส่วน 'ลับที่สุด' เป็นชั้นความลับ)","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":5,"topic":"การใช้ภาษาไทยเพื่อการสื่อสาร","question":"อ่านข้อความแล้วตอบคำถาม: 'การอ่านเป็นทักษะพื้นฐานของการเรียนรู้ทุกวิชา นักเรียนที่อ่านคล่องย่อมเข้าใจโจทย์คณิตศาสตร์ ตีความบทเรียนวิทยาศาสตร์ และค้นคว้าข้อมูลได้ดีกว่า โรงเรียนจึงควรส่งเสริมการอ่านอย่างจริงจังในทุกกลุ่มสาระ' ใจความสำคัญของข้อความนี้คือข้อใด","choices":["โรงเรียนควรส่งเสริมการอ่านในทุกกลุ่มสาระ เพราะการอ่านเป็นพื้นฐานของการเรียนรู้ทุกวิชา","การค้นคว้าข้อมูลเป็นทักษะที่สำคัญที่สุด","นักเรียนที่อ่านคล่องจะเรียนคณิตศาสตร์ได้ดี","วิชาวิทยาศาสตร์ต้องอาศัยการตีความ"],"answer":0,"explanation":"ใจความสำคัญคือประเด็นหลักที่ครอบคลุมทั้งข้อความ ประโยคอื่นเป็นส่วนขยายหรือตัวอย่าง ข้อความนี้เสนอว่าควรส่งเสริมการอ่านทุกกลุ่มสาระ โดยให้เหตุผลว่าการอ่านเป็นพื้นฐานของทุกวิชา","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":5,"topic":"การใช้ภาษาไทยเพื่อการสื่อสาร","question":"ประโยคใดใช้ภาษาได้ถูกต้อง ชัดเจน ไม่กำกวม","choices":["นักเรียนที่ส่งงานช้าบ่อย ๆ ครูตักเตือน","ครูแจ้งให้นักเรียนส่งรายงานภายในวันศุกร์ที่ 25 กันยายน","ครูแจ้งให้นักเรียนส่งรายงานภายในวันศุกร์นี้หรือวันจันทร์ก็ได้มั้ง","ครูได้ทำการประเมินผลการเรียนของนักเรียนในห้องเรียนที่ครูสอนในห้องเรียน"],"answer":1,"explanation":"ประโยคที่ดีต้องชัดเจน กระชับ ไม่กำกวม และใช้ภาษาระดับเหมาะสม ตัวเลือกอื่นใช้ภาษาพูด ('มั้ง') เรียงลำดับคำกำกวม หรือใช้คำฟุ่มเฟือยซ้ำซ้อน","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"},{"domain":5,"topic":"การใช้ภาษาไทยเพื่อการสื่อสาร","question":"ข้อความใดเป็นการใช้ภาษาเพื่อโน้มน้าวใจ","choices":["โรงเรียนมีนักเรียนทั้งหมด 850 คน","ถุงพลาสติกทำจากปิโตรเลียม","ถุงพลาสติกใช้เวลาย่อยสลายนานหลายร้อยปี","มาร่วมกันงดใช้ถุงพลาสติกตั้งแต่วันนี้ เพื่อให้โรงเรียนของเราเป็นโรงเรียนสีเขียวที่น่าภาคภูมิใจ"],"answer":3,"explanation":"การโน้มน้าวใจมุ่งให้ผู้รับสารเปลี่ยนความคิดหรือลงมือทำ มักมีการเร้าอารมณ์และชี้ประโยชน์ ส่วนตัวเลือกอื่นเป็นการให้ข้อเท็จจริง","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":5,"topic":"การใช้ภาษาไทยเพื่อการสื่อสาร","question":"คำลงท้ายในหนังสือภายนอกที่มีถึงบุคคลทั่วไปหรือหัวหน้าส่วนราชการ ใช้คำใด","choices":["ขอแสดงความนับถือ","ด้วยความเคารพอย่างสูง","ขอบพระคุณเป็นอย่างสูง","จึงเรียนมาเพื่อโปรดทราบ"],"answer":0,"explanation":"หนังสือภายนอกถึงบุคคลทั่วไปหรือหัวหน้าส่วนราชการใช้คำลงท้าย 'ขอแสดงความนับถือ' ส่วน 'จึงเรียนมาเพื่อโปรดทราบ' เป็นข้อความส่วนจุดประสงค์ ไม่ใช่คำลงท้าย","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":5,"topic":"English for Teachers","question":"A teacher gives students temporary support, such as hints and guiding questions, and gradually removes it as they become more independent. What is this called?","choices":["Summative assessment","Streaming","Scaffolding","Rote learning"],"answer":2,"explanation":"Scaffolding (การเสริมต่อการเรียนรู้) คือการช่วยเหลือชั่วคราวแล้วค่อย ๆ ถอนออกเมื่อผู้เรียนทำได้เอง","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"English for Teachers","question":"Which word best completes the sentence? \"A ______ is a scoring guide that lists the criteria and describes levels of quality for a task.\"","choices":["worksheet","syllabus","rubric","timetable"],"answer":2,"explanation":"Rubric คือเกณฑ์การให้คะแนน ระบุประเด็นการประเมินและคำอธิบายระดับคุณภาพ ส่วน syllabus = ประมวลรายวิชา, worksheet = ใบงาน, timetable = ตารางเรียน","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"English for Teachers","question":"Read the text: \"Formative assessment happens during learning. Its main purpose is to give feedback so that teachers can adjust instruction and students can improve.\" What is the main purpose of formative assessment?","choices":["To give final grades at the end of the term","To rank students for university admission","To provide feedback that improves teaching and learning","To certify that students have completed the course"],"answer":2,"explanation":"ข้อความระบุว่าจุดมุ่งหมายหลักของ formative assessment คือการให้ข้อมูลย้อนกลับ (feedback) เพื่อปรับการสอนและพัฒนาการเรียนของผู้เรียน","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"English for Teachers","question":"Which classroom instruction is the most appropriate and polite?","choices":["Open book now, page 25!","Could you please open your books to page 25?","You open the books, page 25, quickly.","Books! Page 25!"],"answer":1,"explanation":"Classroom English ที่ดีควรชัดเจนและสุภาพ โครงสร้าง 'Could you please + V1 ...?' เป็นการขอร้องอย่างสุภาพและถูกไวยากรณ์","difficulty":"ง่าย","level":"ประยุกต์ใช้"},{"domain":5,"topic":"English for Teachers","question":"\"Differentiated instruction\" means that teachers ______.","choices":["adapt content, process, or products to meet students' different needs","teach every student in exactly the same way","separate students permanently by ability","use only one textbook for the whole year"],"answer":0,"explanation":"Differentiated instruction คือการสอนแบบแตกต่าง ปรับเนื้อหา กระบวนการ หรือชิ้นงาน ให้เหมาะกับความพร้อมและความสนใจของผู้เรียนแต่ละคน","difficulty":"ปานกลาง","level":"จำ/เข้าใจ"},{"domain":5,"topic":"English for Teachers","question":"Choose the grammatically correct sentence.","choices":["The students having finished their project.","The students have finish their project.","The students have finished their project.","The students has finished their project."],"answer":2,"explanation":"Present Perfect ใช้โครงสร้าง have/has + V3 ประธานพหูพจน์ (The students) ใช้ 'have' และกริยาช่องที่ 3 คือ 'finished'","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"English for Teachers","question":"According to the CEFR, which level is the highest?","choices":["C1","A2","C2","B2"],"answer":2,"explanation":"CEFR แบ่งเป็น 6 ระดับ จากต่ำไปสูง: A1, A2, B1, B2, C1, C2 ระดับ C2 สูงที่สุด (Mastery/Proficiency)","difficulty":"ง่าย","level":"จำ/เข้าใจ"},{"domain":5,"topic":"English for Teachers","question":"Read the text: \"In a flipped classroom, students watch short video lessons at home. Class time is then used for discussion, problem-solving, and hands-on activities with the teacher's support.\" What do students mainly do during class time?","choices":["Take notes from the teacher's lecture","Engage in active learning tasks with teacher support","Do homework individually and silently","Watch video lessons"],"answer":1,"explanation":"ข้อความระบุว่าเวลาในห้องเรียนใช้สำหรับการอภิปราย แก้ปัญหา และกิจกรรมลงมือปฏิบัติโดยมีครูช่วยเหลือ ส่วนการดูวิดีโอทำที่บ้าน","difficulty":"ปานกลาง","level":"วิเคราะห์/ประเมินค่า"}];</script>
+<script>
+/* ===================== ฮูกติวครู : core ===================== */
+const FB_CONFIG = {
+  apiKey: "AIzaSyBWmKO4Naw6bAe-Vcp5xA0bBAcQaiqT8qI",
+  authDomain: "biprakorb.firebaseapp.com",
+  projectId: "biprakorb",
+  storageBucket: "biprakorb.firebasestorage.app",
+  messagingSenderId: "1070042075166",
+  appId: "1:1070042075166:web:45e1c01dcc2e7fe3955e0f"
+};
+const EMAIL_DOMAIN = "users.biprakorb.app";
+const PASS = 60;
+const L = ["ก","ข","ค","ง","จ","ฉ"];
+const DOM = {
+  1:{s:"บริบทโลก & SEP", n:"การเปลี่ยนแปลงบริบทโลก สังคม และปรัชญาของเศรษฐกิจพอเพียง", w:.18},
+  2:{s:"จิตวิทยา", n:"จิตวิทยาพัฒนาการ จิตวิทยาการศึกษา และจิตวิทยาการให้คำปรึกษา", w:.20},
+  3:{s:"หลักสูตร & การสอน", n:"หลักสูตร ศาสตร์การสอน และเทคโนโลยีดิจิทัล", w:.32},
+  4:{s:"วัดผล & วิจัย", n:"การวัด ประเมินผลการเรียนรู้ และการวิจัยเพื่อพัฒนาผู้เรียน", w:.18},
+  5:{s:"ภาษา & ประกันคุณภาพ", n:"การใช้ภาษาไทย/อังกฤษเพื่อการสื่อสาร และการประกันคุณภาพการศึกษา", w:.12}
+};
+const DIDS = [1,2,3,4,5];
+const REAL = {1:18,2:20,3:32,4:18,5:12}; // จำลองสอบจริง 100 ข้อ ตามสัดส่วนผัง
+const DIFFS = ["ง่าย","ปานกลาง","ยาก"];
+const LEVELS = ["จำ/เข้าใจ","ประยุกต์ใช้","วิเคราะห์/ประเมินค่า"];
+const OWL_COLORS = ["#8A5CF0","#F2557E","#16A87E","#2E86DE","#F08C1B","#5B5470"];
+
+/* ---------- utils ---------- */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function h(html){ const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+const LS = {
+  get(k,d){ try{ const v=localStorage.getItem(k); return v==null?d:JSON.parse(v); }catch(e){ return d; } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+function shuffle(a){ a=[...a]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const pct = (c,t) => t ? Math.round(c*1000/t)/10 : 0;
+const r0 = n => Math.round(n);
+function fmtTime(sec){ sec=Math.max(0,Math.round(sec)); const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60; return (h? h+":"+String(m).padStart(2,"0") : m)+":"+String(s).padStart(2,"0"); }
+function fmtDur(sec){ const m=Math.round(sec/60); if(m<1) return Math.round(sec)+" วินาที"; if(m<60) return m+" นาที"; return Math.floor(m/60)+" ชม. "+(m%60)+" นาที"; }
+function fmtDate(ms){ try{ return new Date(ms).toLocaleString("th-TH",{day:"numeric",month:"short",year:"2-digit",hour:"2-digit",minute:"2-digit"}); }catch(e){ return new Date(ms).toISOString().slice(0,16); } }
+const toEmail = u => u.toLowerCase()+"@"+EMAIL_DOMAIN;
+async function sha(s){ try{ const b=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join(""); }catch(e){ return "p:"+s; } }
+
+/* ---------- icons ---------- */
+const IC = {
+  home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
+  play:'<path d="M7 4l13 8-13 8z"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  list:'<path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/>',
+  box:'<path d="M3 7l9-4 9 4-9 4z"/><path d="M3 7v10l9 4 9-4V7M12 11v10"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  left:'<path d="M15 5l-7 7 7 7"/>', right:'<path d="M9 5l7 7-7 7"/>',
+  flag:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+  grid:'<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
+  check:'<path d="M4 12l5 5L20 6"/>',
+  up:'<path d="M12 19V5M5 12l7-7 7 7"/>', down:'<path d="M12 5v14M5 12l7 7 7-7"/>',
+  file:'<path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/>',
+  upload:'<path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 20h16"/>',
+  dl:'<path d="M12 4v12M6 10l6 6 6-6"/><path d="M4 20h16"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>', trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+  edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  bolt:'<path d="M13 3L5 14h6l-1 7 8-11h-6z"/>',
+  redo:'<path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v5h-5"/>',
+  star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+  book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>',
+  users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.3-5 6.5-5s5.7 1.5 6.5 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.5c2.8.2 4.8 1.6 5.5 4.5"/>',
+  logout:'<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h11"/>',
+  trend:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+  shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
+  sparkle:'<path d="M12 3v6M12 15v6M3 12h6M15 12h6"/>'
+};
+const ic = (n, w=2.4) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||""}</svg>`;
+
+/* ---------- mascot (original owl) ---------- */
+function owl(mood="happy", color=OWL_COLORS[0], cls="owl"){
+  const eyes = mood==="sad"
+    ? '<path d="M36 50q10-6 20 0M64 50q10-6 20 0" stroke="#2B2340" stroke-width="4" fill="none" stroke-linecap="round"/>'
+    : mood==="cheer"
+    ? '<path d="M37 52q9-10 18 0M65 52q9-10 18 0" stroke="#2B2340" stroke-width="4.5" fill="none" stroke-linecap="round"/>'
+    : '<circle cx="46" cy="50" r="12" fill="#fff" stroke="#2B2340" stroke-width="3"/><circle cx="74" cy="50" r="12" fill="#fff" stroke="#2B2340" stroke-width="3"/>'
+      + (mood==="think" ? '<circle cx="50" cy="46" r="5.5" fill="#2B2340"/><circle cx="78" cy="46" r="5.5" fill="#2B2340"/>' : '<circle cx="47" cy="51" r="5.5" fill="#2B2340"/><circle cx="73" cy="51" r="5.5" fill="#2B2340"/><circle cx="49" cy="49" r="2" fill="#fff"/><circle cx="75" cy="49" r="2" fill="#fff"/>');
+  const arms = mood==="cheer"
+    ? `<path d="M26 70q-12-14-8-30" stroke="${color}" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M94 70q12-14 8-30" stroke="${color}" stroke-width="10" stroke-linecap="round" fill="none"/>`
+    : `<path d="M28 66q-8 10-4 22" stroke="${color}" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M92 66q8 10 4 22" stroke="${color}" stroke-width="10" stroke-linecap="round" fill="none"/>`;
+  const mouth = mood==="sad" ? '<path d="M55 64l5-3 5 3" stroke="#F08C1B" stroke-width="4" fill="none" stroke-linejoin="round"/>' : '<path d="M55 60l5 7 5-7z" fill="#FFB547" stroke="#2B2340" stroke-width="2.5" stroke-linejoin="round"/>';
+  return `<svg class="${cls}" viewBox="0 0 120 120" aria-hidden="true">
+    <ellipse cx="60" cy="112" rx="30" ry="5" fill="#000" opacity=".1"/>
+    ${arms}
+    <path d="M24 64c0-26 16-42 36-42s36 16 36 42-16 44-36 44-36-18-36-44z" fill="${color}" stroke="#2B2340" stroke-width="3"/>
+    <path d="M40 78c0-12 9-19 20-19s20 7 20 19-9 22-20 22-20-10-20-22z" fill="#fff" opacity=".85"/>
+    <path d="M52 76q8 4 16 0M52 84q8 4 16 0" stroke="${color}" stroke-width="2.5" fill="none" opacity=".6" stroke-linecap="round"/>
+    <path d="M30 32l10 12M90 32L80 44" stroke="#2B2340" stroke-width="3" stroke-linecap="round"/>
+    ${eyes}${mouth}
+    <circle cx="34" cy="64" r="5" fill="#FF7AA8" opacity=".55"/><circle cx="86" cy="64" r="5" fill="#FF7AA8" opacity=".55"/>
+    <path d="M38 24l22-11 22 11-22 9z" fill="#2B2340"/><path d="M80 25v11" stroke="#FFB547" stroke-width="3"/><circle cx="80" cy="38" r="3.5" fill="#FFB547"/>
+  </svg>`;
+}
+
+/* ---------- toast & modal ---------- */
+function toast(msg, type=""){
+  let box=$(".toasts"); if(!box){ box=h('<div class="toasts" role="status" aria-live="polite"></div>'); document.body.append(box); }
+  const t=h(`<div class="toast ${type}">${esc(msg)}</div>`); box.append(t);
+  setTimeout(()=>{ t.classList.add("out"); setTimeout(()=>t.remove(),320); }, type==="bad"?4200:2600);
+}
+function modal({title="", body="", actions=[{k:"ok",t:"ตกลง",c:"pri"}], onOpen, dismiss=true}){
+  return new Promise(res=>{
+    const sc=h(`<div class="scrim" role="dialog" aria-modal="true"><div class="sheet"><h3>${title}</h3><div class="mb"></div><div class="acts"></div></div></div>`);
+    const mb=$(".mb",sc); if(typeof body==="string") mb.innerHTML=body; else mb.append(body);
+    const close=(k)=>{ sc.classList.remove("show"); setTimeout(()=>sc.remove(),300); document.removeEventListener("keydown",onKey); res(k); };
+    const onKey=e=>{ if(e.key==="Escape" && dismiss) close(null); };
+    actions.forEach(a=>{ const b=h(`<button class="btn ${a.c||""}">${a.t}</button>`); b.onclick=async()=>{ if(a.run){ const ok=await a.run(sc); if(ok===false) return; } close(a.k); }; $(".acts",sc).append(b); });
+    if(dismiss) sc.addEventListener("click",e=>{ if(e.target===sc) close(null); });
+    document.addEventListener("keydown",onKey);
+    document.body.append(sc); requestAnimationFrame(()=>requestAnimationFrame(()=>sc.classList.add("show")));
+    onOpen && onOpen(sc, close);
+  });
+}
+const confirmBox = (title, text, okText="ยืนยัน", cls="bad") => modal({title, body:`<p>${text}</p>`, actions:[{k:null,t:"ยกเลิก",c:"ghost"},{k:"ok",t:okText,c:cls}]}).then(k=>k==="ok");
+
+/* ---------- confetti ---------- */
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c=h('<canvas id="confetti"></canvas>'); document.body.append(c);
+  const x=c.getContext("2d"); const W=c.width=innerWidth, H=c.height=innerHeight;
+  const cols=["#F2557E","#F08C1B","#16A87E","#2E86DE","#8A5CF0","#FFB547"];
+  const P=Array.from({length:140},()=>({x:W/2+(Math.random()-.5)*120,y:H*.35,vx:(Math.random()-.5)*12,vy:-Math.random()*13-4,r:Math.random()*6+4,c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*6,va:(Math.random()-.5)*.3}));
+  let f=0; (function tick(){ x.clearRect(0,0,W,H); P.forEach(p=>{ p.vy+=.35; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.a+=p.va; x.save(); x.translate(p.x,p.y); x.rotate(p.a); x.fillStyle=p.c; x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2); x.restore(); }); if(++f<150) requestAnimationFrame(tick); else c.remove(); })();
+}
+
+/* ===================== data stores ===================== */
+const AUTH_MSG = {
+  "auth/email-already-in-use":"ชื่อผู้ใช้นี้มีคนใช้แล้ว ลองชื่ออื่นนะ",
+  "auth/invalid-credential":"ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+  "auth/invalid-login-credentials":"ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+  "auth/wrong-password":"ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+  "auth/user-not-found":"ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+  "auth/weak-password":"รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร",
+  "auth/too-many-requests":"ลองหลายครั้งเกินไป รอสักครู่แล้วลองใหม่",
+  "auth/network-request-failed":"เชื่อมต่ออินเทอร์เน็ตไม่ได้",
+  "auth/operation-not-allowed":"ยังไม่ได้เปิดการเข้าสู่ระบบแบบ Email/Password ใน Firebase Console",
+  "auth/requires-recent-login":"กรุณาออกจากระบบแล้วเข้าใหม่ก่อนเปลี่ยนรหัสผ่าน",
+  "permission-denied":"ไม่มีสิทธิ์ทำรายการนี้ (ตรวจสอบ Firestore Rules)",
+  "unavailable":"เชื่อมต่อฐานข้อมูลไม่ได้ ลองใหม่อีกครั้ง"
+};
+const errMsg = e => AUTH_MSG[e?.code] || AUTH_MSG[(e?.code||"").replace("firestore/","")] || e?.message || String(e);
+
+class FirebaseStore {
+  constructor(){
+    this.kind="firebase";
+    firebase.initializeApp(FB_CONFIG);
+    this.auth=firebase.auth(); this.db=firebase.firestore();
+    try{ this.db.enablePersistence({synchronizeTabs:true}).catch(()=>{}); }catch(e){}
+    this._pending=null;
+  }
+  onAuth(cb){ this.auth.onAuthStateChanged(async u=>{ if(!u) return cb(null); if(this._pending) await this._pending; try{ cb(await this._user(u)); }catch(e){ console.error(e); cb({uid:u.uid, username:u.email.split("@")[0], displayName:u.email.split("@")[0], avatar:0, admin:false}); } }); }
+  async _user(u){
+    const ref=this.db.doc("users/"+u.uid); const s=await ref.get();
+    let p=s.exists? s.data() : null;
+    if(!p){ const un=u.email.split("@")[0]; p={username:un, displayName:un, avatar:0, createdAt:Date.now()}; await ref.set(p); }
+    return {uid:u.uid, ...p, admin: await this.isAdmin(u.uid)};
+  }
+  async isAdmin(id){ try{ const s=await this.db.doc("config/admins").get(); return s.exists && (s.data().uids||[]).includes(id); }catch(e){ return false; } }
+  async admins(){ const s=await this.db.doc("config/admins").get(); return s.exists? (s.data().uids||[]) : []; }
+  async signUp(username,password,displayName){
+    let done; this._pending=new Promise(r=>done=r);
+    try{
+      const cred=await this.auth.createUserWithEmailAndPassword(toEmail(username), password);
+      const id=cred.user.uid;
+      await this.db.doc("users/"+id).set({username, displayName:displayName||username, avatar:0, createdAt:Date.now()});
+      try{ await this.db.runTransaction(async t=>{ const ref=this.db.doc("config/admins"); const s=await t.get(ref); if(!s.exists) t.set(ref,{uids:[id]}); }); }catch(e){ /* มีผู้ดูแลแล้ว */ }
+    } finally { done(); this._pending=null; }
+  }
+  signIn(u,p){ return this.auth.signInWithEmailAndPassword(toEmail(u), p); }
+  signOut(){ return this.auth.signOut(); }
+  async changePassword(oldP,newP){ const u=this.auth.currentUser; const cred=firebase.auth.EmailAuthProvider.credential(u.email, oldP); await u.reauthenticateWithCredential(cred); await u.updatePassword(newP); }
+  updateProfile(id,data){ return this.db.doc("users/"+id).set(data,{merge:true}); }
+  async listQuestions(){ const s=await this.db.collection("questions").get(); return s.docs.map(d=>({id:d.id,...d.data()})); }
+  async addQuestions(list, by, onProg){
+    let n=0;
+    for(let i=0;i<list.length;i+=400){
+      const b=this.db.batch();
+      list.slice(i,i+400).forEach(q=>{ b.set(this.db.collection("questions").doc(), {...q, createdAt:Date.now(), createdBy:by}); });
+      await b.commit(); n=Math.min(list.length,i+400); onProg&&onProg(n,list.length);
+    }
+  }
+  updateQuestion(id,data){ return this.db.doc("questions/"+id).set(data,{merge:true}); }
+  async deleteQuestions(ids, onProg){ for(let i=0;i<ids.length;i+=400){ const b=this.db.batch(); ids.slice(i,i+400).forEach(id=>b.delete(this.db.doc("questions/"+id))); await b.commit(); onProg&&onProg(Math.min(ids.length,i+400),ids.length); } }
+  async listExams(){ const s=await this.db.collection("exams").get(); return s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); }
+  async saveExam(e){ const {id,...d}=e; if(id) await this.db.doc("exams/"+id).set(d); else await this.db.collection("exams").add(d); }
+  deleteExam(id){ return this.db.doc("exams/"+id).delete(); }
+  async saveAttempt(id, sum, detail){
+    const b=this.db.batch();
+    b.set(this.db.doc(`users/${id}/attempts/${sum.id}`), sum);
+    b.set(this.db.doc(`users/${id}/attemptDetails/${sum.id}`), detail);
+    await b.commit();
+  }
+  async listAttempts(id){ const s=await this.db.collection(`users/${id}/attempts`).orderBy("createdAt","desc").limit(300).get(); return s.docs.map(d=>d.data()); }
+  async getDetail(id, aid){ const s=await this.db.doc(`users/${id}/attemptDetails/${aid}`).get(); return s.exists? s.data() : null; }
+  async deleteAttempt(id, aid){ const b=this.db.batch(); b.delete(this.db.doc(`users/${id}/attempts/${aid}`)); b.delete(this.db.doc(`users/${id}/attemptDetails/${aid}`)); await b.commit(); }
+  async listUsers(){ const s=await this.db.collection("users").get(); return s.docs.map(d=>({uid:d.id,...d.data()})); }
+  async setAdmin(id,on){ const ref=this.db.doc("config/admins"); await ref.update({uids: on? firebase.firestore.FieldValue.arrayUnion(id) : firebase.firestore.FieldValue.arrayRemove(id)}); }
+}
+
+/* โหมดทดลอง: เก็บข้อมูลในเบราว์เซอร์เครื่องนี้ */
+class LocalStore {
+  constructor(){ this.kind="local"; this.K="hkt_local_v1"; this.d=LS.get(this.K,null);
+    if(!this.d){ this.d={users:{}, admins:[], session:null, questions:[], exams:[], attempts:{}, details:{}};
+      (window.SAMPLE_QB||[]).forEach(q=>this.d.questions.push({id:uid(),...q,createdAt:Date.now()})); this._save(); } }
+  _save(){ if(!LS.set(this.K,this.d)) toast("พื้นที่เก็บข้อมูลในเครื่องเต็ม","bad"); }
+  _err(code){ const e=new Error(AUTH_MSG[code]||code); e.code=code; return e; }
+  onAuth(cb){ this._cb=cb; setTimeout(()=>this._emit(),0); }
+  _emit(){ const s=this.d.session; const u=s && Object.values(this.d.users).find(x=>x.uid===s); this._cb && this._cb(u? {uid:u.uid, username:u.username, displayName:u.displayName, avatar:u.avatar||0, admin:this.d.admins.includes(u.uid)} : null); }
+  async admins(){ return this.d.admins; }
+  async signUp(username,password,displayName){
+    const k=username.toLowerCase(); if(this.d.users[k]) throw this._err("auth/email-already-in-use");
+    if(password.length<6) throw this._err("auth/weak-password");
+    const id="u"+uid(); this.d.users[k]={uid:id, username, displayName:displayName||username, avatar:0, pw:await sha(password), createdAt:Date.now()};
+    if(!this.d.admins.length) this.d.admins.push(id);
+    this.d.session=id; this._save(); this._emit();
+  }
+  async signIn(username,password){ const u=this.d.users[username.toLowerCase()]; if(!u || u.pw!==await sha(password)) throw this._err("auth/invalid-credential"); this.d.session=u.uid; this._save(); this._emit(); }
+  async signOut(){ this.d.session=null; this._save(); this._emit(); }
+  _byId(id){ return Object.values(this.d.users).find(x=>x.uid===id); }
+  async changePassword(o,n){ const u=this._byId(this.d.session); if(u.pw!==await sha(o)) throw this._err("auth/invalid-credential"); if(n.length<6) throw this._err("auth/weak-password"); u.pw=await sha(n); this._save(); }
+  async updateProfile(id,data){ Object.assign(this._byId(id),data); this._save(); }
+  async listQuestions(){ return JSON.parse(JSON.stringify(this.d.questions)); }
+  async addQuestions(list,by,onProg){ list.forEach(q=>this.d.questions.push({id:uid(),...q,createdAt:Date.now(),createdBy:by})); this._save(); onProg&&onProg(list.length,list.length); }
+  async updateQuestion(id,data){ const q=this.d.questions.find(x=>x.id===id); Object.assign(q,data); this._save(); }
+  async deleteQuestions(ids,onProg){ const s=new Set(ids); this.d.questions=this.d.questions.filter(q=>!s.has(q.id)); this._save(); onProg&&onProg(ids.length,ids.length); }
+  async listExams(){ return [...this.d.exams].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); }
+  async saveExam(e){ if(e.id){ const i=this.d.exams.findIndex(x=>x.id===e.id); this.d.exams[i]=e; } else this.d.exams.push({...e,id:uid()}); this._save(); }
+  async deleteExam(id){ this.d.exams=this.d.exams.filter(e=>e.id!==id); this._save(); }
+  async saveAttempt(id,sum,detail){ (this.d.attempts[id] ||= []).push(sum); this.d.details[sum.id]=detail; this._save(); }
+  async listAttempts(id){ return [...(this.d.attempts[id]||[])].sort((a,b)=>b.createdAt-a.createdAt); }
+  async getDetail(id,aid){ return this.d.details[aid]||null; }
+  async deleteAttempt(id,aid){ this.d.attempts[id]=(this.d.attempts[id]||[]).filter(a=>a.id!==aid); delete this.d.details[aid]; this._save(); }
+  async listUsers(){ return Object.values(this.d.users).map(({pw,...u})=>u); }
+  async setAdmin(id,on){ this.d.admins = on? [...new Set([...this.d.admins,id])] : this.d.admins.filter(x=>x!==id); this._save(); }
+}
+
+/* ===================== analytics & charts ===================== */
+function computeStats(atts){
+  const asc=[...atts].sort((a,b)=>a.createdAt-b.createdAt);
+  const recent=asc.slice(-10);
+  const dom={}; DIDS.forEach(d=>dom[d]={c:0,t:0,ms:0});
+  recent.forEach(a=>(a.items||[]).forEach(it=>{ const x=dom[it.d]; if(!x) return; x.t++; if(it.ok) x.c++; x.ms+=it.ms||0; }));
+  const all={}; DIDS.forEach(d=>all[d]={c:0,t:0});
+  const topic={}; const last={}; let totalQ=0, totalMs=0;
+  asc.forEach(a=>(a.items||[]).forEach(it=>{
+    totalQ++; totalMs+=it.ms||0;
+    if(all[it.d]){ all[it.d].t++; if(it.ok) all[it.d].c++; }
+    const k=it.tp||"ไม่ระบุหัวข้อ"; (topic[k] ||= {c:0,t:0,d:it.d}); topic[k].t++; if(it.ok) topic[k].c++;
+    last[it.id]=!!it.ok;
+  }));
+  const wrongIds=Object.keys(last).filter(k=>!last[k]);
+  const pcts=asc.map(a=>a.pct);
+  const avg=pcts.length? pcts.reduce((s,x)=>s+x,0)/pcts.length : 0;
+  const best=pcts.length? Math.max(...pcts) : 0;
+  // คาดการณ์คะแนนสอบจริงตามน้ำหนักผัง
+  let wsum=0, proj=0; DIDS.forEach(d=>{ if(dom[d].t){ wsum+=DOM[d].w; proj+=DOM[d].w*dom[d].c/dom[d].t; } });
+  const projection = wsum? proj/wsum*100 : null;
+  // วันต่อเนื่อง
+  const days=new Set(asc.map(a=>new Date(a.createdAt).toDateString()));
+  let streak=0; const dt=new Date(); if(!days.has(dt.toDateString())) dt.setDate(dt.getDate()-1);
+  while(days.has(dt.toDateString())){ streak++; dt.setDate(dt.getDate()-1); }
+  const today=asc.filter(a=>new Date(a.createdAt).toDateString()===new Date().toDateString()).reduce((s,a)=>s+a.total,0);
+  return {count:asc.length, asc, dom, all, topic, wrongIds, avg, best, projection, streak, today, totalQ, avgSec: totalQ? totalMs/totalQ/1000 : 0};
+}
+
+function adviceFor(st){
+  const tips=[];
+  if(!st.count){ tips.push({d:3,icon:"target",t:"เริ่มจากแบบทดสอบวัดระดับ ด้านละ 10 ข้อ (50 ข้อ) เพื่อดูจุดแข็งจุดอ่อนก่อนวางแผนอ่าน",act:{t:"เริ่มวัดระดับ",p:{preset:"diag"}}}); return tips; }
+  const doms=DIDS.filter(d=>st.dom[d].t>=3).map(d=>({d,acc:st.dom[d].c/st.dom[d].t,t:st.dom[d].t}));
+  if(doms.length){
+    const gain=doms.map(x=>({...x,g:DOM[x.d].w*(1-x.acc)*100})).sort((a,b)=>b.g-a.g)[0];
+    if(gain.acc<.9) tips.push({d:gain.d,icon:"bolt",t:`ด้าน ${gain.d} ${DOM[gain.d].s} ตอบถูก ${r0(gain.acc*100)}% และมีน้ำหนัก ${r0(DOM[gain.d].w*100)}% ของข้อสอบ ถ้าเก็บด้านนี้ได้ครบจะเพิ่มคะแนนได้อีกราว ${r0(gain.g)} คะแนน คุ้มที่สุดที่จะฝึกตอนนี้`,act:{t:`ฝึกด้าน ${gain.d} 20 ข้อ`,p:{preset:"domain",d:gain.d}}});
+    const low=doms.filter(x=>x.acc<PASS/100).sort((a,b)=>a.acc-b.acc);
+    low.filter(x=>x.d!==gain.d).slice(0,1).forEach(x=>tips.push({d:x.d,icon:"target",t:`ด้าน ${x.d} ยังต่ำกว่าเกณฑ์ (${r0(x.acc*100)}%) เกณฑ์ผ่านคิดรายวิชา ควรกลับไปอ่านสรุปด้านนี้ก่อน แล้วค่อยฝึกซ้ำ`,act:{t:`ฝึกด้าน ${x.d}`,p:{preset:"domain",d:x.d}}}));
+  }
+  const weakT=Object.entries(st.topic).filter(([,v])=>v.t>=2 && v.c/v.t<.6).sort((a,b)=>a[1].c/a[1].t-b[1].c/b[1].t).slice(0,3);
+  if(weakT.length) tips.push({d:weakT[0][1].d,icon:"book",t:"หัวข้อที่พลาดบ่อย: "+weakT.map(([k,v])=>`${k} (${r0(v.c*100/v.t)}%)`).join(" · ")+" — ทบทวนหัวข้อเหล่านี้เป็นพิเศษ"});
+  if(st.wrongIds.length) tips.push({d:1,icon:"redo",t:`มีข้อที่เคยตอบผิดและยังไม่ได้แก้ ${st.wrongIds.length} ข้อ การทำซ้ำข้อที่ผิดช่วยให้จำได้แม่นขึ้น`,act:{t:"ฝึกข้อที่เคยผิด",p:{preset:"wrong"}}});
+  if(st.asc.length>=4){ const a=st.asc.slice(-2).reduce((s,x)=>s+x.pct,0)/2, b=st.asc.slice(-4,-2).reduce((s,x)=>s+x.pct,0)/2;
+    if(a-b>=5) tips.push({d:3,icon:"trend",t:`พัฒนาการดีขึ้น! 2 ครั้งล่าสุดเฉลี่ย ${r0(a)}% เพิ่มจาก ${r0(b)}% รักษาจังหวะนี้ไว้`});
+    else if(b-a>=5) tips.push({d:1,icon:"trend",t:`คะแนน 2 ครั้งล่าสุดลดลง (${r0(b)}% → ${r0(a)}%) ลองพักสั้น ๆ แล้วทำชุดสั้นที่ด้านถนัดเพื่อเรียกความมั่นใจ`}); }
+  if(st.avgSec>90) tips.push({d:4,icon:"clock",t:`ใช้เวลาเฉลี่ย ${r0(st.avgSec)} วินาทีต่อข้อ ค่อนข้างนาน ลองฝึกแบบจับเวลา ~1.2 นาที/ข้อ และข้ามข้อยากไปก่อน`});
+  if(st.projection!=null) tips.push({d:5,icon:"star",t:`คาดการณ์คะแนนสอบจริงจากผลล่าสุดตามน้ำหนักผัง ≈ ${r0(st.projection)}% ${st.projection>=PASS? "อยู่ในเกณฑ์ผ่าน รักษาระดับด้วยการจำลองสอบเต็ม 100 ข้อ":"ยังต่ำกว่าเกณฑ์ 60% โฟกัสด้านที่แนะนำด้านบนก่อน"}`, act: st.projection>=PASS? {t:"จำลองสอบจริง",p:{preset:"real"}} : null});
+  return tips;
+}
+
+/* line chart of scores */
+function trendSVG(asc){
+  const pts=asc.slice(-15); const W=600,H=220,pl=38,pr=16,pt=16,pb=30;
+  const x=i=> pl + (pts.length<2? (W-pl-pr)/2 : i*(W-pl-pr)/(pts.length-1));
+  const y=v=> pt + (100-v)*(H-pt-pb)/100;
+  const grid=[0,20,40,60,80,100].map(v=>`<line x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}" stroke="var(--soft)" stroke-width="2"/><text x="${pl-8}" y="${y(v)+4}" text-anchor="end" font-size="12" fill="var(--muted)">${v}</text>`).join("");
+  const line=pts.map((p,i)=>`${i?"L":"M"}${x(i)},${y(p.pct)}`).join("");
+  const area= pts.length>1? `${line}L${x(pts.length-1)},${y(0)}L${x(0)},${y(0)}Z` : "";
+  const dots=pts.map((p,i)=>`<circle cx="${x(i)}" cy="${y(p.pct)}" r="${i===pts.length-1?7:4.5}" fill="${p.pct>=PASS?"var(--ok)":"var(--bad)"}" stroke="var(--line)" stroke-width="2.5"/>`).join("");
+  const lp=pts[pts.length-1];
+  const lx=Math.min(x(pts.length-1), W-pr-30);
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="กราฟคะแนนย้อนหลัง">
+    ${grid}
+    <line x1="${pl}" x2="${W-pr}" y1="${y(PASS)}" y2="${y(PASS)}" stroke="var(--ok)" stroke-width="2.5" stroke-dasharray="7 6"/>
+    <text x="${W-pr}" y="${y(PASS)-6}" text-anchor="end" font-size="12" font-weight="700" fill="var(--ok)">เกณฑ์ผ่าน 60%</text>
+    ${area? `<path d="${area}" fill="var(--pri)" opacity=".14"/>`:""}
+    <path d="${line}" fill="none" stroke="var(--pri)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    ${dots}
+    <text x="${lx}" y="${Math.max(14,y(lp.pct)-14)}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">${r0(lp.pct)}%</text>
+    <text x="${pl}" y="${H-8}" font-size="12" fill="var(--muted)">${pts.length} ครั้งล่าสุด</text>
+  </svg>`;
+}
+
+/* radar of 5 domains */
+function radarSVG(dom){
+  const S=300,c=150,R=100; const ang=i=>-Math.PI/2+i*2*Math.PI/5;
+  const P=(i,r)=>[c+r*Math.cos(ang(i)), c+r*Math.sin(ang(i))];
+  const ring=f=>DIDS.map((d,i)=>P(i,R*f).join(",")).join(" ");
+  const acc=DIDS.map(d=>dom[d].t? dom[d].c/dom[d].t : 0);
+  const poly=acc.map((a,i)=>P(i,R*Math.max(a,.02)).join(",")).join(" ");
+  const labels=DIDS.map((d,i)=>{ const [lx,ly]=P(i,R+30); const anc= Math.abs(lx-c)<10? "middle" : lx>c? "start":"end"; return `<text x="${lx}" y="${ly}" text-anchor="${anc}" font-size="13" font-weight="700" fill="var(--d${d})">ด้าน ${d}</text><text x="${lx}" y="${ly+16}" text-anchor="${anc}" font-size="13" fill="var(--ink)">${dom[d].t? r0(acc[i]*100)+"%" : "–"}</text>`; }).join("");
+  return `<svg class="chart" viewBox="-40 -10 ${S+80} ${S+20}" role="img" aria-label="แผนภาพความแม่นยำ 5 ด้าน" style="max-width:380px;margin:0 auto">
+    ${[.2,.4,.8,1].map(f=>`<polygon points="${ring(f)}" fill="none" stroke="var(--soft)" stroke-width="2"/>`).join("")}
+    <polygon points="${ring(.6)}" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5 5"/>
+    ${DIDS.map((d,i)=>`<line x1="${c}" y1="${c}" x2="${P(i,R)[0]}" y2="${P(i,R)[1]}" stroke="var(--soft)" stroke-width="2"/>`).join("")}
+    <polygon points="${poly}" fill="var(--pri)" fill-opacity=".25" stroke="var(--pri)" stroke-width="3.5" stroke-linejoin="round"/>
+    ${acc.map((a,i)=>{ const [px,py]=P(i,R*Math.max(a,.02)); return `<circle cx="${px}" cy="${py}" r="6" fill="var(--d${i+1})" stroke="var(--line)" stroke-width="2.5"/>`; }).join("")}
+    ${labels}
+  </svg>`;
+}
+
+function domBars(dom){
+  return `<div class="list">${DIDS.map(d=>{ const x=dom[d]; const p=x.t? x.c*100/x.t : 0;
+    return `<div class="dbar d${d}"><span class="nm" title="${esc(DOM[d].n)}">${d}. ${esc(DOM[d].s)}</span><div class="track"><i style="width:0" data-w="${p}"></i><span class="pass"></span></div><span class="pc">${x.t? r0(p)+"%" : "–"}</span></div>`; }).join("")}</div>`;
+}
+function animateBars(root){ requestAnimationFrame(()=>requestAnimationFrame(()=>$$(".track i[data-w]",root).forEach(i=>i.style.width=i.dataset.w+"%"))); }
+
+/* ===================== app state & router ===================== */
+const S={store:null,user:null,bank:null,exams:null,atts:null,view:null,exam:null,timer:null};
+const draftKey=()=>"hkt_draft_"+(S.user?.uid||"x");
+
+async function loadBank(force){ if(!S.bank||force) S.bank=await S.store.listQuestions(); return S.bank; }
+async function loadExams(force){ if(!S.exams||force) S.exams=await S.store.listExams(); return S.exams; }
+async function loadAtts(force){ if(!S.atts||force) S.atts=await S.store.listAttempts(S.user.uid); return S.atts; }
+
+const VIEWS={};
+const NAV=[["home","หน้าหลัก","home"],["practice","ฝึกสอบ","play"],["history","ประวัติ","list"],["manage","จัดการ","box",true],["me","ฉัน","user"]];
+function renderNav(){
+  const items=NAV.filter(n=>!n[3]||S.user?.admin);
+  const tn=$(".topnav"), bn=$(".bnav .inner");
+  tn.innerHTML=items.map(([k,t])=>`<button data-go="${k}" class="${S.view===k?"on":""}">${t}</button>`).join("");
+  bn.innerHTML=items.map(([k,t,i])=>`<button data-go="${k}" class="${S.view===k?"on":""}" aria-label="${t}">${ic(i)}<span>${t}</span></button>`).join("");
+}
+document.addEventListener("click",e=>{ const b=e.target.closest("[data-go]"); if(b && !b.closest(".view")?.dataset.lock) { go(b.dataset.go); } });
+
+async function go(name, params={}){
+  if(S.view==="exam" && name!=="exam" && S.exam && !params.force){ const k=await leaveExamPrompt(); if(!k) return; }
+  if(name!=="exam") stopTimer();
+  const host=$("#view"); const old=$(".view:not(.leaving)",host);
+  const nv=h(`<div class="view entering"><div class="skel"></div><div class="skel" style="height:160px"></div></div>`);
+  if(old){ old.classList.add("leaving"); setTimeout(()=>old.remove(),340); }
+  host.append(nv); S.view=name; document.body.classList.toggle("focus", name==="exam");
+  renderNav(); window.scrollTo({top:0,behavior:"instant" in window? "instant":"auto"});
+  requestAnimationFrame(()=>requestAnimationFrame(()=>nv.classList.remove("entering")));
+  try{ await VIEWS[name](nv, params); }
+  catch(e){ console.error(e); nv.innerHTML=`<div class="card empty">${owl("sad")}<h3>เกิดข้อผิดพลาด</h3><p class="muted">${esc(errMsg(e))}</p><button class="btn" data-go="home">กลับหน้าหลัก</button></div>`; }
+}
+
+/* ===================== auth ===================== */
+function renderAuth(){
+  $("#main").classList.add("hide"); $(".bnav").classList.add("hide"); let a=$("#auth");
+  if(!a){ a=h('<div id="auth"></div>'); document.body.prepend(a); }
+  a.className="app"; a.classList.remove("hide");
+  let mode="in";
+  a.innerHTML=`<div class="auth"><div class="card pop">
+    <div class="float">${owl("happy")}</div>
+    <h1>ฮูกติวครู</h1>
+    <p class="muted" style="text-align:center">ฝึกทำข้อสอบใบประกอบวิชาชีพครู “วิชาครู” เก็บคะแนน ดูพัฒนาการ วางกลยุทธ์</p>
+    <div class="seg" role="tablist"><button class="on" data-m="in">เข้าสู่ระบบ</button><button data-m="up">สมัครใหม่</button></div>
+    <form id="af" class="list" novalidate>
+      <label class="f">ชื่อผู้ใช้<input id="au" class="in" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="เช่น krunon" required></label>
+      <label class="f up hide">ชื่อที่แสดง<input id="an" class="in" placeholder="เช่น ครูนนท์"></label>
+      <label class="f">รหัสผ่าน<input id="ap" class="in" type="password" autocomplete="current-password" placeholder="อย่างน้อย 6 ตัวอักษร" required></label>
+      <label class="f up hide">ยืนยันรหัสผ่าน<input id="ap2" class="in" type="password" autocomplete="new-password"></label>
+      <p class="err" id="ae"></p>
+      <button class="btn pri block" id="ab" type="submit">เข้าสู่ระบบ</button>
+    </form>
+    <p class="small muted up hide">ชื่อผู้ใช้ใช้ได้เฉพาะ a–z, 0–9, จุด, ขีด และขีดล่าง 3–20 ตัว · บัญชีแรกที่สมัครจะเป็นผู้ดูแลระบบ</p>
+    ${S.store.kind==="firebase"? `<button class="btn ghost sm" id="ademo" type="button">ทดลองใช้โดยไม่ต้องสมัคร (เก็บข้อมูลในเครื่องนี้)</button>` : `<p class="small muted" style="text-align:center"><span class="demo-pill">โหมดทดลอง</span> ข้อมูลเก็บเฉพาะในเบราว์เซอร์นี้ มีคลังตัวอย่าง 150 ข้อ</p>`}
+  </div></div>`;
+  $$(".seg button",a).forEach(b=>b.onclick=()=>{ mode=b.dataset.m; $$(".seg button",a).forEach(x=>x.classList.toggle("on",x===b)); $$(".up",a).forEach(x=>x.classList.toggle("hide",mode!=="up")); $("#ab").textContent=mode==="up"?"สมัครและเข้าสู่ระบบ":"เข้าสู่ระบบ"; $("#ap").autocomplete=mode==="up"?"new-password":"current-password"; $("#ae").textContent=""; });
+  const demo=$("#ademo",a); if(demo) demo.onclick=()=>{ LS.set("hkt_mode","local"); location.reload(); };
+  $("#af",a).onsubmit=async e=>{
+    e.preventDefault(); const u=$("#au").value.trim(), p=$("#ap").value, er=$("#ae");
+    if(!/^[a-z0-9._-]{3,20}$/i.test(u)){ er.textContent="ชื่อผู้ใช้ต้องเป็น a–z, 0–9, . _ - ยาว 3–20 ตัว"; $("#af").classList.add("shake"); setTimeout(()=>$("#af").classList.remove("shake"),500); return; }
+    if(p.length<6){ er.textContent="รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร"; return; }
+    if(mode==="up" && p!==$("#ap2").value){ er.textContent="ยืนยันรหัสผ่านไม่ตรงกัน"; return; }
+    const b=$("#ab"); b.disabled=true; b.textContent="กำลังดำเนินการ…"; er.textContent="";
+    try{ if(mode==="up") await S.store.signUp(u.toLowerCase(),p,$("#an").value.trim()||u); else await S.store.signIn(u,p); }
+    catch(x){ er.textContent=errMsg(x); b.disabled=false; b.textContent=mode==="up"?"สมัครและเข้าสู่ระบบ":"เข้าสู่ระบบ"; $("#af").classList.add("shake"); setTimeout(()=>$("#af").classList.remove("shake"),500); }
+  };
+}
+
+/* ===================== home ===================== */
+VIEWS.home=async(v)=>{
+  const [atts,bank,exams]=await Promise.all([loadAtts(),loadBank(),loadExams()]);
+  const st=computeStats(atts); const u=S.user;
+  const draft=LS.get(draftKey(),null);
+  const hi=new Date().getHours(); const greet= hi<12?"อรุณสวัสดิ์":hi<17?"สวัสดีตอนบ่าย":"สวัสดีตอนเย็น";
+  v.innerHTML=`
+  <div class="card hero pop">${owl(st.count&&st.dom? "happy":"think", OWL_COLORS[u.avatar||0])}
+    <div><h2>${greet} ${esc(u.displayName)}</h2><p class="muted">${st.count? `ทำแบบทดสอบไปแล้ว ${st.count} ครั้ง${st.streak>1?` · ฝึกต่อเนื่อง ${st.streak} วัน`:""}${st.today?` · วันนี้ ${st.today} ข้อ`:""}` : "มาเริ่มฝึกชุดแรกกันเลย ฮูกจะช่วยวิเคราะห์ให้ว่าควรอ่านอะไรก่อน"}</p></div></div>
+  ${draft? `<div class="card pop d2" style="background:var(--t)"><h3>${ic("clock")} มีข้อสอบที่ทำค้างไว้</h3><p>${esc(draft.title)} · ตอบแล้ว ${draft.ans.filter(x=>x>=0).length}/${draft.qs.length} ข้อ</p><div class="row"><button class="btn pri" id="resume">ทำต่อ</button><button class="btn ghost" id="drop">ทิ้งชุดนี้</button></div></div>`:""}
+  <div class="kpis pop">
+    <div class="kpi"><div class="v">${st.count}</div><div class="l">ครั้งที่ทำ</div></div>
+    <div class="kpi"><div class="v">${st.count? r0(st.avg)+"%":"–"}</div><div class="l">คะแนนเฉลี่ย</div></div>
+    <div class="kpi"><div class="v">${st.count? r0(st.best)+"%":"–"}</div><div class="l">ดีที่สุด</div></div>
+    <div class="kpi"><div class="v" style="color:${st.projection==null?"inherit":st.projection>=PASS?"var(--ok)":"var(--bad)"}">${st.projection==null?"–":r0(st.projection)+"%"}</div><div class="l">คาดการณ์สอบจริง</div></div>
+  </div>
+  ${!bank.length? `<div class="card empty pop">${owl("think")}<h3>คลังข้อสอบยังว่างอยู่</h3><p class="muted">${u.admin? "นำเข้าข้อสอบจากไฟล์ .xlsx หรือเพิ่มชุดตัวอย่าง 150 ข้อได้ในหน้าจัดการ":"รอผู้ดูแลนำเข้าข้อสอบก่อนนะ"}</p>${u.admin? `<button class="btn pri" data-go="manage">ไปหน้าจัดการคลัง</button>`:""}</div>` : ""}
+  <div class="actions pop">
+    <button class="act d5" data-p="real"><span class="ic">${ic("target")}</span><div><b>จำลองสอบจริง</b><span>100 ข้อ ตามสัดส่วนผัง 5 ด้าน</span></div></button>
+    <button class="act d3" data-p="custom"><span class="ic">${ic("sparkle")}</span><div><b>สุ่มฝึกตามใจ</b><span>เลือกด้าน จำนวนข้อ และเวลาเอง</span></div></button>
+    <button class="act d1" data-p="wrong"><span class="ic">${ic("redo")}</span><div><b>ฝึกข้อที่เคยผิด</b><span>${st.wrongIds.length} ข้อรอแก้ตัว</span></div></button>
+    ${exams.slice(0,3).map(e=>`<button class="act d4" data-ex="${e.id}"><span class="ic">${ic("file")}</span><div><b>${esc(e.title)}</b><span>${e.total||"?"} ข้อ · ${e.timeLimitMin? e.timeLimitMin+" นาที":"ไม่จับเวลา"}</span></div></button>`).join("")}
+  </div>
+  <div class="grid2">
+    <div class="card pop"><h3>${ic("trend")} พัฒนาการ <small>คะแนน %</small></h3>${st.count? trendSVG(st.asc) : `<p class="muted">ทำแบบทดสอบอย่างน้อย 1 ครั้งเพื่อดูกราฟ</p>`}</div>
+    <div class="card pop"><h3>${ic("star")} ความแม่นยำรายด้าน <small>10 ครั้งล่าสุด</small></h3>${radarSVG(st.dom)}</div>
+  </div>
+  <div class="card pop"><h3>${ic("bolt")} กลยุทธ์จากฮูก</h3><div class="advice">${adviceFor(st).map((t,i)=>`<div class="tipc d${t.d}"><span class="b">${ic(t.icon,2.6)}</span><div><p>${esc(t.t)}</p>${t.act? `<button class="btn sm" data-adv="${i}">${esc(t.act.t)} ${ic("right")}</button>`:""}</div></div>`).join("")}</div></div>
+  <div class="card pop"><h3>${ic("list")} สรุปรายด้าน <small>เส้นประ = เกณฑ์ 60%</small></h3>${domBars(st.dom)}</div>`;
+  animateBars(v);
+  const adv=adviceFor(st);
+  $$("[data-adv]",v).forEach(b=>b.onclick=()=>startPreset(adv[+b.dataset.adv].act.p));
+  $$("[data-p]",v).forEach(b=>b.onclick=()=>startPreset({preset:b.dataset.p}));
+  $$("[data-ex]",v).forEach(b=>b.onclick=()=>go("practice",{exam:b.dataset.ex}));
+  if(draft){ $("#resume",v).onclick=()=>{ S.exam=draft; go("exam"); }; $("#drop",v).onclick=async()=>{ if(await confirmBox("ทิ้งข้อสอบที่ทำค้าง?","คำตอบที่ทำไว้จะหายไป","ทิ้งชุดนี้")){ LS.del(draftKey()); go("home"); } }; }
+};
+
+function startPreset(p){
+  if(p.preset==="real") return go("practice",{mode:"real"});
+  if(p.preset==="wrong") return go("practice",{mode:"wrong"});
+  if(p.preset==="diag") return go("practice",{mode:"custom",counts:{1:10,2:10,3:10,4:10,5:10}});
+  if(p.preset==="domain") return go("practice",{mode:"custom",counts:{[p.d]:20}});
+  return go("practice",{mode:"custom"});
+}
+
+/* ===================== practice setup ===================== */
+VIEWS.practice=async(v,params)=>{
+  const [bank,exams,atts]=await Promise.all([loadBank(),loadExams(),loadAtts()]);
+  const st=computeStats(atts);
+  const avail={}; DIDS.forEach(d=>avail[d]=bank.filter(q=>q.domain===d).length);
+  const bankIds=new Set(bank.map(q=>q.id));
+  const wrongAvail=st.wrongIds.filter(id=>bankIds.has(id)).length;
+  const pre=params.exam? exams.find(e=>e.id===params.exam) : null;
+  const cfg={ mode: pre? "preset" : params.mode||"custom", counts:{1:0,2:0,3:0,4:0,5:0,...(params.counts||{})}, diffs:[], timed:true, minutes:30, shuffleCh:true, style:"exam", wrongN:Math.min(20,wrongAvail)||0, exam:pre };
+  if(cfg.mode==="custom" && !params.counts) cfg.counts={1:5,2:5,3:5,4:5,5:5};
+  if(cfg.mode==="real"){ cfg.minutes=120; }
+  if(pre){ cfg.timed=!!pre.timeLimitMin; cfg.minutes=pre.timeLimitMin||30; cfg.style=pre.style||"exam"; }
+  const total=()=> cfg.mode==="real"? DIDS.reduce((s,d)=>s+Math.min(REAL[d],avail[d]),0) : cfg.mode==="wrong"? cfg.wrongN : cfg.mode==="preset"? (cfg.exam.ids? cfg.exam.ids.filter(id=>bankIds.has(id)).length : DIDS.reduce((s,d)=>s+Math.min(cfg.exam.counts?.[d]||0,avail[d]),0)) : DIDS.reduce((s,d)=>s+Math.min(cfg.counts[d],avail[d]),0);
+  const autoMin=()=>{ if(cfg.mode!=="preset"&&cfg.mode!=="real"){ cfg.minutes=Math.max(5,Math.ceil(total()*1.2)); const m=$("#mins",v); if(m) m.value=cfg.minutes; } };
+  function draw(){
+    v.innerHTML=`
+    <div class="card pop"><h3>${ic("play")} ตั้งค่าการฝึกสอบ</h3>
+      <div class="seg" id="modeSeg">${[["real","จำลองสอบจริง"],["custom","กำหนดเอง"],["wrong","ข้อที่เคยผิด"]].map(([k,t])=>`<button data-m="${k}" class="${cfg.mode===k?"on":""}">${t}</button>`).join("")}</div>
+      ${exams.length? `<div class="chips">${exams.map(e=>`<button class="chip ${cfg.exam?.id===e.id&&cfg.mode==="preset"?"on":""}" data-ex="${e.id}">${ic("file")} ${esc(e.title)}</button>`).join("")}</div>`:""}
+      <div id="modeBody"></div>
+    </div>
+    <div class="card pop"><h3>${ic("clock")} เวลาและรูปแบบ</h3>
+      <label class="switch">จับเวลา<input type="checkbox" id="timed" ${cfg.timed?"checked":""}></label>
+      <div class="row ${cfg.timed?"":"hide"}" id="timeRow"><div class="stepper"><button type="button" data-t="-5">−</button><input id="mins" inputmode="numeric" value="${cfg.minutes}"><button type="button" data-t="5">+</button></div><span class="muted">นาที</span><div class="chips">${[15,30,60,120].map(m=>`<button class="chip" data-tm="${m}">${m}</button>`).join("")}</div></div>
+      <div class="seg" id="styleSeg"><button data-s="exam" class="${cfg.style==="exam"?"on":""}">โหมดสอบ · เฉลยตอนจบ</button><button data-s="practice" class="${cfg.style==="practice"?"on":""}">โหมดฝึก · เฉลยทันที</button></div>
+      <label class="switch">สลับลำดับตัวเลือก<input type="checkbox" id="shch" ${cfg.shuffleCh?"checked":""}></label>
+    </div>
+    <div class="card pop" style="position:sticky;bottom:calc(92px + env(safe-area-inset-bottom,0px))"><div class="row" style="justify-content:space-between"><div><b style="font-family:var(--fd);font-size:24px" id="tot">${total()} ข้อ</b><div class="small muted" id="totSub"></div></div><button class="btn pri" id="go">${ic("play")} เริ่มทำข้อสอบ</button></div></div>`;
+    const mb=$("#modeBody",v);
+    if(cfg.mode==="real"){
+      mb.innerHTML=`<p class="muted small">สุ่ม 100 ข้อตามสัดส่วนผังโดยประมาณ ${DIDS.map(d=>`ด้าน ${d}: ${REAL[d]}`).join(" · ")} ${DIDS.some(d=>avail[d]<REAL[d])? `<br><span class="badge warn">คลังมีไม่พอบางด้าน จะใช้เท่าที่มี</span>`:""}</p>`;
+    } else if(cfg.mode==="wrong"){
+      mb.innerHTML= wrongAvail? `<p>มีข้อที่เคยตอบผิดและยังไม่ได้แก้ ${wrongAvail} ข้อ</p><div class="row"><span>จำนวนข้อ</span><div class="stepper"><button type="button" data-w="-5">−</button><input id="wn" inputmode="numeric" value="${cfg.wrongN}"><button type="button" data-w="5">+</button></div></div>` : `<div class="empty">${owl("cheer")}<p>ยังไม่มีข้อที่ตอบผิดค้างอยู่ เก่งมาก!</p></div>`;
+    } else if(cfg.mode==="preset"){
+      const e=cfg.exam; mb.innerHTML=`<p><b>${esc(e.title)}</b></p><p class="muted small">${esc(e.desc||"")}</p><p class="small">${e.ids? `ชุดข้อสอบตายตัว ${e.ids.length} ข้อ` : DIDS.filter(d=>e.counts?.[d]).map(d=>`ด้าน ${d}: ${e.counts[d]}`).join(" · ")}</p>`;
+    } else {
+      mb.innerHTML=`<div class="list">${DIDS.map(d=>`<div class="dbar d${d}" style="grid-template-columns:1fr auto"><span><span class="dtag"><b>${d}</b>${esc(DOM[d].s)}</span> <span class="small muted">มี ${avail[d]} ข้อ</span></span><div class="stepper"><button type="button" data-d="${d}" data-s="-1">−</button><input data-dn="${d}" inputmode="numeric" value="${cfg.counts[d]}"><button type="button" data-d="${d}" data-s="1">+</button></div></div>`).join("")}</div>
+      <div class="chips"><button class="chip" data-q="5">ด้านละ 5</button><button class="chip" data-q="10">ด้านละ 10</button><button class="chip" data-q="20">ด้านละ 20</button><button class="chip" data-q="0">ล้าง</button></div>
+      <div class="chips"><span class="small muted" style="align-self:center">ความยาก:</span>${DIFFS.map(x=>`<button class="chip ${cfg.diffs.includes(x)?"on":""}" data-df="${x}">${x}</button>`).join("")}</div>`;
+    }
+    const upd=()=>{ $("#tot",v).textContent=total()+" ข้อ"; $("#totSub",v).textContent= cfg.timed? `เวลา ${cfg.minutes} นาที · ${cfg.style==="exam"?"เฉลยตอนจบ":"เฉลยทันที"}` : `ไม่จับเวลา · ${cfg.style==="exam"?"เฉลยตอนจบ":"เฉลยทันที"}`; $("#go",v).disabled=!total(); };
+    upd();
+    $$("#modeSeg button",v).forEach(b=>b.onclick=()=>{ cfg.mode=b.dataset.m; cfg.exam=null; if(cfg.mode==="real") cfg.minutes=120; else autoMin(); draw(); });
+    $$("[data-ex]",v).forEach(b=>b.onclick=()=>{ cfg.mode="preset"; cfg.exam=exams.find(e=>e.id===b.dataset.ex); cfg.timed=!!cfg.exam.timeLimitMin; cfg.minutes=cfg.exam.timeLimitMin||30; cfg.style=cfg.exam.style||"exam"; draw(); });
+    $$("[data-d]",v).forEach(b=>b.onclick=()=>{ const d=b.dataset.d; cfg.counts[d]=Math.max(0,Math.min(avail[d],cfg.counts[d]+(+b.dataset.s))); $(`[data-dn="${d}"]`,v).value=cfg.counts[d]; autoMin(); upd(); });
+    $$("[data-dn]",v).forEach(i=>i.onchange=()=>{ const d=i.dataset.dn; cfg.counts[d]=Math.max(0,Math.min(avail[d],parseInt(i.value)||0)); i.value=cfg.counts[d]; autoMin(); upd(); });
+    $$("[data-q]",v).forEach(b=>b.onclick=()=>{ DIDS.forEach(d=>cfg.counts[d]=Math.min(avail[d],+b.dataset.q)); draw(); autoMin(); upd(); });
+    $$("[data-df]",v).forEach(b=>b.onclick=()=>{ const x=b.dataset.df; cfg.diffs=cfg.diffs.includes(x)? cfg.diffs.filter(y=>y!==x) : [...cfg.diffs,x]; b.classList.toggle("on"); });
+    $$("[data-w]",v).forEach(b=>b.onclick=()=>{ cfg.wrongN=Math.max(1,Math.min(wrongAvail,cfg.wrongN+(+b.dataset.w))); $("#wn",v).value=cfg.wrongN; autoMin(); upd(); });
+    const wn=$("#wn",v); if(wn) wn.onchange=()=>{ cfg.wrongN=Math.max(1,Math.min(wrongAvail,parseInt(wn.value)||1)); wn.value=cfg.wrongN; autoMin(); upd(); };
+    $("#timed",v).onchange=e=>{ cfg.timed=e.target.checked; $("#timeRow",v).classList.toggle("hide",!cfg.timed); upd(); };
+    $$("[data-t]",v).forEach(b=>b.onclick=()=>{ cfg.minutes=Math.max(1,cfg.minutes+(+b.dataset.t)); $("#mins",v).value=cfg.minutes; upd(); });
+    $$("[data-tm]",v).forEach(b=>b.onclick=()=>{ cfg.minutes=+b.dataset.tm; $("#mins",v).value=cfg.minutes; upd(); });
+    $("#mins",v).onchange=e=>{ cfg.minutes=Math.max(1,parseInt(e.target.value)||1); e.target.value=cfg.minutes; upd(); };
+    $$("#styleSeg button",v).forEach(b=>b.onclick=()=>{ cfg.style=b.dataset.s; $$("#styleSeg button",v).forEach(x=>x.classList.toggle("on",x===b)); upd(); });
+    $("#shch",v).onchange=e=>cfg.shuffleCh=e.target.checked;
+    $("#go",v).onclick=()=>{ const ex=buildExam(cfg,bank,st); if(!ex.qs.length) return toast("ไม่พบข้อสอบตามเงื่อนไข","bad"); S.exam=ex; LS.set(draftKey(),ex); go("exam"); };
+  }
+  draw();
+};
+
+function buildExam(cfg,bank,st){
+  let pool=bank;
+  if(cfg.mode==="custom" && cfg.diffs.length) pool=bank.filter(q=>cfg.diffs.includes(q.difficulty));
+  let picked=[], title="";
+  const byD=(d,n)=>shuffle(pool.filter(q=>q.domain===d)).slice(0,n);
+  if(cfg.mode==="real"){ DIDS.forEach(d=>picked.push(...byD(d,REAL[d]))); title="จำลองสอบจริง"; }
+  else if(cfg.mode==="wrong"){ const s=new Set(st.wrongIds); picked=shuffle(bank.filter(q=>s.has(q.id))).slice(0,cfg.wrongN); title="ฝึกข้อที่เคยผิด"; }
+  else if(cfg.mode==="preset"){ const e=cfg.exam; title=e.title; if(e.ids){ const m=new Map(bank.map(q=>[q.id,q])); picked=e.ids.map(id=>m.get(id)).filter(Boolean); } else DIDS.forEach(d=>picked.push(...byD(d,e.counts?.[d]||0))); }
+  else { DIDS.forEach(d=>picked.push(...byD(d,cfg.counts[d]))); const ds=DIDS.filter(d=>cfg.counts[d]>0); title= ds.length===1? `ฝึกด้าน ${ds[0]} ${DOM[ds[0]].s}` : "ฝึกแบบกำหนดเอง"; }
+  if(cfg.mode!=="preset" || !cfg.exam?.ids) picked=shuffle(picked);
+  const qs=picked.map(q=>{
+    let order=q.choices.map((_,i)=>i).filter(i=>String(q.choices[i]??"").trim()!=="");
+    if(cfg.shuffleCh) order=shuffle(order);
+    return {id:q.id,d:q.domain,tp:q.topic||"",q:q.question,ch:order.map(i=>q.choices[i]),a:order.indexOf(q.answer),exp:q.explanation||"",df:q.difficulty||""};
+  });
+  return {id:uid(),title,mode:cfg.mode,style:cfg.style,timeLimitMin:cfg.timed? cfg.minutes : 0,startedAt:Date.now(),endAt:cfg.timed? Date.now()+cfg.minutes*60000 : null,qs,ans:qs.map(()=>-1),fl:qs.map(()=>false),ms:qs.map(()=>0),cur:0,examRef:cfg.exam?.id||null};
+}
+
+/* ===================== exam ===================== */
+function stopTimer(){ if(S.timer){ clearInterval(S.timer); S.timer=null; } }
+async function leaveExamPrompt(){
+  const k=await modal({title:"ออกจากการทำข้อสอบ?",body:"<p>บันทึกไว้ทำต่อภายหลังได้ (เวลายังเดินต่อถ้าจับเวลา)</p>",actions:[{k:null,t:"ทำต่อ",c:"ghost"},{k:"save",t:"บันทึกไว้ทำต่อ",c:""},{k:"submit",t:"ส่งคำตอบเลย",c:"pri"}]});
+  if(k==="save"){ tickMs(); LS.set(draftKey(),S.exam); S.exam=null; return true; }
+  if(k==="submit"){ await finishExam(); return false; }
+  return false;
+}
+function tickMs(){ const e=S.exam; if(!e) return; const now=Date.now(); if(e._t) e.ms[e.cur]+=now-e._t; e._t=now; }
+
+VIEWS.exam=async(v)=>{
+  const e=S.exam; if(!e){ const d=LS.get(draftKey(),null); if(!d) return go("home"); S.exam=d; return VIEWS.exam(v); }
+  e._t=Date.now();
+  const practice=e.style==="practice";
+  v.innerHTML=`
+    <div class="exam-top"><button class="iconbtn" id="xq" aria-label="ออก">${ic("x")}</button><div class="t">${esc(e.title)}</div>${e.endAt? `<div class="timer" id="tm">${ic("clock")}<span>--:--</span></div>` : `<div class="timer">${ic("clock")}<span id="el">0:00</span></div>`}</div>
+    <div class="prog"><i id="pg" style="width:0"></i></div>
+    <div class="qwrap"><div class="card qcard" id="qc"></div></div>
+    <div class="exam-foot"><button class="iconbtn" id="pv" aria-label="ข้อก่อนหน้า">${ic("left")}</button>
+      <div class="row" style="justify-content:center;gap:8px"><button class="btn sm" id="gridb">${ic("grid")} <span id="cnt"></span></button><button class="iconbtn flag" id="fl" aria-label="ปักธง">${ic("flag")}</button></div>
+      <button class="iconbtn" id="nx" aria-label="ข้อถัดไป" style="background:var(--pri);color:#fff">${ic("right")}</button></div>
+    <button class="btn ok block" id="sub">${ic("check")} ส่งคำตอบ</button>`;
+  const qc=$("#qc",v);
+  const save=()=>LS.set(draftKey(),e);
+  function paint(dir){
+    const i=e.cur, q=e.qs[i], a=e.ans[i], locked=practice && a>=0;
+    const html=`<div class="row" style="justify-content:space-between"><span class="qno">ข้อ ${i+1} / ${e.qs.length}</span><span class="dtag d${q.d}"><b>${q.d}</b>${esc(q.tp||DOM[q.d].s)}</span></div>
+      <p class="qtext">${esc(q.q)}</p>
+      <div class="choices">${q.ch.map((c,j)=>{ let cls= a===j?"sel":""; if(locked){ if(j===q.a) cls="right"; else if(j===a) cls="wrong"; }
+        return `<button class="choice ${cls}" data-c="${j}" ${locked?"disabled":""}><span class="L">${L[j]}</span><span>${esc(c)}</span></button>`; }).join("")}</div>
+      ${locked? `<div class="explain pop"><b>${a===q.a?"ถูกต้อง! ":"ยังไม่ถูก "}</b>คำตอบคือ ${L[q.a]}. ${esc(q.ch[q.a])}${q.exp? `<br>${esc(q.exp)}`:""}</div>`:""}`;
+    if(dir){ qc.classList.add(dir>0?"out-l":"out-r"); setTimeout(()=>{ qc.innerHTML=html; qc.classList.remove("out-l","out-r"); qc.classList.add(dir>0?"in-l":"in-r"); bind(); requestAnimationFrame(()=>requestAnimationFrame(()=>qc.classList.remove("in-l","in-r"))); },200); }
+    else { qc.innerHTML=html; bind(); }
+    const done=e.ans.filter(x=>x>=0).length;
+    $("#pg",v).style.width=(done*100/e.qs.length)+"%"; $("#cnt",v).textContent=`${done}/${e.qs.length}`;
+    $("#fl",v).classList.toggle("on",!!e.fl[i]);
+    $("#pv",v).disabled=i===0; $("#pv",v).style.opacity=i===0?.4:1;
+    $("#nx",v).style.opacity= i===e.qs.length-1? .4:1;
+  }
+  function bind(){
+    $$(".choice",qc).forEach(b=>b.onclick=()=>{
+      const i=e.cur, j=+b.dataset.c; if(practice && e.ans[i]>=0) return;
+      e.ans[i]= (!practice && e.ans[i]===j)? -1 : j; save();
+      if(practice){ paint(); const ok=j===e.qs[i].a; const el=$(`.choice[data-c="${j}"]`,qc); el?.classList.add(ok?"bump":"shake"); }
+      else { $$(".choice",qc).forEach(x=>x.classList.toggle("sel",+x.dataset.c===e.ans[i])); b.classList.add("bump"); setTimeout(()=>b.classList.remove("bump"),450);
+        const done=e.ans.filter(x=>x>=0).length; $("#pg",v).style.width=(done*100/e.qs.length)+"%"; $("#cnt",v).textContent=`${done}/${e.qs.length}`;
+        if(e.ans[i]>=0 && i<e.qs.length-1) setTimeout(()=>{ if(e.cur===i) move(1); },380); }
+    });
+  }
+  function move(d){ const n=e.cur+d; if(n<0||n>=e.qs.length) return; tickMs(); e.cur=n; save(); paint(d); }
+  $("#pv",v).onclick=()=>move(-1); $("#nx",v).onclick=()=>move(1);
+  $("#fl",v).onclick=()=>{ e.fl[e.cur]=!e.fl[e.cur]; save(); $("#fl",v).classList.toggle("on",e.fl[e.cur]); };
+  $("#xq",v).onclick=()=>go("home");
+  $("#sub",v).onclick=async()=>{ const un=e.ans.filter(x=>x<0).length, fl=e.fl.filter(Boolean).length;
+    if(await confirmBox("ส่งคำตอบ?", un||fl? `ยังไม่ได้ตอบ ${un} ข้อ${fl?` · ปักธงไว้ ${fl} ข้อ`:""} ต้องการส่งเลยหรือไม่` : "ตอบครบทุกข้อแล้ว พร้อมส่ง", "ส่งคำตอบ", "ok")) finishExam(); };
+  $("#gridb",v).onclick=()=>modal({title:"ไปยังข้อ",body:`<div class="navgrid">${e.qs.map((q,i)=>{ let c=e.ans[i]>=0?"ans":""; if(practice&&e.ans[i]>=0) c=e.ans[i]===q.a?"r":"w"; return `<button data-j="${i}" class="${c} ${e.fl[i]?"fl":""} ${i===e.cur?"cur":""}">${i+1}</button>`; }).join("")}</div><p class="small muted" style="margin-top:10px">สีม่วง = ตอบแล้ว · จุดส้ม = ปักธง</p>`,actions:[{k:null,t:"ปิด",c:""}],onOpen:(sc,close)=>$$("[data-j]",sc).forEach(b=>b.onclick=()=>{ const j=+b.dataset.j; close(null); if(j!==e.cur){ tickMs(); const d=j>e.cur?1:-1; e.cur=j; save(); paint(d); } })});
+  // swipe
+  let sx=null, sy=null; qc.addEventListener("touchstart",ev=>{ sx=ev.touches[0].clientX; sy=ev.touches[0].clientY; },{passive:true});
+  qc.addEventListener("touchend",ev=>{ if(sx==null) return; const dx=ev.changedTouches[0].clientX-sx, dy=ev.changedTouches[0].clientY-sy; if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)*1.5) move(dx<0?1:-1); sx=null; });
+  v._key=ev=>{ if(S.view!=="exam"||$(".scrim")) return; if(ev.key==="ArrowRight") move(1); else if(ev.key==="ArrowLeft") move(-1); else { const k="1234".indexOf(ev.key); const t="กขคง".indexOf(ev.key); const j=k>=0?k:t; if(j>=0){ const b=$(`.choice[data-c="${j}"]`,qc); b&&b.click(); } } };
+  document.onkeydown=v._key;
+  paint();
+  stopTimer();
+  const tm=$("#tm",v), el=$("#el",v);
+  const tick=()=>{ if(S.view!=="exam"||S.exam!==e) return stopTimer();
+    if(e.endAt){ const left=(e.endAt-Date.now())/1000; $("span",tm).textContent=fmtTime(left); tm.classList.toggle("low",left<=300); if(left<=0){ stopTimer(); toast("หมดเวลา! ส่งคำตอบอัตโนมัติ","bad"); finishExam(); } }
+    else el.textContent=fmtTime((Date.now()-e.startedAt)/1000); };
+  tick(); S.timer=setInterval(tick,1000);
+};
+
+async function finishExam(){
+  const e=S.exam; if(!e||e._finishing) return; e._finishing=true; stopTimer(); tickMs();
+  const items=e.qs.map((q,i)=>({id:q.id,d:q.d,tp:q.tp,ch:e.ans[i],a:q.a,ok:e.ans[i]===q.a,fl:!!e.fl[i],ms:Math.round(e.ms[i])}));
+  const byDomain={}; DIDS.forEach(d=>byDomain[d]={c:0,t:0}); items.forEach(it=>{ byDomain[it.d].t++; if(it.ok) byDomain[it.d].c++; });
+  const correct=items.filter(x=>x.ok).length, total=items.length, p=pct(correct,total);
+  const now=Date.now(); const dur=Math.round(Math.min(now, e.endAt||now)-e.startedAt)/1000;
+  const sum={id:e.id,title:e.title,mode:e.mode,style:e.style,createdAt:now,startedAt:e.startedAt,durationSec:Math.round(dur),timeLimitMin:e.timeLimitMin,total,correct,answered:items.filter(x=>x.ch>=0).length,pct:p,passed:p>=PASS,byDomain,items,examRef:e.examRef||null};
+  const detail={id:e.id,qs:e.qs.map(q=>({id:q.id,d:q.d,tp:q.tp,q:q.q,ch:q.ch,a:q.a,exp:q.exp}))};
+  try{ await S.store.saveAttempt(S.user.uid,sum,detail); LS.del(draftKey()); S.atts=[sum,...(S.atts||[])]; }
+  catch(x){ console.error(x); toast("บันทึกผลไม่สำเร็จ: "+errMsg(x)+" (ผลยังแสดงให้ดู)","bad"); const pend=LS.get("hkt_pending",[]); pend.push({uid:S.user.uid,sum,detail}); LS.set("hkt_pending",pend); LS.del(draftKey()); }
+  S.exam=null; document.onkeydown=null;
+  go("result",{sum,detail,fresh:true,force:true});
+}
+async function flushPending(){ const pend=LS.get("hkt_pending",[]); if(!pend.length) return; const left=[]; for(const p of pend){ if(p.uid!==S.user.uid){ left.push(p); continue; } try{ await S.store.saveAttempt(p.uid,p.sum,p.detail); }catch(e){ left.push(p); } } LS.set("hkt_pending",left); if(left.length<pend.length){ toast("บันทึกผลที่ค้างไว้เรียบร้อย","ok"); S.atts=null; } }
+
+/* ===================== result ===================== */
+VIEWS.result=async(v,{sum,detail,fresh,id})=>{
+  if(!sum){ const atts=await loadAtts(); sum=atts.find(a=>a.id===id); if(!sum) return go("history"); }
+  if(!detail) detail=await S.store.getDetail(S.user.uid,sum.id);
+  const qm=new Map((detail?.qs||[]).map(q=>[q.id,q]));
+  const bm=new Map((S.bank||[]).map(q=>[q.id,q]));
+  const passed=sum.pct>=PASS, C=2*Math.PI*70;
+  const wrongTopics={}; sum.items.filter(x=>!x.ok).forEach(x=>{ const k=x.tp||DOM[x.d].s; wrongTopics[k]=(wrongTopics[k]||0)+1; });
+  const wt=Object.entries(wrongTopics).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const weakD=DIDS.filter(d=>sum.byDomain[d]?.t).sort((a,b)=>sum.byDomain[a].c/sum.byDomain[a].t-sum.byDomain[b].c/sum.byDomain[b].t)[0];
+  const avgSec=sum.items.reduce((s,x)=>s+(x.ms||0),0)/1000/sum.total;
+  v.innerHTML=`
+  <div class="card res-hero pop">
+    ${owl(passed?"cheer":"sad", passed?OWL_COLORS[2]:OWL_COLORS[0])}
+    <div class="verdict">${passed?"ผ่านเกณฑ์แล้ว เยี่ยมมาก!":"ยังไม่ถึงเกณฑ์ สู้ต่อนะ"}</div>
+    <div class="ring"><svg viewBox="0 0 160 160"><circle cx="80" cy="80" r="70" fill="none" stroke="var(--soft)" stroke-width="16"/><circle id="rg" cx="80" cy="80" r="70" fill="none" stroke="${passed?"var(--ok)":"var(--bad)"}" stroke-width="16" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}"/></svg><div class="c"><b id="rp">0%</b><span class="muted small">${sum.correct}/${sum.total} ข้อ</span></div></div>
+    <div class="row" style="justify-content:center"><span class="badge pri">${esc(sum.title)}</span><span class="badge">${fmtDate(sum.createdAt)}</span><span class="badge">ใช้เวลา ${fmtDur(sum.durationSec)}</span><span class="badge">เฉลี่ย ${r0(avgSec)} วิ/ข้อ</span>${sum.total-sum.answered? `<span class="badge warn">ไม่ได้ตอบ ${sum.total-sum.answered} ข้อ</span>`:""}</div>
+  </div>
+  <div class="card pop"><h3>${ic("list")} คะแนนรายด้าน</h3>${domBars(sum.byDomain)}</div>
+  <div class="card pop"><h3>${ic("bolt")} วิเคราะห์ชุดนี้</h3><div class="advice">
+    ${weakD&&sum.byDomain[weakD].c<sum.byDomain[weakD].t? `<div class="tipc d${weakD}"><span class="b">${ic("target",2.6)}</span><p>ด้านที่ควรเร่งพัฒนาในชุดนี้คือ <b>ด้าน ${weakD} ${esc(DOM[weakD].s)}</b> ตอบถูก ${sum.byDomain[weakD].c}/${sum.byDomain[weakD].t} ข้อ</p></div>`:""}
+    ${wt.length? `<div class="tipc d1"><span class="b">${ic("book",2.6)}</span><p>หัวข้อที่พลาด: ${wt.map(([k,n])=>`${esc(k)} (${n})`).join(" · ")}</p></div>`:`<div class="tipc d3"><span class="b">${ic("star",2.6)}</span><p>ตอบถูกทุกข้อ ยอดเยี่ยม!</p></div>`}
+    ${sum.timeLimitMin? `<div class="tipc d4"><span class="b">${ic("clock",2.6)}</span><p>ใช้เวลา ${fmtDur(sum.durationSec)} จาก ${sum.timeLimitMin} นาที ${sum.durationSec/60>sum.timeLimitMin*.95? "— เกือบหมดเวลา ลองข้ามข้อยากแล้วค่อยกลับมาทำ":"— บริหารเวลาได้ดี"}</p></div>`:""}
+  </div>
+  <div class="row"><button class="btn pri" id="again">${ic("redo")} ทำชุดนี้อีกครั้ง</button>${sum.items.some(x=>!x.ok)? `<button class="btn pink" id="wrongOnly">${ic("target")} ฝึกเฉพาะข้อที่ผิด</button>`:""}<button class="btn" data-go="home">${ic("home")} หน้าหลัก</button></div></div>
+  <div class="card pop"><h3>${ic("book")} เฉลยและเหตุผล</h3>
+    <div class="chips" id="rf">${[["all","ทั้งหมด"],["w","ผิด/ไม่ตอบ"],["r","ถูก"],["f","ปักธง"]].map(([k,t],i)=>`<button class="chip ${i?"":"on"}" data-f="${k}">${t}</button>`).join("")}</div>
+    <div class="list" id="rl"></div></div>`;
+  animateBars(v);
+  setTimeout(()=>{ $("#rg",v).style.strokeDashoffset=C*(1-sum.pct/100); let n=0; const tgt=sum.pct; const st=performance.now(); (function f(t){ const k=Math.min(1,(t-st)/1200); n=tgt*(1-Math.pow(1-k,3)); const el=$("#rp",v); if(!el) return; el.textContent=r0(n)+"%"; if(k<1) requestAnimationFrame(f); })(st); if(fresh&&passed) confetti(); },250);
+  const snap=i=>{ const it=sum.items[i]; return qm.get(it.id) || (bm.get(it.id)? {q:bm.get(it.id).question,ch:null,exp:bm.get(it.id).explanation} : null); };
+  function list(f){
+    const rows=sum.items.map((it,i)=>({it,i})).filter(({it})=> f==="all"||(f==="w"&&!it.ok)||(f==="r"&&it.ok)||(f==="f"&&it.fl));
+    $("#rl",v).innerHTML= rows.length? rows.map(({it,i})=>{ const q=snap(i);
+      return `<div class="rv"><div class="row" style="justify-content:space-between"><b>ข้อ ${i+1}</b><span class="row" style="gap:6px"><span class="dtag d${it.d}"><b>${it.d}</b>${esc(it.tp||DOM[it.d].s)}</span><span class="badge ${it.ok?"ok":it.ch<0?"warn":"bad"}">${it.ok?"ถูก":it.ch<0?"ไม่ได้ตอบ":"ผิด"}</span>${it.fl?'<span class="badge warn">ปักธง</span>':""}</span></div>
+      ${q? `<p style="white-space:pre-wrap">${esc(q.q)}</p>${q.ch? `<div class="choices">${q.ch.map((c,j)=>`<div class="choice ${j===it.a?"right":j===it.ch?"wrong":""}"><span class="L">${L[j]}</span><span>${esc(c)}</span></div>`).join("")}</div>`:""}${q.exp? `<div class="explain"><b>เหตุผล </b>${esc(q.exp)}</div>`:""}` : `<p class="muted">ไม่พบรายละเอียดข้อสอบนี้</p>`}</div>`; }).join("") : `<p class="muted">ไม่มีรายการ</p>`;
+  }
+  list("all");
+  $$("#rf .chip",v).forEach(b=>b.onclick=()=>{ $$("#rf .chip",v).forEach(x=>x.classList.toggle("on",x===b)); list(b.dataset.f); });
+  const reuse=(filterFn,title)=>{ const qs=(detail?.qs||[]).filter((q,i)=>filterFn(sum.items[i])).map(q=>{ const order=shuffle(q.ch.map((_,i)=>i)); return {...q,ch:order.map(i=>q.ch[i]),a:order.indexOf(q.a)}; });
+    if(!qs.length) return toast("ไม่พบข้อสอบของชุดนี้","bad");
+    const ex={id:uid(),title,mode:"retry",style:sum.style||"exam",timeLimitMin:sum.timeLimitMin? Math.max(1,Math.round(sum.timeLimitMin*qs.length/sum.total)):0,startedAt:Date.now(),qs:shuffle(qs),cur:0};
+    ex.endAt=ex.timeLimitMin? Date.now()+ex.timeLimitMin*60000 : null; ex.ans=ex.qs.map(()=>-1); ex.fl=ex.qs.map(()=>false); ex.ms=ex.qs.map(()=>0);
+    S.exam=ex; LS.set(draftKey(),ex); go("exam"); };
+  $("#again",v).onclick=()=>reuse(()=>true, sum.title+" (ซ้ำ)");
+  const wo=$("#wrongOnly",v); if(wo) wo.onclick=()=>reuse(it=>!it.ok, "ข้อที่ผิดจาก "+sum.title);
+};
+
+/* ===================== history ===================== */
+VIEWS.history=async(v)=>{
+  const atts=await loadAtts(true);
+  v.innerHTML=`<div class="card pop"><h3>${ic("list")} ประวัติการทำข้อสอบ <small>${atts.length} ครั้ง</small></h3>
+    ${atts.length? `<div class="list">${atts.map(a=>`<button class="li" data-id="${a.id}"><span class="score-dot ${a.pct>=PASS?"pass":"fail"}">${r0(a.pct)}</span><span><b>${esc(a.title)}</b><br><span class="small muted">${fmtDate(a.createdAt)} · ${a.correct}/${a.total} ข้อ · ${fmtDur(a.durationSec)}</span></span><span class="badge ${a.pct>=PASS?"ok":"bad"}">${a.pct>=PASS?"ผ่าน":"ไม่ผ่าน"}</span></button>`).join("")}</div>`
+    : `<div class="empty">${owl("think")}<p class="muted">ยังไม่มีประวัติ ไปฝึกชุดแรกกันเลย</p><button class="btn pri" data-go="practice">เริ่มฝึก</button></div>`}</div>
+    ${atts.length? `<p class="small muted" style="text-align:center">กดค้างที่รายการเพื่อลบ</p>`:""}`;
+  $$(".li",v).forEach(b=>{ let t; b.onclick=()=>go("result",{id:b.dataset.id});
+    const del=async()=>{ if(await confirmBox("ลบประวัติครั้งนี้?","ข้อมูลการทำข้อสอบครั้งนี้จะถูกลบถาวร","ลบ")){ await S.store.deleteAttempt(S.user.uid,b.dataset.id); S.atts=null; toast("ลบแล้ว","ok"); go("history"); } };
+    b.addEventListener("contextmenu",e=>{ e.preventDefault(); del(); });
+    b.addEventListener("touchstart",()=>{ t=setTimeout(()=>{ t="fired"; del(); },650); },{passive:true});
+    b.addEventListener("touchend",e=>{ if(t==="fired"){ e.preventDefault(); } else clearTimeout(t); t=null; });
+  });
+};
+
+/* ===================== me ===================== */
+VIEWS.me=async(v)=>{
+  const u=S.user;
+  v.innerHTML=`<div class="card pop" style="justify-items:center;text-align:center">${owl("happy",OWL_COLORS[u.avatar||0])}<h2>${esc(u.displayName)}</h2><p class="muted">@${esc(u.username)} ${u.admin? '<span class="badge pri">ผู้ดูแล</span>':""} ${S.store.kind==="local"? '<span class="demo-pill">โหมดทดลอง</span>':""}</p></div>
+  <div class="card pop"><h3>${ic("user")} โปรไฟล์</h3>
+    <label class="f">ชื่อที่แสดง<input id="dn" class="in" value="${esc(u.displayName)}"></label>
+    <div><div class="small muted" style="font-weight:600;margin-bottom:6px">สีน้องฮูก</div><div class="owlpick">${OWL_COLORS.map((c,i)=>`<button data-a="${i}" class="${(u.avatar||0)===i?"on":""}" aria-label="สีที่ ${i+1}">${owl("happy",c,"")}</button>`).join("")}</div></div>
+    <button class="btn pri" id="svp">บันทึกโปรไฟล์</button></div>
+  <div class="card pop"><h3>${ic("shield")} เปลี่ยนรหัสผ่าน</h3>
+    <label class="f">รหัสผ่านเดิม<input id="op" type="password" class="in" autocomplete="current-password"></label>
+    <label class="f">รหัสผ่านใหม่<input id="np" type="password" class="in" autocomplete="new-password"></label>
+    <button class="btn" id="cpw">เปลี่ยนรหัสผ่าน</button></div>
+  <div class="card pop"><button class="btn bad" id="lo">${ic("logout")} ออกจากระบบ</button>${S.store.kind==="local" && !window.FORCE_LOCAL? `<button class="btn ghost sm" id="toFb">กลับไปใช้ระบบออนไลน์ (Firebase)</button>`:""}</div>`;
+  let av=u.avatar||0;
+  $$("[data-a]",v).forEach(b=>b.onclick=()=>{ av=+b.dataset.a; $$("[data-a]",v).forEach(x=>x.classList.toggle("on",x===b)); });
+  $("#svp",v).onclick=async()=>{ const dn=$("#dn",v).value.trim()||u.username; try{ await S.store.updateProfile(u.uid,{displayName:dn,avatar:av}); u.displayName=dn; u.avatar=av; toast("บันทึกแล้ว","ok"); go("me"); }catch(e){ toast(errMsg(e),"bad"); } };
+  $("#cpw",v).onclick=async()=>{ const o=$("#op",v).value, n=$("#np",v).value; if(n.length<6) return toast("รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษร","bad"); try{ await S.store.changePassword(o,n); toast("เปลี่ยนรหัสผ่านแล้ว","ok"); $("#op",v).value=$("#np",v).value=""; }catch(e){ toast(errMsg(e),"bad"); } };
+  $("#lo",v).onclick=async()=>{ if(await confirmBox("ออกจากระบบ?","","ออกจากระบบ")) { await S.store.signOut(); } };
+  const tf=$("#toFb",v); if(tf) tf.onclick=()=>{ LS.del("hkt_mode"); location.reload(); };
+};
+
+/* ===================== manage (admin) ===================== */
+VIEWS.manage=async(v,params={})=>{
+  if(!S.user.admin){ v.innerHTML=`<div class="card empty">${owl("think")}<p>หน้านี้สำหรับผู้ดูแลระบบ</p></div>`; return; }
+  const tab=params.tab||"bank";
+  v.innerHTML=`<div class="seg pop" id="mt">${[["bank","คลังข้อสอบ"],["exams","ชุดข้อสอบ"],["members","สมาชิก"]].map(([k,t])=>`<button data-t="${k}" class="${tab===k?"on":""}">${t}</button>`).join("")}</div><div id="mb" class="view" style="padding:0"></div>`;
+  $$("#mt button",v).forEach(b=>b.onclick=()=>{ if(b.dataset.t!==tab) go("manage",{tab:b.dataset.t}); });
+  const mb=$("#mb",v); mb.innerHTML='<div class="skel"></div>';
+  await ({bank:mBank,exams:mExams,members:mMembers})[tab](mb);
+};
+
+/* ---------- bank ---------- */
+async function mBank(root){
+  const bank=await loadBank(true);
+  const f={d:0,q:"",n:30};
+  const cnt=d=>bank.filter(q=>q.domain===d).length;
+  const sampleLeft=(window.SAMPLE_QB||[]).filter(s=>!bank.some(q=>q.question===s.question)).length;
+  root.innerHTML=`
+  <div class="card pop"><h3>${ic("box")} คลังข้อสอบ <small>ทั้งหมด ${bank.length} ข้อ</small></h3>
+    <div class="chips" id="dch"><button class="chip on" data-d="0">ทุกด้าน</button>${DIDS.map(d=>`<button class="chip dc d${d}" data-d="${d}">ด้าน ${d} · ${cnt(d)}</button>`).join("")}</div>
+    <input class="in" id="qs" placeholder="ค้นหาคำถาม หัวข้อ หรือเหตุผล…" type="search">
+    <div class="row">
+      <label class="btn pri sm" style="cursor:pointer">${ic("upload")} นำเข้า .xlsx<input type="file" id="xf" accept=".xlsx,.xls,.csv" multiple hidden></label>
+      <button class="btn sm" id="tpl">${ic("dl")} ดาวน์โหลดแม่แบบ</button>
+      <button class="btn sm" id="exp">${ic("file")} ส่งออกคลัง</button>
+      <button class="btn sm" id="add">${ic("plus")} เพิ่มข้อสอบ</button>
+      ${sampleLeft? `<button class="btn sm pink" id="smp">${ic("star")} เพิ่มชุดตัวอย่าง ${sampleLeft} ข้อ</button>`:""}
+    </div>
+  </div>
+  <div class="card pop"><div class="row" style="justify-content:space-between"><b id="fc"></b><button class="btn sm bad" id="delF">${ic("trash")} ลบที่แสดงทั้งหมด</button></div><div class="list" id="ql"></div><button class="btn block hide" id="more">แสดงเพิ่ม</button></div>`;
+  const filtered=()=>{ const s=f.q.toLowerCase(); return bank.filter(q=>(!f.d||q.domain===f.d) && (!s || [q.question,q.topic,q.explanation,...(q.choices||[])].join(" ").toLowerCase().includes(s))); };
+  function list(){
+    const rows=filtered(); $("#fc",root).textContent=`แสดง ${Math.min(f.n,rows.length)} จาก ${rows.length} ข้อ`;
+    $("#ql",root).innerHTML= rows.length? rows.slice(0,f.n).map(q=>`<div class="qitem" data-id="${q.id}">
+      <div class="row" style="justify-content:space-between"><span class="dtag d${q.domain}"><b>${q.domain}</b>${esc(q.topic||DOM[q.domain]?.s||"")}</span><span class="row" style="gap:6px">${q.difficulty? `<span class="badge">${esc(q.difficulty)}</span>`:""}<button class="iconbtn" style="width:34px;height:34px" data-e="${q.id}" aria-label="แก้ไข">${ic("edit")}</button><button class="iconbtn" style="width:34px;height:34px" data-x="${q.id}" aria-label="ลบ">${ic("trash")}</button></span></div>
+      <p class="qt" role="button" tabindex="0">${esc(q.question)}</p>
+      <div class="more">${(q.choices||[]).map((c,j)=> c? `<div class="small" style="${j===q.answer?"font-weight:700;color:var(--ok)":""}">${L[j]}. ${esc(c)} ${j===q.answer?"✓":""}</div>`:"").join("")}${q.explanation? `<div class="explain small">${esc(q.explanation)}</div>`:""}</div></div>`).join("") : `<p class="muted">ไม่พบข้อสอบ</p>`;
+    $("#more",root).classList.toggle("hide",rows.length<=f.n);
+    $$(".qt",root).forEach(p=>p.onclick=()=>p.closest(".qitem").classList.toggle("open"));
+    $$("[data-e]",root).forEach(b=>b.onclick=()=>editQ(bank.find(q=>q.id===b.dataset.e)));
+    $$("[data-x]",root).forEach(b=>b.onclick=async()=>{ if(await confirmBox("ลบข้อสอบนี้?","ลบออกจากคลังถาวร","ลบ")){ try{ await S.store.deleteQuestions([b.dataset.x]); toast("ลบแล้ว","ok"); go("manage",{tab:"bank"}); }catch(e){ toast(errMsg(e),"bad"); } } });
+  }
+  list();
+  $$("#dch .chip",root).forEach(b=>b.onclick=()=>{ f.d=+b.dataset.d; f.n=30; $$("#dch .chip",root).forEach(x=>x.classList.toggle("on",x===b)); list(); });
+  let t; $("#qs",root).oninput=e=>{ clearTimeout(t); t=setTimeout(()=>{ f.q=e.target.value.trim(); f.n=30; list(); },200); };
+  $("#more",root).onclick=()=>{ f.n+=30; list(); };
+  $("#delF",root).onclick=async()=>{ const ids=filtered().map(q=>q.id); if(!ids.length) return; if(await confirmBox(`ลบ ${ids.length} ข้อ?`,`ข้อสอบที่แสดงตามตัวกรองตอนนี้ทั้งหมด ${ids.length} ข้อจะถูกลบถาวร`,"ลบทั้งหมด")){ try{ await S.store.deleteQuestions(ids); toast(`ลบ ${ids.length} ข้อแล้ว`,"ok"); go("manage",{tab:"bank"}); }catch(e){ toast(errMsg(e),"bad"); } } };
+  $("#add",root).onclick=()=>editQ(null);
+  $("#tpl",root).onclick=downloadTemplate;
+  $("#exp",root).onclick=()=>exportBank(bank);
+  const smp=$("#smp",root); if(smp) smp.onclick=async()=>{ const add=(window.SAMPLE_QB||[]).filter(s=>!bank.some(q=>q.question===s.question)); smp.disabled=true; try{ await S.store.addQuestions(add,S.user.uid); toast(`เพิ่ม ${add.length} ข้อแล้ว`,"ok"); go("manage",{tab:"bank"}); }catch(e){ smp.disabled=false; toast(errMsg(e),"bad"); } };
+  $("#xf",root).onchange=async e=>{ const files=[...e.target.files]; e.target.value=""; if(files.length) importFlow(files,bank); };
+}
+
+function qForm(q){
+  q=q||{domain:1,topic:"",question:"",choices:["","","",""],answer:0,explanation:"",difficulty:"ปานกลาง",level:"ประยุกต์ใช้"};
+  const ch=[...(q.choices||[]),"","","",""].slice(0,4);
+  return h(`<form class="list" onsubmit="return false">
+    <div class="grid2" style="gap:10px"><label class="f">ด้าน<select class="in" name="domain">${DIDS.map(d=>`<option value="${d}" ${q.domain===d?"selected":""}>${d}. ${DOM[d].s}</option>`).join("")}</select></label>
+    <label class="f">หัวข้อ<input class="in" name="topic" value="${esc(q.topic)}"></label></div>
+    <label class="f">คำถาม<textarea class="in" name="question" rows="3">${esc(q.question)}</textarea></label>
+    ${ch.map((c,j)=>`<label class="f" style="grid-template-columns:auto 1fr;align-items:center;gap:8px"><input type="radio" name="answer" value="${j}" ${q.answer===j?"checked":""} aria-label="เฉลย ${L[j]}"><input class="in" name="c${j}" placeholder="ตัวเลือก ${L[j]}" value="${esc(c)}"></label>`).join("")}
+    <p class="small muted">เลือกวงกลมหน้าตัวเลือกที่เป็นคำตอบถูก</p>
+    <label class="f">เหตุผล/คำอธิบาย<textarea class="in" name="explanation" rows="3">${esc(q.explanation)}</textarea></label>
+    <div class="grid2" style="gap:10px"><label class="f">ความยาก<select class="in" name="difficulty"><option value="">–</option>${DIFFS.map(x=>`<option ${q.difficulty===x?"selected":""}>${x}</option>`).join("")}</select></label>
+    <label class="f">ระดับพฤติกรรม<select class="in" name="level"><option value="">–</option>${LEVELS.map(x=>`<option ${q.level===x?"selected":""}>${x}</option>`).join("")}</select></label></div>
+    <p class="err" id="qe"></p></form>`);
+}
+function readQForm(fm){
+  const g=n=>fm.elements[n].value.trim();
+  const choices=[0,1,2,3].map(j=>g("c"+j)); const ans=+(fm.querySelector('input[name="answer"]:checked')?.value ?? -1);
+  while(choices.length>2 && !choices[choices.length-1]) choices.pop();
+  const q={domain:+g("domain"),topic:g("topic"),question:g("question"),choices,answer:ans,explanation:g("explanation"),difficulty:g("difficulty"),level:g("level")};
+  const err=!q.question? "กรุณากรอกคำถาม" : choices.filter(Boolean).length<2? "ต้องมีตัวเลือกอย่างน้อย 2 ตัว" : (ans<0||!choices[ans])? "กรุณาเลือกคำตอบที่ถูก (ตัวเลือกต้องไม่ว่าง)" : "";
+  return {q,err};
+}
+function editQ(q){
+  const fm=qForm(q);
+  modal({title:q?"แก้ไขข้อสอบ":"เพิ่มข้อสอบ",body:fm,actions:[{k:null,t:"ยกเลิก",c:"ghost"},{k:"ok",t:"บันทึก",c:"pri",run:async()=>{ const {q:nq,err}=readQForm(fm); if(err){ $("#qe",fm).textContent=err; return false; }
+    try{ if(q) await S.store.updateQuestion(q.id,nq); else await S.store.addQuestions([nq],S.user.uid); toast("บันทึกแล้ว","ok"); go("manage",{tab:"bank"}); }catch(e){ $("#qe",fm).textContent=errMsg(e); return false; } }}]});
+}
+
+/* ---------- xlsx ---------- */
+const HEAD=["ที่","ด้าน","หัวข้อ","คำถาม","ตัวเลือก ก","ตัวเลือก ข","ตัวเลือก ค","ตัวเลือก ง","เฉลย","เหตุผล/คำอธิบาย","ความยาก","ระดับพฤติกรรม"];
+function needXLSX(){ if(!window.XLSX){ toast("โหลดตัวอ่านไฟล์ Excel ไม่สำเร็จ ตรวจสอบอินเทอร์เน็ต","bad"); return false; } return true; }
+function downloadTemplate(){
+  if(!needXLSX()) return;
+  const ws=XLSX.utils.aoa_to_sheet([HEAD,[1,2,"Vygotsky","ครูให้คำใบ้และค่อย ๆ ลดความช่วยเหลือลงเมื่อนักเรียนทำได้ เป็นการใช้แนวคิดใด","Scaffolding","Reinforcement","Extinction","Advance Organizer","ก","Scaffolding คือการช่วยเหลือชั่วคราวแล้วค่อย ๆ ถอนออก","ง่าย","ประยุกต์ใช้"]]);
+  ws["!cols"]=[5,6,22,60,30,30,30,30,7,60,9,16].map(w=>({wch:w}));
+  const n=XLSX.utils.aoa_to_sheet([["คำชี้แจง"],["ด้าน = 1–5 · เฉลย = ก/ข/ค/ง (หรือ 1–4, A–D) · ต้องมีคำถาม ตัวเลือกอย่างน้อย 2 ตัว และเฉลย"],[],["ด้าน","ชื่อมาตรฐานความรู้"],...DIDS.map(d=>[d,DOM[d].n])]);
+  const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"ข้อสอบ"); XLSX.utils.book_append_sheet(wb,n,"คำชี้แจง");
+  XLSX.writeFile(wb,"แม่แบบนำเข้าข้อสอบ.xlsx");
+}
+function exportBank(bank){
+  if(!needXLSX()) return;
+  const rows=[HEAD,...[...bank].sort((a,b)=>a.domain-b.domain).map((q,i)=>[i+1,q.domain,q.topic||"",q.question,...[0,1,2,3].map(j=>q.choices?.[j]||""),L[q.answer],q.explanation||"",q.difficulty||"",q.level||""])];
+  const ws=XLSX.utils.aoa_to_sheet(rows); ws["!cols"]=[5,6,22,60,30,30,30,30,7,60,9,16].map(w=>({wch:w}));
+  const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"ข้อสอบ"); XLSX.writeFile(wb,`คลังข้อสอบ_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+function parseAnswer(v,choices){
+  const s=String(v??"").trim(); if(!s) return -1;
+  const m={"ก":0,"ข":1,"ค":2,"ง":3,"จ":4,"a":0,"b":1,"c":2,"d":3,"e":4,"1":0,"2":1,"3":2,"4":3,"5":4};
+  const k=s.replace(/^ตัวเลือก\s*/,"").replace(/[.)\s]/g,"").toLowerCase(); if(k in m) return m[k];
+  const i=choices.findIndex(c=>c && c.trim()===s); return i;
+}
+function parseSheetRows(aoa, fname){
+  const hi=aoa.findIndex(r=>r && r.some(c=>/คำถาม|question/i.test(String(c||""))));
+  if(hi<0) return {rows:[],errs:[`${fname}: ไม่พบหัวคอลัมน์ “คำถาม”`]};
+  const H=aoa[hi].map(c=>String(c||"").trim());
+  const col=(re)=>H.findIndex(x=>re.test(x));
+  const cD=col(/^ด้าน|domain|สาระ|มาตรฐาน/i), cT=col(/หัวข้อ|topic/i), cQ=col(/คำถาม|question/i), cA=col(/เฉลย|คำตอบ|answer/i), cE=col(/เหตุผล|อธิบาย|explan/i), cF=col(/ยาก|difficult/i), cV=col(/ระดับพฤติกรรม|พฤติกรรม|bloom|level/i);
+  const cC=["ก","ข","ค","ง","จ"].map((t,j)=>col(new RegExp(`^(ตัวเลือก\\s*)?(${t}|${"ABCDE"[j]}|${j+1})$|ตัวเลือก\\s*${t}|choice\\s*${"ABCDE"[j]}`,"i"))).filter(i=>i>=0);
+  const rows=[], errs=[];
+  aoa.slice(hi+1).forEach((r,k)=>{ if(!r) return; const line=hi+k+2; const q=String(r[cQ]??"").trim(); if(!q) return;
+    const choices=cC.map(i=>String(r[i]??"").trim()); while(choices.length>2 && !choices[choices.length-1]) choices.pop();
+    let d=parseInt(String(r[cD]??"").replace(/[^\d]/g,"")); const a=parseAnswer(r[cA],choices);
+    let diff=String(r[cF]??"").trim(); if(diff==="กลาง") diff="ปานกลาง";
+    const item={domain:d,topic:String(r[cT]??"").trim(),question:q,choices,answer:a,explanation:String(r[cE]??"").trim(),difficulty:DIFFS.includes(diff)?diff:"",level:String(r[cV]??"").trim()};
+    const e=[]; if(!(d>=1&&d<=5)) e.push("ด้านต้องเป็น 1–5"); if(choices.filter(Boolean).length<2) e.push("ตัวเลือกไม่ครบ"); if(a<0||!choices[a]) e.push("เฉลยไม่ถูกต้อง");
+    rows.push({item,err:e.join(", "),line,file:fname}); });
+  return {rows,errs};
+}
+async function importFlow(files,bank){
+  if(!needXLSX()) return;
+  let rows=[], errs=[];
+  for(const f of files){ try{ const wb=XLSX.read(await f.arrayBuffer(),{type:"array"}); const sn=wb.SheetNames.find(n=>/ข้อสอบ/.test(n))||wb.SheetNames[0]; const r=parseSheetRows(XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:""}),f.name); rows.push(...r.rows); errs.push(...r.errs); }catch(e){ errs.push(`${f.name}: อ่านไฟล์ไม่ได้`); } }
+  const have=new Set(bank.map(q=>q.question.trim()));
+  rows.forEach(r=>r.dup=have.has(r.item.question));
+  const good=rows.filter(r=>!r.err), bad=rows.filter(r=>r.err), dup=good.filter(r=>r.dup);
+  const body=h(`<div class="list">
+    <div class="row"><span class="badge ok">พร้อมนำเข้า ${good.length}</span><span class="badge bad">มีปัญหา ${bad.length}</span><span class="badge warn">ซ้ำกับคลัง ${dup.length}</span></div>
+    ${errs.map(e=>`<p class="err">${esc(e)}</p>`).join("")}
+    <div class="row">${DIDS.map(d=>`<span class="dtag d${d}"><b>${d}</b>${good.filter(r=>r.item.domain===d).length} ข้อ</span>`).join("")}</div>
+    ${rows.length? `<div class="tbl" style="max-height:300px"><table><tr><th>แถว</th><th>ด้าน</th><th>คำถาม</th><th>เฉลย</th><th>สถานะ</th></tr>${rows.slice(0,200).map(r=>`<tr class="${r.err?"bad":""}"><td>${r.line}</td><td>${r.item.domain||"?"}</td><td>${esc(r.item.question.slice(0,70))}${r.item.question.length>70?"…":""}</td><td>${r.item.answer>=0?L[r.item.answer]:"?"}</td><td>${r.err? esc(r.err) : r.dup? "ซ้ำ":"✓"}</td></tr>`).join("")}</table></div>`:""}
+    ${dup.length? `<label class="switch">ข้ามข้อที่ซ้ำกับคลัง<input type="checkbox" id="skipDup" checked></label>`:""}
+    <div class="prog hide" id="ip"><i style="width:0"></i></div></div>`);
+  await modal({title:`${ic("upload")} ตรวจสอบก่อนนำเข้า`,body,actions:[{k:null,t:"ยกเลิก",c:"ghost"},{k:"ok",t:"นำเข้า",c:"pri",run:async sc=>{
+    const skip=$("#skipDup",sc)?.checked ?? true; const list=good.filter(r=>!(skip&&r.dup)).map(r=>r.item);
+    if(!list.length){ toast("ไม่มีข้อที่จะนำเข้า","bad"); return false; }
+    $("#ip",sc).classList.remove("hide");
+    try{ await S.store.addQuestions(list,S.user.uid,(n,t)=>{ $("#ip i",sc).style.width=(n*100/t)+"%"; }); toast(`นำเข้า ${list.length} ข้อเรียบร้อย`,"ok"); go("manage",{tab:"bank"}); }
+    catch(e){ toast(errMsg(e),"bad"); return false; } }}]});
+}
+
+/* ---------- exam presets ---------- */
+async function mExams(root){
+  const [exams,bank]=await Promise.all([loadExams(true),loadBank()]);
+  root.innerHTML=`<div class="card pop"><h3>${ic("file")} ชุดข้อสอบสำเร็จรูป <small>สมาชิกทุกคนเลือกทำได้</small></h3>
+    ${exams.length? `<div class="list">${exams.map(e=>`<div class="li" style="grid-template-columns:1fr auto"><span><b>${esc(e.title)}</b><br><span class="small muted">${e.total} ข้อ · ${e.timeLimitMin? e.timeLimitMin+" นาที":"ไม่จับเวลา"} · ${e.ids?"ข้อสอบชุดเดียวกันทุกคน":"สุ่มใหม่ทุกครั้ง"} · ${e.style==="practice"?"เฉลยทันที":"เฉลยตอนจบ"}</span></span><button class="iconbtn" data-x="${e.id}" aria-label="ลบ">${ic("trash")}</button></div>`).join("")}</div>` : `<p class="muted">ยังไม่มีชุดข้อสอบ สร้างชุดแรกด้านล่าง</p>`}</div>
+  <div class="card pop"><h3>${ic("plus")} สร้างชุดใหม่</h3>
+    <label class="f">ชื่อชุด<input class="in" id="et" placeholder="เช่น ชุดที่ 1 ก่อนสอบจริง"></label>
+    <label class="f">คำอธิบาย<input class="in" id="ed" placeholder="(ไม่บังคับ)"></label>
+    <div class="list">${DIDS.map(d=>`<div class="dbar d${d}" style="grid-template-columns:1fr auto"><span class="dtag"><b>${d}</b>${esc(DOM[d].s)} <span class="muted">(${bank.filter(q=>q.domain===d).length})</span></span><div class="stepper"><input data-c="${d}" inputmode="numeric" value="${REAL[d]}"></div></div>`).join("")}</div>
+    <div class="row"><span>เวลา</span><div class="stepper"><input id="em" inputmode="numeric" value="120"></div><span class="muted">นาที (0 = ไม่จับเวลา)</span></div>
+    <div class="seg" id="es"><button class="on" data-s="exam">เฉลยตอนจบ</button><button data-s="practice">เฉลยทันที</button></div>
+    <label class="switch">ตรึงข้อสอบ (ทุกคนได้ชุดเดียวกัน เทียบคะแนนกันได้)<input type="checkbox" id="ef" checked></label>
+    <button class="btn pri" id="esv">บันทึกชุดข้อสอบ</button></div>`;
+  let style="exam"; $$("#es button",root).forEach(b=>b.onclick=()=>{ style=b.dataset.s; $$("#es button",root).forEach(x=>x.classList.toggle("on",x===b)); });
+  $$("[data-x]",root).forEach(b=>b.onclick=async()=>{ if(await confirmBox("ลบชุดข้อสอบนี้?","ประวัติที่ทำไปแล้วยังอยู่","ลบ")){ await S.store.deleteExam(b.dataset.x); S.exams=null; go("manage",{tab:"exams"}); } });
+  $("#esv",root).onclick=async()=>{
+    const title=$("#et",root).value.trim(); if(!title) return toast("กรุณาตั้งชื่อชุด","bad");
+    const counts={}; DIDS.forEach(d=>counts[d]=Math.max(0,parseInt($(`[data-c="${d}"]`,root).value)||0));
+    let total=DIDS.reduce((s,d)=>s+Math.min(counts[d],bank.filter(q=>q.domain===d).length),0); if(!total) return toast("จำนวนข้อเป็น 0","bad");
+    const e={title,desc:$("#ed",root).value.trim(),counts,timeLimitMin:Math.max(0,parseInt($("#em",root).value)||0),style,createdAt:Date.now(),createdBy:S.user.uid,total};
+    if($("#ef",root).checked){ const ids=[]; DIDS.forEach(d=>ids.push(...shuffle(bank.filter(q=>q.domain===d)).slice(0,counts[d]).map(q=>q.id))); e.ids=shuffle(ids); e.total=ids.length; }
+    try{ await S.store.saveExam(e); S.exams=null; toast("บันทึกชุดข้อสอบแล้ว","ok"); go("manage",{tab:"exams"}); }catch(x){ toast(errMsg(x),"bad"); }
+  };
+}
+
+/* ---------- members ---------- */
+async function mMembers(root){
+  const [users,admins]=await Promise.all([S.store.listUsers(),S.store.admins()]);
+  const data=await Promise.all(users.map(async u=>{ try{ const a=await S.store.listAttempts(u.uid); return {u,st:computeStats(a),last:a[0]?.createdAt}; }catch(e){ return {u,st:null}; } }));
+  root.innerHTML=`<div class="card pop"><h3>${ic("users")} สมาชิกครอบครัว <small>${users.length} คน</small></h3><div class="list">${data.map(({u,st,last})=>`
+    <div class="li" style="grid-template-columns:auto 1fr auto">${owl("happy",OWL_COLORS[u.avatar||0],"").replace("<svg",'<svg style="width:48px;height:48px"')}
+      <span><b>${esc(u.displayName)}</b> <span class="small muted">@${esc(u.username)}</span> ${admins.includes(u.uid)?'<span class="badge pri">ผู้ดูแล</span>':""}<br>
+      <span class="small muted">${st&&st.count? `ทำ ${st.count} ครั้ง · เฉลี่ย ${r0(st.avg)}% · ดีสุด ${r0(st.best)}% · คาดการณ์ ${st.projection==null?"–":r0(st.projection)+"%"}${last?` · ล่าสุด ${fmtDate(last)}`:""}` : "ยังไม่เคยทำข้อสอบ"}</span></span>
+      ${u.uid!==S.user.uid? `<button class="btn sm" data-ad="${u.uid}" data-on="${admins.includes(u.uid)?0:1}">${admins.includes(u.uid)?"ถอดผู้ดูแล":"ตั้งเป็นผู้ดูแล"}</button>`:`<span class="badge">คุณ</span>`}</div>`).join("")}</div></div>
+    <p class="small muted" style="text-align:center">ให้สมาชิกสมัครเองจากหน้าเข้าสู่ระบบ แล้วจะปรากฏที่นี่</p>`;
+  $$("[data-ad]",root).forEach(b=>b.onclick=async()=>{ try{ await S.store.setAdmin(b.dataset.ad,b.dataset.on==="1"); toast("อัปเดตสิทธิ์แล้ว","ok"); go("manage",{tab:"members"}); }catch(e){ toast(errMsg(e),"bad"); } });
+}
+
+/* ===================== boot ===================== */
+function boot(){
+  const wantLocal=window.FORCE_LOCAL || LS.get("hkt_mode",null)==="local";
+  let store=null;
+  if(!wantLocal && window.firebase){ try{ store=new FirebaseStore(); }catch(e){ console.error(e); } }
+  if(!store){ store=new LocalStore(); if(!wantLocal && !window.firebase) setTimeout(()=>toast("เชื่อมต่อ Firebase ไม่ได้ ใช้โหมดทดลองในเครื่องแทน"),600); }
+  S.store=store;
+  $(".demo-pill").classList.toggle("hide",store.kind!=="local");
+  store.onAuth(async u=>{
+    S.user=u; S.bank=S.atts=S.exams=null; S.exam=null; stopTimer();
+    if(!u){ S.view=null; $(".view",$("#view"))?.remove(); renderAuth(); return; }
+    $("#auth")?.classList.add("hide"); $("#main").classList.remove("hide"); $(".bnav").classList.remove("hide");
+    $("#brandOwl").innerHTML=owl("happy",OWL_COLORS[u.avatar||0],"");
+    flushPending();
+    const d=LS.get(draftKey(),null);
+    go(d? "home" : "home");
+  });
+}
+
+boot();
+</script>
+</body>
+</html>

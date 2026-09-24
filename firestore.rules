@@ -1,0 +1,66 @@
+rules_version = '2';
+// ฮูกติวครู — Firestore Security Rules (แอปครอบครัว)
+// - ต้องเข้าสู่ระบบจึงอ่าน/เขียนได้
+// - คลังข้อสอบ/ชุดข้อสอบ: สมาชิกอ่านได้ เฉพาะผู้ดูแลเขียนได้
+// - ประวัติการสอบ: เจ้าของอ่าน/เขียน ผู้ดูแลอ่านได้ (ดูพัฒนาการของครอบครัว)
+// - บัญชีแรกที่สมัครจะสร้าง config/admins ได้ครั้งเดียว
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function adminsDoc() { return /databases/$(database)/documents/config/admins; }
+    function isAdmin() {
+      return signedIn() && exists(adminsDoc()) && request.auth.uid in get(adminsDoc()).data.uids;
+    }
+    function validQuestion(d) {
+      return d.domain is int && d.domain >= 1 && d.domain <= 5
+        && d.question is string && d.question.size() > 0 && d.question.size() < 5000
+        && d.choices is list && d.choices.size() >= 2 && d.choices.size() <= 6
+        && d.answer is int && d.answer >= 0 && d.answer < d.choices.size();
+    }
+
+    match /config/admins {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.uids == [request.auth.uid];
+      allow update: if isAdmin() && request.resource.data.uids is list && request.resource.data.uids.size() >= 1;
+      allow delete: if false;
+    }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow create, update: if isOwner(uid)
+        && request.resource.data.username is string
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() <= 60;
+      allow delete: if isAdmin();
+
+      match /attempts/{aid} {
+        allow read: if isOwner(uid) || isAdmin();
+        allow create: if isOwner(uid) && request.resource.data.id == aid
+          && request.resource.data.total is int && request.resource.data.items is list;
+        allow update: if false;
+        allow delete: if isOwner(uid) || isAdmin();
+      }
+      match /attemptDetails/{aid} {
+        allow read: if isOwner(uid) || isAdmin();
+        allow create: if isOwner(uid);
+        allow update: if false;
+        allow delete: if isOwner(uid) || isAdmin();
+      }
+    }
+
+    match /questions/{qid} {
+      allow read: if signedIn();
+      allow create, update: if isAdmin() && validQuestion(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /exams/{eid} {
+      allow read: if signedIn();
+      allow create, update: if isAdmin() && request.resource.data.title is string;
+      allow delete: if isAdmin();
+    }
+
+    match /{document=**} { allow read, write: if false; }
+  }
+}
