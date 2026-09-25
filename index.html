@@ -915,9 +915,10 @@ async function finishExam(){
 async function flushPending(){ const pend=LS.get("hkt_pending",[]); if(!pend.length) return; const left=[]; for(const p of pend){ if(p.uid!==S.user.uid){ left.push(p); continue; } try{ await S.store.saveAttempt(p.uid,p.sum,p.detail); }catch(e){ left.push(p); } } LS.set("hkt_pending",left); if(left.length<pend.length){ toast("บันทึกผลที่ค้างไว้เรียบร้อย","ok"); S.atts=null; } }
 
 /* ===================== result ===================== */
-VIEWS.result=async(v,{sum,detail,fresh,id})=>{
-  if(!sum){ const atts=await loadAtts(); sum=atts.find(a=>a.id===id); if(!sum) return go("history"); }
-  if(!detail) detail=await S.store.getDetail(S.user.uid,sum.id);
+VIEWS.result=async(v,{sum,detail,fresh,id,uid:owner,who})=>{
+  owner=owner||S.user.uid; const other=owner!==S.user.uid && S.user.admin;
+  if(!sum){ const atts= other? await S.store.listAttempts(owner) : await loadAtts(); sum=atts.find(a=>a.id===id); if(!sum) return other? go("member",{uid:owner}) : go("history"); }
+  if(!detail) detail=await S.store.getDetail(owner,sum.id);
   const qm=new Map((detail?.qs||[]).map(q=>[q.id,q]));
   const bm=new Map((S.bank||[]).map(q=>[q.id,q]));
   const passed=sum.pct>=PASS, C=2*Math.PI*70;
@@ -948,7 +949,7 @@ VIEWS.result=async(v,{sum,detail,fresh,id})=>{
   function list(f){
     const rows=sum.items.map((it,i)=>({it,i})).filter(({it})=> f==="all"||(f==="w"&&!it.ok)||(f==="r"&&it.ok)||(f==="f"&&it.fl));
     $("#rl",v).innerHTML= rows.length? rows.map(({it,i})=>{ const q=snap(i);
-      return `<div class="rv"><div class="row" style="justify-content:space-between"><b>ข้อ ${i+1}</b><span class="row" style="gap:6px"><span class="dtag d${it.d}"><b>${it.d}</b>${esc(it.tp||DOM[it.d].s)}</span><span class="badge ${it.ok?"ok":it.ch<0?"warn":"bad"}">${it.ok?"ถูก":it.ch<0?"ไม่ได้ตอบ":"ผิด"}</span>${it.fl?'<span class="badge warn">ปักธง</span>':""}</span></div>
+      return `<div class="rv"><div class="row" style="justify-content:space-between"><b>ข้อ ${i+1}</b><span class="row" style="gap:6px"><span class="badge">${ic("clock")} ${r0((it.ms||0)/1000)} วิ</span>${!it.ok&&it.ch>=0? `<span class="badge bad">ตอบ ${L[it.ch]} · เฉลย ${L[it.a]}</span>`:""}<span class="dtag d${it.d}"><b>${it.d}</b>${esc(it.tp||DOM[it.d].s)}</span><span class="badge ${it.ok?"ok":it.ch<0?"warn":"bad"}">${it.ok?"ถูก":it.ch<0?"ไม่ได้ตอบ":"ผิด"}</span>${it.fl?'<span class="badge warn">ปักธง</span>':""}</span></div>
       ${q? `<p style="white-space:pre-wrap">${esc(q.q)}</p>${q.ch? `<div class="choices">${q.ch.map((c,j)=>`<div class="choice ${j===it.a?"right":j===it.ch?"wrong":""}"><span class="L">${L[j]}</span><span>${esc(c)}</span></div>`).join("")}</div>`:""}${q.exp? `<div class="explain"><b>เหตุผล </b>${esc(q.exp)}</div>`:""}` : `<p class="muted">ไม่พบรายละเอียดข้อสอบนี้</p>`}</div>`; }).join("") : `<p class="muted">ไม่มีรายการ</p>`;
   }
   list("all");
@@ -960,6 +961,12 @@ VIEWS.result=async(v,{sum,detail,fresh,id})=>{
     S.exam=ex; LS.set(draftKey(),ex); go("exam"); };
   $("#again",v).onclick=()=>reuse(()=>true, sum.title+" (ซ้ำ)");
   const wo=$("#wrongOnly",v); if(wo) wo.onclick=()=>reuse(it=>!it.ok, "ข้อที่ผิดจาก "+sum.title);
+  if(other){
+    const r=$("#again",v).parentElement; r.innerHTML=`<button class="btn pri" id="backM">${ic("left")} กลับไปหน้าประวัติสมาชิก</button>`;
+    $("#backM",v).onclick=()=>go("member",{uid:owner});
+    v.prepend(h(`<div class="card pop" style="background:var(--soft)"><div class="row" style="justify-content:space-between"><span>${ic("shield")} ผู้ดูแลกำลังดูผลของ <b>${esc(who||"สมาชิก")}</b></span><button class="btn sm" id="backM2">${ic("left")} กลับ</button></div></div>`));
+    $("#backM2",v).onclick=()=>go("member",{uid:owner});
+  }
 };
 
 /* ===================== history ===================== */
@@ -1226,13 +1233,77 @@ async function mMembers(root){
   const [users,admins]=await Promise.all([S.store.listUsers(),S.store.admins()]);
   const data=await Promise.all(users.map(async u=>{ try{ const a=await S.store.listAttempts(u.uid); return {u,st:computeStats(a),last:a[0]?.createdAt}; }catch(e){ return {u,st:null}; } }));
   root.innerHTML=`<div class="card pop"><h3>${ic("users")} สมาชิกครอบครัว <small>${users.length} คน</small></h3><div class="list">${data.map(({u,st,last})=>`
-    <div class="li" style="grid-template-columns:auto 1fr auto">${owl("happy",OWL_COLORS[u.avatar||0],"").replace("<svg",'<svg style="width:48px;height:48px"')}
+    <div class="li" style="grid-template-columns:auto 1fr auto auto">${owl("happy",OWL_COLORS[u.avatar||0],"").replace("<svg",'<svg style="width:48px;height:48px"')}
       <span><b>${esc(u.displayName)}</b> <span class="small muted">@${esc(u.username)}</span> ${admins.includes(u.uid)?'<span class="badge pri">ผู้ดูแล</span>':""}<br>
       <span class="small muted">${st&&st.count? `ทำ ${st.count} ครั้ง · เฉลี่ย ${r0(st.avg)}% · ดีสุด ${r0(st.best)}% · คาดการณ์ ${st.projection==null?"–":r0(st.projection)+"%"}${last?` · ล่าสุด ${fmtDate(last)}`:""}` : "ยังไม่เคยทำข้อสอบ"}</span></span>
+      <button class="btn sm pri" data-mv="${u.uid}">${ic("list")} ดูประวัติละเอียด</button>
       ${u.uid!==S.user.uid? `<button class="btn sm" data-ad="${u.uid}" data-on="${admins.includes(u.uid)?0:1}">${admins.includes(u.uid)?"ถอดผู้ดูแล":"ตั้งเป็นผู้ดูแล"}</button>`:`<span class="badge">คุณ</span>`}</div>`).join("")}</div></div>
     <p class="small muted" style="text-align:center">ให้สมาชิกสมัครเองจากหน้าเข้าสู่ระบบ แล้วจะปรากฏที่นี่</p>`;
+  $$("[data-mv]",root).forEach(b=>b.onclick=()=>go("member",{uid:b.dataset.mv}));
   $$("[data-ad]",root).forEach(b=>b.onclick=async()=>{ try{ await S.store.setAdmin(b.dataset.ad,b.dataset.on==="1"); toast("อัปเดตสิทธิ์แล้ว","ok"); go("manage",{tab:"members"}); }catch(e){ toast(errMsg(e),"bad"); } });
 }
+
+/* ---------- member detail (admin) ---------- */
+const MODE_TH={real:"จำลองสอบจริง",custom:"สุ่มฝึก",wrong:"ฝึกข้อที่ผิด",retry:"ทำซ้ำ",exam:"ชุดข้อสอบ"};
+VIEWS.member=async(v,{uid:id})=>{
+  if(!S.user.admin){ v.innerHTML=`<div class="card empty">${owl("think")}<p>หน้านี้สำหรับผู้ดูแลระบบ</p></div>`; return; }
+  const [users,atts]=await Promise.all([S.store.listUsers(),S.store.listAttempts(id)]);
+  const u=users.find(x=>x.uid===id)||{uid:id,displayName:"สมาชิก",username:"-"};
+  const st=computeStats(atts); const passN=atts.filter(a=>a.pct>=PASS).length;
+  const totalMin=atts.reduce((s,a)=>s+(a.durationSec||0),0)/60;
+  const topics=Object.entries(st.topic).map(([k,x])=>({k,...x,p:x.c*100/x.t})).sort((a,b)=>a.p-b.p||b.t-a.t);
+  // กิจกรรม 14 วันล่าสุด
+  const days=[...Array(14)].map((_,i)=>{ const d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()-13+i); return d; });
+  const act=days.map(d=>{ const n=atts.filter(a=>new Date(a.createdAt).toDateString()===d.toDateString()); return {d,n:n.length,q:n.reduce((s,a)=>s+a.total,0)}; });
+  const mx=Math.max(1,...act.map(x=>x.q));
+  const modeOf=a=>MODE_TH[a.mode]||a.mode||"-";
+  v.innerHTML=`
+  <div class="card hero pop">${owl("happy",OWL_COLORS[u.avatar||0])}
+    <div><h2>${esc(u.displayName)}</h2><p class="muted">@${esc(u.username)} · ${st.count? `ทำล่าสุด ${fmtDate(atts[0].createdAt)}`:"ยังไม่เคยทำข้อสอบ"}</p>
+    <div class="row"><button class="btn sm" id="bk">${ic("left")} กลับรายชื่อสมาชิก</button>${st.count? `<button class="btn sm" id="csv">${ic("dl")} ส่งออก CSV</button>`:""}</div></div></div>
+  <div class="kpis pop">
+    <div class="kpi"><div class="v">${st.count}</div><div class="l">ครั้งที่ทำ</div></div>
+    <div class="kpi"><div class="v">${st.count? r0(st.avg)+"%":"–"}</div><div class="l">คะแนนเฉลี่ย</div></div>
+    <div class="kpi"><div class="v">${st.count? r0(st.best)+"%":"–"}</div><div class="l">ดีที่สุด</div></div>
+    <div class="kpi"><div class="v" style="color:${st.projection==null?"inherit":st.projection>=PASS?"var(--ok)":"var(--bad)"}">${st.projection==null?"–":r0(st.projection)+"%"}</div><div class="l">คาดการณ์สอบจริง</div></div>
+    <div class="kpi"><div class="v">${passN}/${st.count}</div><div class="l">ครั้งที่ผ่านเกณฑ์</div></div>
+    <div class="kpi"><div class="v">${st.totalQ}</div><div class="l">ข้อที่ทำทั้งหมด</div></div>
+    <div class="kpi"><div class="v">${st.count? r0(st.avgSec):"–"}</div><div class="l">วินาที/ข้อ (เฉลี่ย)</div></div>
+    <div class="kpi"><div class="v">${r0(totalMin)}</div><div class="l">นาทีที่ใช้รวม · ต่อเนื่อง ${st.streak} วัน</div></div>
+  </div>
+  ${st.count? `
+  <div class="card pop"><h3>${ic("clock")} กิจกรรม 14 วันล่าสุด <small>จำนวนข้อ/วัน</small></h3>
+    <div style="display:grid;grid-template-columns:repeat(14,1fr);gap:4px;align-items:end;height:110px">${act.map(x=>`<div title="${x.d.toLocaleDateString("th-TH")}: ${x.n} ครั้ง ${x.q} ข้อ" style="display:grid;align-items:end;height:100%;text-align:center"><div style="height:${x.q? Math.max(6,x.q*80/mx):3}px;background:${x.q?"var(--pri)":"var(--soft)"};border-radius:6px"></div><span class="small muted">${x.d.getDate()}</span></div>`).join("")}</div></div>
+  <div class="grid2">
+    <div class="card pop"><h3>${ic("trend")} พัฒนาการ <small>คะแนน %</small></h3>${trendSVG(st.asc)}</div>
+    <div class="card pop"><h3>${ic("star")} ความแม่นยำรายด้าน <small>10 ครั้งล่าสุด</small></h3>${radarSVG(st.dom)}</div>
+  </div>
+  <div class="card pop"><h3>${ic("list")} สรุปรายด้าน <small>ทุกครั้งที่ทำ</small></h3>${domBars(st.all)}</div>
+  <div class="card pop"><h3>${ic("target")} รายหัวข้อ <small>เรียงจากอ่อนสุด · ข้อที่ผิดค้าง ${st.wrongIds.length} ข้อ</small></h3>
+    <div class="tbl" style="max-height:340px"><table><tr><th>ด้าน</th><th>หัวข้อ</th><th>ถูก/ทำ</th><th>%</th></tr>
+    ${topics.map(t=>`<tr class="${t.p<PASS?"bad":""}"><td><span class="dtag d${t.d}"><b>${t.d}</b></span></td><td>${esc(t.k)}</td><td>${t.c}/${t.t}</td><td><b>${r0(t.p)}%</b></td></tr>`).join("")}</table></div></div>
+  <div class="card pop"><h3>${ic("file")} ประวัติทุกครั้ง <small>${atts.length} ครั้ง · กดแถวเพื่อดูเฉลยรายข้อ</small></h3>
+    <div class="chips" id="af">${[["all","ทั้งหมด"],["p","ผ่าน"],["f","ไม่ผ่าน"],...Object.keys(MODE_TH).filter(m=>atts.some(a=>a.mode===m)).map(m=>["m:"+m,MODE_TH[m]])].map(([k,t],i)=>`<button class="chip ${i?"":"on"}" data-f="${k}">${t}</button>`).join("")}</div>
+    <div class="tbl" style="max-height:480px"><table id="at"></table></div></div>` : ""}`;
+  animateBars(v);
+  $("#bk",v).onclick=()=>go("manage",{tab:"members"});
+  if(!st.count) return;
+  const draw=f=>{ const rows=atts.filter(a=>f==="all"||(f==="p"&&a.pct>=PASS)||(f==="f"&&a.pct<PASS)||(f.startsWith("m:")&&a.mode===f.slice(2)));
+    $("#at",v).innerHTML=`<tr><th>วันเวลา</th><th>ชุด</th><th>รูปแบบ</th><th>คะแนน</th><th>ตอบ</th><th>เวลา</th>${DIDS.map(d=>`<th>ด.${d}</th>`).join("")}<th>ผล</th><th></th></tr>`+
+    (rows.length? rows.map(a=>`<tr data-id="${a.id}" style="cursor:pointer" class="${a.pct>=PASS?"":"bad"}"><td style="white-space:nowrap">${fmtDate(a.createdAt)}</td><td>${esc(a.title)}</td><td>${esc(modeOf(a))}</td><td style="white-space:nowrap"><b>${a.correct}/${a.total}</b> (${r0(a.pct)}%)</td><td>${a.answered??"-"}/${a.total}</td><td style="white-space:nowrap">${fmtDur(a.durationSec||0)}${a.timeLimitMin?` / ${a.timeLimitMin} น.`:""}</td>${DIDS.map(d=>{ const x=a.byDomain?.[d]; return `<td>${x&&x.t? r0(x.c*100/x.t)+"%":"–"}</td>`; }).join("")}<td><span class="badge ${a.pct>=PASS?"ok":"bad"}">${a.pct>=PASS?"ผ่าน":"ไม่ผ่าน"}</span></td><td><button class="btn sm ghost" data-del="${a.id}" title="ลบ">${ic("x")}</button></td></tr>`).join("") : `<tr><td colspan="${8+DIDS.length}" class="muted">ไม่มีรายการ</td></tr>`);
+    $$("#at tr[data-id]",v).forEach(tr=>tr.onclick=e=>{ if(e.target.closest("[data-del]")) return; const a=atts.find(x=>x.id===tr.dataset.id); go("result",{sum:a,uid:id,who:u.displayName}); });
+    $$("#at [data-del]",v).forEach(b=>b.onclick=async()=>{ if(await confirmBox("ลบประวัติครั้งนี้?",`ลบผลสอบของ ${u.displayName} ครั้งนี้ถาวร`,"ลบ")){ try{ await S.store.deleteAttempt(id,b.dataset.del); toast("ลบแล้ว","ok"); go("member",{uid:id}); }catch(e){ toast(errMsg(e),"bad"); } } });
+  };
+  draw("all");
+  $$("#af .chip",v).forEach(b=>b.onclick=()=>{ $$("#af .chip",v).forEach(x=>x.classList.toggle("on",x===b)); draw(b.dataset.f); });
+  $("#csv",v).onclick=()=>{
+    const q=x=>`"${String(x??"").replace(/"/g,'""')}"`;
+    const head=["วันเวลา","ชุด","รูปแบบ","ถูก","ทั้งหมด","ตอบ","ร้อยละ","ผล","เวลา(นาที)","จำกัดเวลา(นาที)",...DIDS.map(d=>"ด้าน "+d+" (%)")];
+    const lines=[head.map(q).join(",")].concat(atts.map(a=>[new Date(a.createdAt).toLocaleString("th-TH"),a.title,modeOf(a),a.correct,a.total,a.answered,r0(a.pct),a.pct>=PASS?"ผ่าน":"ไม่ผ่าน",r0((a.durationSec||0)/60),a.timeLimitMin||"",...DIDS.map(d=>{ const x=a.byDomain?.[d]; return x&&x.t? r0(x.c*100/x.t):""; })].map(q).join(",")));
+    const blob=new Blob(["﻿"+lines.join("\n")],{type:"text/csv;charset=utf-8"});
+    const l=document.createElement("a"); l.href=URL.createObjectURL(blob); l.download=`ประวัติ_${u.username}.csv`; l.click(); setTimeout(()=>URL.revokeObjectURL(l.href),2000);
+  };
+};
 
 /* ===================== boot ===================== */
 function boot(){
